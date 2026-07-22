@@ -1,0 +1,110 @@
+{
+  "nav": {
+    "shop": "Shop",
+    "ourStory": "Our Story",
+    "craft": "Craft",
+    "journal": "Journal"
+  },
+  "hero": {
+    "exploreCollection": "Explore Collection",
+    "scroll": "Scroll"
+  },
+  "artOfShoe": {
+    "title": "The art of the shoe.",
+    "body": "A tuxedo shoe is not just footwear — it is the final sentence of a well-tailored statement. At Lyzane, we believe elegance begins at the sole. Every curve, every stitch, every finish is deliberate.",
+    "cta": "Our Philosophy +"
+  },
+  "brandGrid": {
+    "items": [
+      { "num": "01", "title": "Italian Leather", "desc": "Premium hide" },
+      { "num": "02", "title": "Finitions", "desc": "Hand-stitched details" },
+      { "num": "03", "title": "Comfort", "desc": "Natural feel" },
+      { "num": "04", "title": "Style", "desc": "Timeless design" },
+      { "num": "05", "title": "The Art of Wear", "desc": "Worn with assurance" },
+      { "num": "06", "title": "Presence", "desc": "Commanding silhouette" },
+      { "num": "07", "title": "Character", "desc": "Defined by detail" }
+    ]
+  },
+  "craft": {
+    "title": "Craftsmanship in motion.",
+    "body": "From the first cut of leather to the final polish, our artisans spend over 40 hours on each pair. The mocassin construction wraps the foot in a single piece of leather — seamless, supple, unforgettable.",
+    "cta": "Our Craft +"
+  },
+  "splitFeature": {
+    "title": "Built for moments that matter.",
+    "body": "Black-tie galas. Wedding aisles. Boardrooms. These are the stages where first impressions are permanent. Our shoes do not follow trends — they transcend them.",
+    "cta": "Shop Collection +"
+  },
+  "shop": {
+    "title": "Shop",
+    "subtitle": "Handcrafted tuxedo and mocassin shoes",
+    "all": "All",
+    "noProducts": "No products found. Check back soon.",
+    "selectSize": "Select size",
+    "addToCart": "Add to Cart",
+    "added": "Added",
+    "buyNow": "Buy Now",
+    "likes": "likes"
+  },
+  "product": {
+    "size": "Size",
+    "sizeRequired": "Please select a size",
+    "quantity": "Quantity",
+    "addToCart": "Add to Cart",
+    "addedToCart": "Added to Cart",
+    "buyNow": "Buy Now",
+    "description": "Description",
+    "peopleLiked": "people liked this",
+    "notFound": "Product not found."
+  },
+  "cart": {
+    "title": "Cart",
+    "empty": "Your cart is empty",
+    "size": "Size",
+    "total": "Total",
+    "checkout": "Checkout via WhatsApp"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "empty": "Your cart is empty.",
+    "browseShop": "Browse Shop",
+    "size": "Size",
+    "total": "Total",
+    "fullName": "Full Name",
+    "fullNamePlaceholder": "Your full name",
+    "email": "Email",
+    "emailPlaceholder": "your@email.com",
+    "phone": "Phone Number",
+    "phonePlaceholder": "+212 6XX XXX XXX",
+    "address": "Delivery Address",
+    "addressPlaceholder": "Full delivery address, city",
+    "orderViaWhatsapp": "Order via WhatsApp",
+    "processing": "Processing...",
+    "error": "Failed to process order. Please try again."
+  },
+  "footer": {
+    "tagline": "Timeless by nature",
+    "description": "Classic tuxedo & mocassin shoes. Handcrafted for those who understand that true luxury whispers.",
+    "shop": {
+      "title": "Shop",
+      "allProducts": "All Products",
+      "loafers": "Loafers",
+      "oxfords": "Oxfords"
+    },
+    "help": {
+      "title": "Help",
+      "ourStory": "Our Story",
+      "orderViaWhatsapp": "Order via WhatsApp",
+      "shipping": "Shipping & Returns"
+    },
+    "connected": {
+      "title": "Stay Connected",
+      "subscribe": "Subscribe for updates and exclusive offers.",
+      "emailPlaceholder": "Your email",
+      "subscribeButton": "Subscribe"
+    },
+    "copyright": "All rights reserved.",
+    "privacy": "Privacy Policy",
+    "terms": "Terms"
+  }
+}

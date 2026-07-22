@@ -1,0 +1,487 @@
+{
+  "meta": {
+    "brand": "Lyzane",
+    "description": "Luxury tuxedo & mocassin shoe e-commerce landing page",
+    "framework": "Next.js (App Router)",
+    "styling": "Tailwind CSS v4",
+    "animation": "Framer Motion + Three.js",
+    "lastUpdated": "2026-07-21"
+  },
+
+  "designSystem": {
+    "colors": {
+      "cream": {
+        "hex": "#f5f5f5",
+        "usage": "Light backgrounds, body text on dark surfaces",
+        "roles": ["--background", "bg-cream"]
+      },
+      "charcoal": {
+        "hex": "#1a1a1a",
+        "usage": "Dark backgrounds, primary text color",
+        "roles": ["--foreground", "--primary", "bg-charcoal"]
+      },
+      "burgundy": {
+        "hex": "#722f37",
+        "usage": "Accent color, CTAs, cart badge, active states",
+        "roles": ["--accent", "bg-burgundy", "text-burgundy"]
+      },
+      "brass": {
+        "hex": "#b5985a",
+        "usage": "Brand gold, hero text, decorative glows, particles",
+        "roles": ["text-brass", "border-brass", "bg-brass"]
+      }
+    },
+    "fonts": {
+      "brand": {
+        "family": "Josefin Sans",
+        "weight": 500,
+        "cssClass": "font-brand",
+        "transforms": "uppercase",
+        "letterSpacing": "0.25em",
+        "usage": "Brand name 'Lyzane' only"
+      },
+      "heading": {
+        "family": "Playfair Display",
+        "weight": "400 (normal, no italic)",
+        "cssClass": "font-heading",
+        "usage": "Section titles, ghost watermarks, fallback hero letter"
+      },
+      "body": {
+        "family": "Inter",
+        "cssClass": "font-sans",
+        "usage": "All body text, descriptions, navigation links"
+      }
+    },
+    "tokens": {
+      "--background": "#f5f5f5",
+      "--foreground": "#1a1a1a",
+      "--primary": "#1a1a1a",
+      "--secondary": "#ebebeb",
+      "--muted": "#ebebeb",
+      "--muted-foreground": "#6b6b6b",
+      "--accent": "#722f37",
+      "--border": "#d4cfc7",
+      "--ring": "#722f37",
+      "--destructive": "#dc2626",
+      "--radius": "0.5rem"
+    }
+  },
+
+  "pageStructure": {
+    "sequence": [
+      {
+        "component": "Navbar",
+        "type": "fixed",
+        "zIndex": 50,
+        "height": "80px (h-20)",
+        "background": "charcoal (#1a1a1a)"
+      },
+      {
+        "component": "ShoeHero",
+        "type": "full-viewport",
+        "height": "100vh",
+        "background": "gradient cream to background"
+      },
+      {
+        "component": "NarrativeSection #1",
+        "type": "scroll-section",
+        "variant": "light",
+        "chapter": "Chapter one — values",
+        "height": "min 80vh"
+      },
+      {
+        "component": "NarrativeSection #2",
+        "type": "scroll-section",
+        "variant": "dark",
+        "chapter": "Chapter two — craft",
+        "height": "min 80vh"
+      },
+      {
+        "component": "NarrativeSection #3",
+        "type": "scroll-section",
+        "variant": "light",
+        "chapter": "Chapter three — purpose",
+        "height": "min 80vh"
+      },
+      {
+        "component": "CTASection",
+        "type": "scroll-section",
+        "background": "charcoal",
+        "height": "min 60vh"
+      },
+      {
+        "component": "Footer",
+        "type": "static",
+        "background": "cream"
+      }
+    ],
+    "visualRhythm": "Light → Light → Dark → Light → Dark → Light (alternating contrast)"
+  },
+
+  "components": {
+    "Navbar": {
+      "file": "src/components/layout/Navbar.tsx",
+      "position": "fixed top-0",
+      "background": "bg-charcoal",
+      "height": "h-20",
+      "elements": {
+        "logo": {
+          "src": "/images/logo1v1.png",
+          "width": 120,
+          "height": 40,
+          "className": "h-14 w-auto",
+          "loading": "priority"
+        },
+        "desktopNav": {
+          "links": [
+            { "label": "Shop", "href": "/shop" },
+            { "label": "Our Story", "href": "/#values" },
+            { "label": "Craftsmanship", "href": "/#journey" }
+          ],
+          "style": "text-sm tracking-wide text-white/70",
+          "hoverStyle": "hover:text-white transition-colors"
+        },
+        "cartButton": {
+          "icon": "ShoppingBag (lucide-react)",
+          "badge": {
+            "background": "bg-burgundy",
+            "textColor": "text-white",
+            "size": "w-4 h-4",
+            "position": "absolute -top-2 -right-2"
+          }
+        },
+        "mobileMenu": {
+          "toggleIcon": "Menu / X (lucide-react)",
+          "dropdown": {
+            "background": "bg-cream",
+            "border": "border-t border-border"
+          }
+        }
+      },
+      "state": {
+        "menuOpen": "boolean — mobile menu toggle",
+        "cartOpen": "boolean — cart drawer toggle",
+        "cartCount": "number — read from Zustand store (client-only, useEffect)"
+      },
+      "interactions": [
+        "Cart icon click opens CartDrawer",
+        "Mobile menu toggle shows/hides dropdown",
+        "Link click closes mobile menu",
+        "Cart count synced from Zustand with client-side hydration fix"
+      ]
+    },
+
+    "ShoeHero": {
+      "file": "src/components/landing/ShoeHero.tsx",
+      "height": "100vh",
+      "background": "gradient from-cream via-cream to-background",
+      "layout": "relative flex items-center justify-center",
+      "elements": {
+        "textOverlay": {
+          "position": "absolute inset-0 flex flex-col items-center justify-center z-10",
+          "brandName": {
+            "text": "Lyzane",
+            "font": "font-brand (Josefin Sans)",
+            "size": "text-5xl md:text-7xl lg:text-8xl",
+            "color": "text-brass (#b5985a)"
+          },
+          "tagline": {
+            "text": "Where elegance meets the ground",
+            "font": "font-sans (Inter)",
+            "size": "text-lg",
+            "color": "text-muted-foreground (#6b6b6b)",
+            "marginTop": "mt-4"
+          },
+          "ctaLink": {
+            "text": "Discover",
+            "style": "text-xs uppercase tracking-[0.25em]",
+            "color": "text-burgundy border-burgundy",
+            "hover": "hover:text-charcoal",
+            "border": "border-b border-burgundy",
+            "href": "#values"
+          }
+        },
+        "threeCanvas": {
+          "model": {
+            "src": "/models/shoe.obj",
+            "format": "OBJ",
+            "material": {
+              "color": "#1a1512",
+              "roughness": 0.35,
+              "metalness": 0.1
+            },
+            "autoCenter": true,
+            "autoScale": true,
+            "maxDimension": 2
+          },
+          "position": "[0.1, 1.2, 0]",
+          "scale": "dynamic (2 / maxDim)"
+        },
+        "lighting": {
+          "ambient": { "intensity": 0.5 },
+          "directional": [
+            { "position": [5, 5, 5], "intensity": 1 },
+            { "position": [-3, 3, -3], "intensity": 0.3 }
+          ],
+          "environment": { "preset": "apartment" }
+        },
+        "postProcessing": {
+          "bloom": { "intensity": 0.4, "luminanceThreshold": 0.6 },
+          "vignette": { "offset": 0.3, "darkness": 0.6 }
+        },
+        "contactShadows": {
+          "opacity": 0.4,
+          "scale": 6,
+          "blur": 2,
+          "position": [0, 0.99, 0]
+        },
+        "dustParticles": {
+          "count": 50,
+          "color": "#b5985a (brass)",
+          "opacity": 0.4,
+          "size": 0.02,
+          "volume": "4x3x4 (x: [-2,2], y: [0,3], z: [-2,2])",
+          "animation": "upward drift at delta * 0.05, wraps at y=3"
+        }
+      },
+      "animations": {
+        "shoeRotation": {
+          "type": "continuous",
+          "formula": "sin(t * 0.4) * 0.35 + sin(t * 0.13) * 0.1",
+          "easing": "THREE.MathUtils.damp",
+          "axis": "Y"
+        },
+        "cameraParallax": {
+          "trigger": "mouse position",
+          "multiplier": "0.15x horizontal, 0.1x vertical",
+          "easing": "damp"
+        },
+        "scrollFade": {
+          "trigger": "scroll",
+          "range": "0% to 80% of hero",
+          "effect": "text overlay opacity 1 → 0",
+          "library": "Framer Motion useScroll + useTransform"
+        },
+        "entryAnimations": [
+          {
+            "element": "Brand name",
+            "delay": "1.2s",
+            "duration": "1s",
+            "easing": "cubic-bezier [0.25, 0.1, 0.25, 1]"
+          },
+          {
+            "element": "Tagline",
+            "delay": "1s + 0.3s",
+            "duration": "1s"
+          },
+          {
+            "element": "CTA link",
+            "delay": "1s + 1s",
+            "duration": "1s"
+          }
+        ]
+      },
+      "featureDetection": {
+        "canRun3D": {
+          "returns_false_if": [
+            "prefers-reduced-motion is set",
+            "CPU has fewer than 4 cores",
+            "WebGL is not available"
+          ],
+          "fallback": "Translucent rounded rectangle with large 'L' watermark"
+        }
+      }
+    },
+
+    "NarrativeSection": {
+      "file": "src/components/landing/NarrativeSection.tsx",
+      "height": "min-h-[80vh]",
+      "props": {
+        "id": "string — section anchor (e.g., 'values', 'journey', 'purpose')",
+        "index": "number — chapter number (1, 2, 3)",
+        "chapterLabel": "string — e.g., 'Chapter one — values'",
+        "variant": "'light' | 'dark'",
+        "nextVariant": "'light' | 'dark' — determines gradient transition direction",
+        "align": "'left' | 'center' | 'right'",
+        "image": "string (optional) — path to image for two-column layout",
+        "title": "string — section heading",
+        "paragraphs": "string[] — array of body paragraphs"
+      },
+      "variants": {
+        "light": {
+          "background": "bg-cream (#f5f5f5)",
+          "textColor": "text-charcoal (#1a1a1a)",
+          "mutedText": "#6b6b6b",
+          "eyebrowColor": "text-brass (#b5985a)",
+          "hairlineColor": "bg-brass",
+          "underlineGradient": "from-brass to-transparent",
+          "glowEffect": "none"
+        },
+        "dark": {
+          "background": "bg-charcoal (#1a1a1a)",
+          "textColor": "text-cream (#f5f5f5)",
+          "bodyTextOpacity": "55% white",
+          "eyebrowColor": "text-brass (#b5985a)",
+          "hairlineColor": "bg-burgundy",
+          "underlineGradient": "from-burgundy to-transparent",
+          "glowEffect": "brass radial 260px circle, 18% opacity"
+        }
+      },
+      "elements": {
+        "gradientTransition": {
+          "height": "h-20",
+          "position": "absolute bottom-0 left-0 right-0",
+          "description": "20px gradient fading into next section's color"
+        },
+        "ghostNumeral": {
+          "position": "absolute top-20 right-8",
+          "size": "text-[120px]",
+          "opacity": "4-5%",
+          "font": "font-heading (Playfair Display)",
+          "fontWeight": 700,
+          "content": "01, 02, 03 (zero-padded index)"
+        },
+        "eyebrow": {
+          "font": "text-xs uppercase tracking-[0.25em]",
+          "color": "text-brass",
+          "elements": ["chapterLabel text", "hairline (w-8 h-px bg-brass)"]
+        },
+        "animatedUnderline": {
+          "width": "w-12",
+          "height": "h-px",
+          "gradient": "variant-dependent",
+          "animation": "width 0 → 48px on scroll, 0.6s, 0.3s delay"
+        },
+        "heading": {
+          "font": "font-heading (Playfair Display)",
+          "size": "text-4xl md:text-5xl lg:text-6xl"
+        },
+        "bodyParagraphs": {
+          "color": "text-muted-foreground or text-white/55",
+          "lineHeight": "leading-relaxed"
+        },
+        "imageColumn": {
+          "aspectRatio": "3:4",
+          "objectFit": "object-cover",
+          "layout": "grid grid-cols-1 md:grid-cols-2 gap-12 items-center"
+        }
+      },
+      "animations": {
+        "trigger": "useInView (once: true, margin: -100px)",
+        "imageSlideIn": { "from": "translateX(30px)", "to": "translateX(0)" },
+        "eyebrowSlideIn": { "from": "translateX(20px)", "to": "translateX(0)" },
+        "titleFadeUp": { "from": "translateY(40px) opacity 0", "to": "translateY(0) opacity 1", "duration": "1s" },
+        "underlineGrow": { "from": "width 0", "to": "width 48px", "duration": "0.6s", "delay": "0.3s" },
+        "paragraphStagger": {
+          "from": "translateY(30px) opacity 0",
+          "to": "translateY(0) opacity 1",
+          "delay": "incremental 0.15s between paragraphs",
+          "easing": "cubic-bezier [0.25, 0.1, 0.25, 1]"
+        }
+      },
+      "layoutLogic": {
+        "withImage": "grid grid-cols-1 md:grid-cols-2 gap-12 items-center",
+        "withoutImage": {
+          "left": "max-w-2xl",
+          "right": "max-w-2xl ml-auto",
+          "center": "max-w-3xl mx-auto"
+        }
+      }
+    },
+
+    "CTASection": {
+      "file": "src/components/landing/CTASection.tsx",
+      "height": "min-h-[60vh]",
+      "background": "bg-charcoal",
+      "layout": "flex items-center justify-center text-center",
+      "elements": {
+        "brassGlow": {
+          "size": "260px",
+          "position": "30% from top",
+          "color": "brass",
+          "opacity": 0.25
+        },
+        "heading": {
+          "text": "Ready to Step Into Elegance?",
+          "font": "font-heading (Playfair Display)",
+          "size": "text-4xl md:text-5xl lg:text-6xl",
+          "color": "text-cream"
+        },
+        "subtext": {
+          "text": "Each pair is handcrafted to order...",
+          "color": "text-white/55",
+          "font": "font-sans (Inter)"
+        },
+        "button": {
+          "text": "Explore the Collection",
+          "href": "/shop",
+          "style": "text-sm tracking-widest uppercase",
+          "background": "bg-transparent",
+          "border": "border border-brass",
+          "color": "text-brass",
+          "hover": "hover:bg-brass hover:text-charcoal",
+          "padding": "px-8 py-3",
+          "transition": "0.3s"
+        }
+      },
+      "animations": {
+        "trigger": "scroll into view (useInView)",
+        "heading": { "from": "translateY(40px) opacity 0", "duration": "1s" },
+        "subtext": { "from": "translateY(30px) opacity 0", "duration": "0.8s", "delay": "0.2s" },
+        "button": { "from": "translateY(20px) opacity 0", "duration": "0.8s", "delay": "0.4s" }
+      }
+    },
+
+    "DustParticles": {
+      "file": "src/components/landing/DustParticles.tsx",
+      "type": "Three.js Points",
+      "count": 50,
+      "color": "#b5985a (brass/gold)",
+      "opacity": 0.4,
+      "size": 0.02,
+      "volume": {
+        "x": [-2, 2],
+        "y": [0, 3],
+        "z": [-2, 2]
+      },
+      "material": {
+        "transparent": true,
+        "depthWrite": false,
+        "sizeAttenuation": true
+      },
+      "animation": {
+        "movement": "Upward drift at delta * 0.05 per frame",
+        "wrap": "Resets to y=0 when y > 3"
+      }
+    }
+  },
+
+  "userFlow": {
+    "entry": "Landing page loads with cinematic 3D shoe reveal",
+    "navigation": [
+      "User sees brand name 'Lyzane' in brass with tagline",
+      "Scrolling reveals three narrative chapters alternating light/dark",
+      "Chapter 1 (light): Brand values — text-only, centered",
+      "Chapter 2 (dark): Craftsmanship — with shoe product image",
+      "Chapter 3 (light): Purpose — with occasion/lifestyle image",
+      "CTA section prompts action with brass-outlined button",
+      "Footer provides navigation and WhatsApp contact info"
+    ],
+    "ctaDestination": "/shop (product listing page)",
+    "whatsappOrder": "Checkout page sends formatted order to WhatsApp API"
+  },
+
+  "accessibility": {
+    "reducedMotion": "3D canvas disabled, shows static fallback",
+    "mobileResponsive": "Navbar collapses to hamburger, sections stack vertically",
+    "semanticHTML": "nav, main, footer landmarks",
+    "scrollAnchors": "#values, #journey, #purpose for in-page navigation"
+  },
+
+  "performance": {
+    "3DFeatureDetection": "Disables 3D on low-end devices (< 4 CPU cores, no WebGL)",
+    "imageLoading": "Logo uses priority loading",
+    "animations": "Scroll-triggered with once: true (no re-triggering)",
+    "codeSplitting": "Three.js loaded only when 3D is enabled"
+  }
+}

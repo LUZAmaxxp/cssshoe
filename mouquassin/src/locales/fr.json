@@ -1,0 +1,110 @@
+{
+  "nav": {
+    "shop": "Boutique",
+    "ourStory": "Notre Histoire",
+    "craft": "Savoir-faire",
+    "journal": "Journal"
+  },
+  "hero": {
+    "exploreCollection": "Découvrir la Collection",
+    "scroll": "Défiler"
+  },
+  "artOfShoe": {
+    "title": "L'art de la chaussure.",
+    "body": "Une chaussure de smoking n'est pas simplement un accessoire — c'est la dernière phrase d'un ensemble bien tailouré. Chez Lyzane, nous croyons que l'élégance commence par la semelle. Chaque courbe, chaque couture, chaque finition est délibérée.",
+    "cta": "Notre Philosophie +"
+  },
+  "brandGrid": {
+    "items": [
+      { "num": "01", "title": "Cuir Italien", "desc": "Cuir premium" },
+      { "num": "02", "title": "Finitions", "desc": "Détails cousus main" },
+      { "num": "03", "title": "Confort", "desc": "Ressenti naturel" },
+      { "num": "04", "title": "Style", "desc": "Design intemporel" },
+      { "num": "05", "title": "L'Art du Port", "desc": "Porté avec assurance" },
+      { "num": "06", "title": "Présence", "desc": "Silhouette imposante" },
+      { "num": "07", "title": "Caractère", "desc": "Défini par le détail" }
+    ]
+  },
+  "craft": {
+    "title": "Le savoir-faire en mouvement.",
+    "body": "De la première coupe de cuir au polissage final, nos artisans consacrent plus de 40 heures à chaque paire. La construction mocassin enveloppe le pied dans une seule pièce de cuir — sans couture, souple, inoubliable.",
+    "cta": "Notre Savoir-faire +"
+  },
+  "splitFeature": {
+    "title": "Conçu pour les moments qui comptent.",
+    "body": "Galas en tenue de soirée. Allées de mariage. Salles de réunion. Ce sont les scènes où les premières impressions sont permanentes. Nos chaussures ne suivent pas les tendances — elles les transcendent.",
+    "cta": "Découvrir la Collection +"
+  },
+  "shop": {
+    "title": "Boutique",
+    "subtitle": "Chaussures classiques de smoking et mocassins artisanales",
+    "all": "Tout",
+    "noProducts": "Aucun produit trouvé. Revenez bientôt.",
+    "selectSize": "Choisir la taille",
+    "addToCart": "Ajouter au Panier",
+    "added": "Ajouté",
+    "buyNow": "Acheter Maintenant",
+    "likes": "mentions j'aime"
+  },
+  "product": {
+    "size": "Taille",
+    "sizeRequired": "Veuillez choisir une taille",
+    "quantity": "Quantité",
+    "addToCart": "Ajouter au Panier",
+    "addedToCart": "Ajouté au Panier",
+    "buyNow": "Acheter Maintenant",
+    "description": "Description",
+    "peopleLiked": "personnes ont aimé",
+    "notFound": "Produit non trouvé."
+  },
+  "cart": {
+    "title": "Panier",
+    "empty": "Votre panier est vide",
+    "size": "Taille",
+    "total": "Total",
+    "checkout": "Commander via WhatsApp"
+  },
+  "checkout": {
+    "title": "Commande",
+    "empty": "Votre panier est vide.",
+    "browseShop": "Voir la Boutique",
+    "size": "Taille",
+    "total": "Total",
+    "fullName": "Nom Complet",
+    "fullNamePlaceholder": "Votre nom complet",
+    "email": "Email",
+    "emailPlaceholder": "votre@email.com",
+    "phone": "Numéro de Téléphone",
+    "phonePlaceholder": "+212 6XX XXX XXX",
+    "address": "Adresse de Livraison",
+    "addressPlaceholder": "Adresse complète de livraison, ville",
+    "orderViaWhatsapp": "Commander via WhatsApp",
+    "processing": "Traitement...",
+    "error": "Échec du traitement de la commande. Veuillez réessayer."
+  },
+  "footer": {
+    "tagline": "Intemporel par nature",
+    "description": "Chaussures classiques de smoking et mocassins. Artisanales pour ceux qui comprennent que le vrai luxe se murmure.",
+    "shop": {
+      "title": "Boutique",
+      "allProducts": "Tous les Produits",
+      "loafers": "Mocassins",
+      "oxfords": "Richelieu"
+    },
+    "help": {
+      "title": "Aide",
+      "ourStory": "Notre Histoire",
+      "orderViaWhatsapp": "Commander via WhatsApp",
+      "shipping": "Livraison & Retours"
+    },
+    "connected": {
+      "title": "Restez Connecté",
+      "subscribe": "Abonnez-vous pour les mises à jour et offres exclusives.",
+      "emailPlaceholder": "Votre email",
+      "subscribeButton": "S'abonner"
+    },
+    "copyright": "Tous droits réservés.",
+    "privacy": "Politique de Confidentialité",
+    "terms": "Conditions"
+  }
+}
