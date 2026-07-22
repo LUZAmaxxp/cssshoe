@@ -3,10 +3,19 @@ import { connectToDatabase } from "@/lib/db";
 import Order from "@/models/Order";
 import AnalyticsEvent from "@/models/AnalyticsEvent";
 import { orderSchema } from "@/lib/validations/order";
-import { rateLimit, getRateLimitHeaders } from "@/lib/rate-limit";
+import { rateLimiters, getClientIp, getRateLimitHeaders } from "@/lib/rate-limit";
 import { sendOrderConfirmationEmail } from "@/lib/email";
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const ip = getClientIp(request);
+  const result = rateLimiters.api(ip);
+  if (!result.allowed) {
+    return NextResponse.json(
+      { error: "Too many requests" },
+      { status: 429, headers: getRateLimitHeaders(result, 60) }
+    );
+  }
+
   try {
     await connectToDatabase();
     const orders = await Order.find().sort({ createdAt: -1 }).lean();
@@ -21,11 +30,12 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
-  const ip = request.headers.get("x-forwarded-for") || "unknown";
-  if (!rateLimit(`order:${ip}`, 10, 60000)) {
+  const ip = getClientIp(request);
+  const result = rateLimiters.orders(ip);
+  if (!result.allowed) {
     return NextResponse.json(
       { error: "Too many requests. Please try again later." },
-      { status: 429, headers: getRateLimitHeaders(`order:${ip}`, 10) }
+      { status: 429, headers: getRateLimitHeaders(result, 10) }
     );
   }
 

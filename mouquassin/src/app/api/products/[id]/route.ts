@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/db";
 import Product from "@/models/Product";
 import AnalyticsEvent from "@/models/AnalyticsEvent";
+import { rateLimiters, getClientIp, getRateLimitHeaders } from "@/lib/rate-limit";
 
 export async function GET(
   _request: NextRequest,
@@ -33,6 +34,15 @@ export async function PATCH(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const ip = getClientIp(request);
+  const result = rateLimiters.api(ip);
+  if (!result.allowed) {
+    return NextResponse.json(
+      { error: "Too many requests" },
+      { status: 429, headers: getRateLimitHeaders(result, 60) }
+    );
+  }
+
   try {
     await connectToDatabase();
     const { id } = await params;
