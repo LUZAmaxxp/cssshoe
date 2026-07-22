@@ -29,7 +29,7 @@ export function CraftSection({ id }: CraftSectionProps) {
         playsInline
         className="absolute inset-0 w-full h-full object-cover"
       >
-        <source src="/images/craft.webm" type="video/webm" />
+        <source src="https://res.cloudinary.com/dzrsbjdma/video/upload/craft-video.mp4" type="video/mp4" />
       </video>
 
       {/* Dark overlay for text legibility */}

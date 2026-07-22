@@ -36,9 +36,10 @@ yarn-error.log*
 # vercel
 .vercel
 
-# large media files - tracked via Git LFS
+# large media files - hosted on Cloudinary
 *.mp4
 *.mov
+*.webm
 
 # uploads
 /public/uploads/*
