@@ -1,0 +1,122 @@
+{
+  "task": "Redesign the Lyzane admin panel to carry the storefront's brand identity (charcoal/brass/burgundy, Playfair/Josefin typography) instead of generic gray-900/MUI-default styling",
+  "target_files": [
+    "src/components/admin/AdminSidebar.tsx",
+    "src/app/(admin)/admin/page.tsx",
+    "src/app/(admin)/admin/orders/page.tsx",
+    "src/app/(admin)/admin/products/page.tsx",
+    "src/app/(admin)/admin/analytics/page.tsx",
+    "src/app/(admin)/admin/login/page.tsx"
+  ],
+  "design_principles": [
+    "Admin stays dense and functional, not cinematic like the storefront — polish comes from color/typography consistency, not motion or 3D",
+    "Replace MUI default role colors (primary blue, error red, success green) with brand-mapped colors: burgundy for primary metrics, brass for 'liked/favorite' metrics, charcoal for neutral/inventory metrics",
+    "Status badges become rounded pills with brand-tinted backgrounds instead of MUI's default solid Chip colors",
+    "Sidebar active state uses a left accent bar in brass plus a faint tinted background, not a flat solid gray-800 fill",
+    "Background warms from flat gray-50 to a warm off-white (#faf9f7) consistent with the storefront's cream tone",
+    "Login page adopts the actual brand font/logo treatment instead of generic 'Sign In' card styling"
+  ],
+  "changes": [
+    {
+      "id": "sidebar-branding",
+      "file": "src/components/admin/AdminSidebar.tsx",
+      "description": "Replace plain 'Lyzane' text header with the actual brand font treatment and a brass eyebrow label",
+      "remove": "<p className=\"text-lg font-brand\">Lyzane</p> / <p className=\"text-xs text-gray-400 mt-1\">Admin Panel</p>",
+      "add_jsx": [
+        "<p className=\"font-brand text-[15px] text-cream\">Lyzane</p>",
+        "<p className=\"text-[10px] tracking-[0.1em] uppercase text-brass mt-1\">Manager portal</p>"
+      ],
+      "notes": "font-brand class already defined in globals.css per spec section 2.3, no new CSS needed"
+    },
+    {
+      "id": "sidebar-nav-active-state",
+      "file": "src/components/admin/AdminSidebar.tsx",
+      "description": "Replace flat active-state background with a left accent bar + tinted background using brass",
+      "remove": "Active: bg-gray-800 text-white",
+      "add": "Active: border-l-2 border-brass bg-brass/10 text-cream. Inactive stays text-cream/45 hover:text-cream hover:bg-cream/5",
+      "example_jsx": "<Link className={`flex items-center gap-2.5 px-3 py-2.5 border-l-2 transition-colors ${isActive ? 'border-brass bg-brass/10 text-cream' : 'border-transparent text-cream/45 hover:text-cream hover:bg-cream/5'}`}>"
+    },
+    {
+      "id": "dashboard-metric-card-icons",
+      "file": "src/app/(admin)/admin/page.tsx",
+      "description": "Replace MUI default primary/error/success icon colors with brand-mapped circular icon badges",
+      "remove": "MUI Grid cards using color='primary' | 'error' | 'success' on icons (ShoppingCart, Favorite, Inventory)",
+      "add": [
+        "Orders card: icon badge background rgba(114,47,55,0.1), icon color #722f37 (burgundy)",
+        "Most Liked card: icon badge background rgba(181,152,90,0.15), icon color #8a6d2f (brass, darkened for contrast)",
+        "Products card: icon badge background rgba(26,26,26,0.06), icon color #1a1a1a (charcoal)"
+      ],
+      "structure_note": "Each card: 32px circle icon badge above the value, value in 22px/500 weight, label below in 12px muted gray, matching the storefront's metric-card visual weight rather than raw MUI Card defaults"
+    },
+    {
+      "id": "dashboard-background",
+      "file": "src/app/(admin)/admin/layout.tsx",
+      "description": "Warm the admin background from flat gray-50 to match the storefront's cream tone",
+      "remove": "bg-gray-50 (outer admin layout and main content area)",
+      "add": "bg-[#faf9f7]"
+    },
+    {
+      "id": "orders-status-badges",
+      "file": "src/app/(admin)/admin/orders/page.tsx",
+      "description": "Replace the MUI Select-based status renderer's default coloring with brand-mapped pill badges for the read display state (Select control itself remains functional/unstyled for editing)",
+      "status_color_map": {
+        "new": { "background": "rgba(26,26,26,0.06)", "text": "#1a1a1a" },
+        "contacted": { "background": "rgba(181,152,90,0.15)", "text": "#8a6d2f" },
+        "confirmed": { "background": "rgba(99,153,34,0.12)", "text": "#3b6d11" },
+        "shipped": { "background": "rgba(114,47,55,0.1)", "text": "#722f37" },
+        "cancelled": { "background": "rgba(220,38,38,0.1)", "text": "#dc2626" }
+      },
+      "notes": "Apply as inline style or a small statusStyles lookup object keyed by the existing status enum; pill shape via border-radius: 20px, padding 3px 10px, font-size 11px"
+    },
+    {
+      "id": "orders-customer-avatar",
+      "file": "src/app/(admin)/admin/orders/page.tsx",
+      "description": "Add a small initials-avatar next to customerName in the DataGrid renderer for visual rhythm, matching the storefront's data-record card pattern",
+      "add": "24px circle, background #ebebeb, initials derived from customerName.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase(), font-size 10px, color #6b6b6b"
+    },
+    {
+      "id": "products-table-thumbnails",
+      "file": "src/app/(admin)/admin/products/page.tsx",
+      "description": "Add a small square thumbnail preview (first image in product.images[]) as the first column of the products table, currently text-only",
+      "add": "40x40px thumbnail, object-cover, rounded 6px, fallback to a muted placeholder square with a 'M' letter matching the storefront's ProductGallery fallback style if no image exists"
+    },
+    {
+      "id": "products-status-chip",
+      "file": "src/app/(admin)/admin/products/page.tsx",
+      "description": "Replace default MUI Chip Active/Archived coloring with brand-tinted pills consistent with the orders status badges",
+      "status_color_map": {
+        "active": { "background": "rgba(99,153,34,0.12)", "text": "#3b6d11" },
+        "archived": { "background": "rgba(26,26,26,0.06)", "text": "#6b6b6b" }
+      }
+    },
+    {
+      "id": "analytics-chart-colors",
+      "file": "src/app/(admin)/admin/analytics/page.tsx",
+      "description": "Override MUI X BarChart default blue palette with brand colors",
+      "remove": "Default MUI X Charts color palette (blue-based)",
+      "add": "colors prop on BarChart: ['#722f37', '#b5985a'] — burgundy for Most Viewed chart series, brass for Most Liked chart series",
+      "notes": "MUI X Charts BarChart accepts a colors array prop; pass it directly rather than theming globally to avoid affecting other MUI components admin-wide"
+    },
+    {
+      "id": "login-page-branding",
+      "file": "src/app/(admin)/admin/login/page.tsx",
+      "description": "Replace generic 'Sign In' card styling with the actual brand identity",
+      "remove": "text-3xl font-brand text-gray-900 header + bg-gray-50 page background + bg-gray-900 submit button",
+      "add": [
+        "Page background: bg-charcoal (matches storefront navbar/dark sections) instead of bg-gray-50",
+        "Header: font-brand text-cream for 'Lyzane', text-brass text-sm tracking-wide mt-1 for 'Manager portal' subtitle",
+        "Form card: bg-white rounded-lg border border-border shadow-sm p-8 (unchanged structure, sits on the new dark page background for contrast)",
+        "Submit button: bg-charcoal -> bg-burgundy text-white hover:bg-charcoal, consistent with storefront primary actions"
+      ]
+    }
+  ],
+  "verification_steps": [
+    "Confirm sidebar active nav item shows the brass left border + tinted background and inactive items remain legible at reduced opacity",
+    "Confirm dashboard metric card icon badges use the three mapped brand colors, not MUI defaults",
+    "Confirm status pills across Orders and Products use the shared color map consistently (same 'confirmed'/'active' green across both pages)",
+    "Confirm analytics BarCharts render in burgundy/brass instead of default blue",
+    "Confirm login page reads clearly on the new charcoal background (form card contrast, label legibility)",
+    "Confirm no MUI default theme override leaks into unrelated MUI components outside admin (DataGrid pagination controls, Select dropdowns should remain default MUI styling unless explicitly restyled)",
+    "Test dashboard/orders/products pages at tablet width (DataGrid horizontal scroll should still work)"
+  ]
+}

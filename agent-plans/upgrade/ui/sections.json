@@ -1,0 +1,141 @@
+{
+  "task": "Redesign NarrativeSection and CTASection to visually match the upgraded cinematic ShoeHero — currently these are plain text blocks with only fade-up animation and no visual relationship to the hero",
+  "target_files": [
+    "src/components/landing/NarrativeSection.tsx",
+    "src/components/landing/CTASection.tsx"
+  ],
+  "design_principles": [
+    "Alternate background tone per section (cream / charcoal / cream / charcoal-CTA) so scrolling feels like moving through distinct chapters rather than one flat page",
+    "Carry the hero's brass radial glow motif into dark sections for continuity",
+    "Add an eyebrow label + hairline rule above each title, using the same tracking-widest brand typography as the hero subtitle",
+    "Add a large low-opacity serif numeral watermark behind each section for editorial/magazine weight",
+    "Add a short animated gradient underline beneath each title that draws in on scroll instead of appearing instantly",
+    "CTA button changes from solid burgundy fill to outlined brass, to feel restrained/luxury rather than like a standard ecommerce banner"
+  ],
+  "changes": [
+    {
+      "id": "narrative-section-props",
+      "file": "src/components/landing/NarrativeSection.tsx",
+      "description": "Extend props to support alternating dark/light background and a chapter number/label",
+      "add_props": [
+        "index: number  // used for chapter numeral, e.g. '01', '02', '03'",
+        "chapterLabel: string  // e.g. 'Chapter one — values'",
+        "variant?: 'light' | 'dark'  // defaults to 'light', pass 'dark' for even-indexed sections"
+      ],
+      "notes": "Existing props (id, title, paragraphs[], align) remain unchanged"
+    },
+    {
+      "id": "narrative-section-background",
+      "file": "src/components/landing/NarrativeSection.tsx",
+      "description": "Wrap the section in a variant-aware background, replacing the current flat bg",
+      "remove": "section: min-h-[80vh] flex items-center py-24 px-4  (on default/cream background only)",
+      "add_jsx": [
+        "<section id={id} className={`relative min-h-[80vh] flex items-center py-24 px-4 overflow-hidden ${variant === 'dark' ? 'bg-charcoal' : 'bg-cream'}`}>",
+        "  {variant === 'dark' && (",
+        "    <div className=\"absolute w-[260px] h-[260px] rounded-full pointer-events-none\" style={{ background: 'radial-gradient(circle, rgba(181,152,90,0.18) 0%, transparent 70%)', top: '50%', [align === 'right' ? 'right' : 'left']: '-40px', transform: 'translateY(-50%)' }} />",
+        "  )}",
+        "  <p className=\"absolute top-[-10px] right-5 font-voice pointer-events-none select-none\" style={{ fontSize: '120px', lineHeight: 1, color: variant === 'dark' ? 'rgba(245,245,245,0.05)' : 'rgba(26,26,26,0.04)' }}>",
+        "    {String(index).padStart(2, '0')}",
+        "  </p>",
+        "  {/* existing content wrapper goes here, unchanged except color tokens below */}",
+        "</section>"
+      ],
+      "notes": "The radial glow div is dark-mode only per the design; light/cream sections stay flat to avoid muddying the brand's clean daytime look"
+    },
+    {
+      "id": "narrative-eyebrow-label",
+      "file": "src/components/landing/NarrativeSection.tsx",
+      "description": "Add eyebrow label + hairline rule above the title, replacing the bare heading",
+      "location": "Immediately above the existing <motion.h2> title element",
+      "add_jsx": [
+        "<motion.div",
+        "  initial={{ opacity: 0, x: align === 'right' ? 20 : -20 }}",
+        "  whileInView={{ opacity: 1, x: 0 }}",
+        "  viewport={{ once: true, margin: '-100px' }}",
+        "  transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}",
+        "  className={`flex items-center gap-2.5 mb-3.5 ${align === 'right' ? 'justify-end' : align === 'center' ? 'justify-center' : 'justify-start'}`}",
+        ">",
+        "  <span className=\"w-6 h-px bg-burgundy\" style={{ order: align === 'right' ? 2 : 0 }} />",
+        "  <span className=\"text-[11px] tracking-[0.25em] uppercase\" style={{ color: variant === 'dark' ? '#b5985a' : '#722f37' }}>",
+        "    {chapterLabel}",
+        "  </span>",
+        "</motion.div>"
+      ]
+    },
+    {
+      "id": "narrative-animated-underline",
+      "file": "src/components/landing/NarrativeSection.tsx",
+      "description": "Add an animated gradient underline beneath the title that draws in on scroll",
+      "location": "Immediately below the existing <motion.h2> title element, before the paragraphs",
+      "add_jsx": [
+        "<motion.div",
+        "  initial={{ width: 0 }}",
+        "  whileInView={{ width: 48 }}",
+        "  viewport={{ once: true, margin: '-100px' }}",
+        "  transition={{ duration: 0.6, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}",
+        "  className=\"h-0.5 mb-4\"",
+        "  style={{",
+        "    background: align === 'right'",
+        "      ? 'linear-gradient(270deg, #722f37, transparent)'",
+        "      : 'linear-gradient(90deg, #b5985a, transparent)',",
+        "    marginLeft: align === 'right' ? 'auto' : align === 'center' ? 'auto' : 0,",
+        "    marginRight: align === 'center' ? 'auto' : 0",
+        "  }}",
+        "/>"
+      ]
+    },
+    {
+      "id": "narrative-text-color-variant",
+      "file": "src/components/landing/NarrativeSection.tsx",
+      "description": "Update title and paragraph text colors to remain readable on the dark variant",
+      "location": "Existing title and paragraph className/style bindings",
+      "change": "Title color: text-charcoal (light) -> conditionally text-cream (dark). Paragraph color: text-muted-foreground (light) -> conditionally rgba(245,245,245,0.55) (dark)",
+      "example": "className={`text-4xl md:text-5xl lg:text-6xl font-heading mb-8 ${variant === 'dark' ? 'text-cream' : 'text-charcoal'}`}"
+    },
+    {
+      "id": "landing-page-composition-update",
+      "file": "src/app/page.tsx",
+      "description": "Pass the new index/chapterLabel/variant props when rendering each NarrativeSection, alternating variant",
+      "example_jsx": [
+        "<NarrativeSection id=\"values\" index={1} chapterLabel=\"Chapter one — values\" variant=\"light\" align=\"center\" title=\"The Art of the Shoe\" paragraphs={[...]} />",
+        "<NarrativeSection id=\"journey\" index={2} chapterLabel=\"Chapter two — craft\" variant=\"dark\" align=\"right\" title=\"Craftsmanship in Motion\" paragraphs={[...]} />",
+        "<NarrativeSection id=\"purpose\" index={3} chapterLabel=\"Chapter three — purpose\" variant=\"light\" align=\"left\" title=\"Built for Moments That Matter\" paragraphs={[...]} />"
+      ]
+    },
+    {
+      "id": "cta-section-background",
+      "file": "src/components/landing/CTASection.tsx",
+      "description": "Replace flat background with a dark gradient card carrying the hero's brass glow, matching the redesigned CTA card",
+      "remove": "section: min-h-[60vh] flex items-center justify-center py-24 px-4  (on default background)",
+      "add_jsx": [
+        "<section className=\"relative min-h-[60vh] flex items-center justify-center py-24 px-4 overflow-hidden\" style={{ background: 'linear-gradient(135deg, #1a1a1a, #0f0d0c)' }}>",
+        "  <div className=\"absolute rounded-full pointer-events-none\" style={{ width: '260px', height: '260px', left: '50%', top: '30%', transform: 'translate(-50%, -50%)', background: 'radial-gradient(circle, rgba(181,152,90,0.25) 0%, transparent 70%)' }} />",
+        "  {/* existing content wrapper, with text colors updated per cta-text-color-update below */}",
+        "</section>"
+      ]
+    },
+    {
+      "id": "cta-text-color-update",
+      "file": "src/components/landing/CTASection.tsx",
+      "description": "Update heading/paragraph colors for the new dark background",
+      "change": "Heading: text-charcoal -> text-cream. Paragraph: text-muted-foreground -> rgba(245,245,245,0.55)"
+    },
+    {
+      "id": "cta-button-restyle",
+      "file": "src/components/landing/CTASection.tsx",
+      "description": "Replace solid burgundy CTA button with an outlined brass button for a more restrained, luxury feel",
+      "remove": "inline-block bg-burgundy text-white px-8 py-3 text-sm tracking-widest uppercase hover:bg-charcoal transition-colors duration-300",
+      "add": "inline-block bg-transparent border border-brass text-brass px-8 py-3 text-sm tracking-widest uppercase hover:bg-brass hover:text-charcoal transition-colors duration-300"
+    }
+  ],
+  "verification_steps": [
+    "Confirm sections visually alternate cream/charcoal/cream down the page and the transition doesn't feel jarring on scroll",
+    "Confirm the brass radial glow only appears on dark-variant sections, not on cream sections",
+    "Confirm the ghost numeral (01/02/03) is visible but subtle, not competing with the title for attention",
+    "Confirm the eyebrow label color adapts correctly per variant (brass on dark, burgundy on light)",
+    "Confirm the animated underline draws in after the eyebrow label but before/alongside the paragraph reveal, not simultaneously with the title",
+    "Confirm all text passes basic contrast check on both light and dark variants",
+    "Confirm the CTA button's hover state (brass fill, charcoal text) is legible",
+    "Test on mobile widths to confirm the ghost numeral and glow don't overflow or cause horizontal scroll"
+  ]
+}

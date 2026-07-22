@@ -1,0 +1,183 @@
+{
+  "task": "Adopt this design system as the definitive visual direction for Lyzane, replacing prior exploratory directions (Atelier Noir marquee/cursor concepts, burgundy-forward palette) with what is shown in the reference mockups and official logo",
+  "supersedes_note": "This design system takes priority over conflicting decisions made in earlier changesets: burgundy shifts from a primary accent to a minor functional-only color, hero/section layout moves from centered/stacked to photography-led asymmetric splits, and headline typography moves from tracked-uppercase to sentence-case serif. The 3D shoe hero, admin panel structure, and cart/checkout logic from earlier changesets remain valid and are not affected by this file.",
+  "brand_identity": {
+    "logo": {
+      "asset_file": "public/images/logo1v1.png (existing) -- treat the graphic mark as a fixed asset, do not recreate the metallic ribbon/S swoosh in CSS",
+      "wordmark_typography": {
+        "text": "LYZANE",
+        "transform": "uppercase",
+        "letter_spacing": "0.35em",
+        "font_weight": "400-500 (light-to-medium, not bold)",
+        "style": "geometric sans-serif, architectural feel with slightly customized letterforms",
+        "recommended_web_fonts": [
+          "Josefin Sans (already in project as --font-josefin / font-brand -- keep, but increase tracking from 0.25em to 0.35em to match reference more closely)",
+          "Montserrat Light/ExtraLight as an alternative if Josefin Sans doesn't feel geometric enough once tracked wider"
+        ],
+        "notes": "If exact character shapes matter (the reference logo's Y and A have subtly custom cuts), the wordmark in the navbar/footer should render as the logo image asset, not live text -- only use the font substitution for any place the brand name appears as plain text (e.g. metadata, loading states)"
+      },
+      "tagline": {
+        "text": "TIMELESS BY NATURE",
+        "transform": "uppercase",
+        "letter_spacing": "0.3em",
+        "font_size": "10-11px",
+        "font_weight": 400,
+        "color_light_bg": "charcoal at 60% opacity equivalent (#6b6b6b works)",
+        "color_dark_bg": "cream at 55-60% opacity equivalent",
+        "placement": "directly beneath the wordmark in navbar/hero, and in the footer brand column"
+      }
+    }
+  },
+  "colors": {
+    "near_black": {
+      "hex": "#0d0c0a",
+      "usage": "Hero backgrounds, dark section backgrounds, footer, navbar -- replaces the flatter #1a1a1a charcoal from the prior spec with a warmer near-black matching the reference photography's shadow tones"
+    },
+    "warm_cream": {
+      "hex": "#f2ede6",
+      "usage": "Light section backgrounds -- replaces the cooler #f5f5f5 cream from the prior spec with a warmer, slightly deeper cream matching the reference's paper-like tone"
+    },
+    "brass_accent": {
+      "hex": "#c9a876",
+      "usage": "Primary CTA buttons on light backgrounds (filled), link underlines, small accent details -- used sparingly, one accent moment per section, not as a dominant color"
+    },
+    "charcoal_text": {
+      "hex": "#1a1a1a",
+      "usage": "Body/heading text on cream backgrounds"
+    },
+    "cream_text": {
+      "hex": "#f2ede6",
+      "usage": "Body/heading text on near-black backgrounds"
+    },
+    "muted_gray": {
+      "hex": "#6b6b6b",
+      "usage": "Secondary/supporting text on light backgrounds"
+    },
+    "muted_cream": {
+      "hex": "rgba(242,237,230,0.55)",
+      "usage": "Secondary/supporting text on dark backgrounds"
+    },
+    "burgundy_functional_only": {
+      "hex": "#722f37",
+      "usage": "DEMOTED from primary accent to functional-only: cart item count badge, destructive/error states, admin status pills only. Do not use for primary CTA buttons or decorative accents going forward"
+    },
+    "border_hairline": {
+      "hex": "#d8d0c4",
+      "usage": "Borders/dividers on cream backgrounds",
+      "dark_variant": "rgba(242,237,230,0.12)"
+    }
+  },
+  "typography": {
+    "headline": {
+      "family": "Playfair Display (existing font-heading, keep)",
+      "case": "sentence case, NOT uppercase -- e.g. 'Designed to last.' not 'DESIGNED TO LAST'",
+      "weight": "400-500",
+      "size_hero": "text-5xl md:text-6xl lg:text-7xl",
+      "size_section": "text-3xl md:text-4xl lg:text-5xl",
+      "line_height": "tight, 1.05-1.15",
+      "notes": "This is a departure from the earlier Atelier Noir direction which used ultra-light weight tracked uppercase -- references consistently show warm, readable sentence-case serif headlines"
+    },
+    "nav_and_labels": {
+      "family": "Inter (existing font-sans)",
+      "case": "uppercase",
+      "letter_spacing": "0.15-0.2em",
+      "size": "11-12px",
+      "weight": 400,
+      "usage": "Nav links, eyebrow labels (e.g. 'COLLECTION', 'JOURNAL'), product category labels, button text"
+    },
+    "body": {
+      "family": "Inter (existing font-sans)",
+      "size": "14-15px",
+      "line_height": 1.7,
+      "color": "muted_gray on light, muted_cream on dark"
+    }
+  },
+  "page_composition": {
+    "sequence": [
+      "Navbar (transparent over hero, solidifies on scroll)",
+      "HeroCarousel (full-bleed photography, left-aligned text block, pagination dots, scroll hint)",
+      "SplitFeature (image + text, alternating side per instance)",
+      "FeatureStrip (4-column dark photography grid with numbered captions)",
+      "JournalSection (full-bleed editorial photography + dark text panel)",
+      "ProductGrid (collection preview, 4 products, 'VIEW ALL' link)",
+      "Footer (four-column: brand, shop links, help links, newsletter+social)"
+    ]
+  },
+  "components": {
+    "Navbar": {
+      "file": "src/components/layout/Navbar.tsx",
+      "changes": [
+        "Background: transparent over the hero image, transitioning to near_black (#0d0c0a) with a subtle bottom border once scrolled past hero height (pair with the existing hide-on-scroll behavior from prior changesets -- this replaces 'hide' with 'solidify')",
+        "Logo: use the actual logo image asset (mark + wordmark), sized to match reference proportions (mark roughly 28-32px tall, wordmark text sized to align optically with mark)",
+        "Nav links: uppercase, 12px, tracking 0.15em, color cream at 70% opacity, hover to full opacity cream, active link gets a thin underline (1px, cream or brass)",
+        "Right side icons: search, account/user, cart -- bare icon style (no button borders), consistent with existing near-invisible-chrome principle",
+        "Cart badge: keep burgundy per the demoted functional-only role"
+      ]
+    },
+    "HeroCarousel": {
+      "new_file": "src/components/landing/HeroCarousel.tsx",
+      "description": "Replaces/extends the existing ShoeHero for the top-of-page moment -- can either wrap the existing 3D scene as one carousel slide, or sit as a photography-led alternative depending on whether real product photography exists yet",
+      "layout": [
+        "Full-bleed background: 3D scene (existing) OR high-res product photography once shot, with a dark gradient overlay on the left third for text legibility (linear-gradient(90deg, rgba(13,12,10,0.75) 0%, rgba(13,12,10,0.2) 50%, transparent 80%))",
+        "Text block: left-aligned, vertically centered-low (around 45-55% viewport height), NOT centered on the page",
+        "Eyebrow: 'TIMELESS BY NATURE' per tagline spec above",
+        "Headline: sentence-case serif, e.g. 'Designed to last.', two lines max",
+        "CTA: text link style 'EXPLORE COLLECTION' with a small arrow icon, NOT a filled button -- thin bottom border, uppercase, tracked, matches reference's understated hero CTA",
+        "Pagination indicator: bottom-left, '01 — 02 — 03' style, small tracked numerals, indicates carousel position if multiple hero slides exist",
+        "Scroll hint: bottom-right, small vertical 'SCROLL' label with a thin descending line or chevron"
+      ]
+    },
+    "SplitFeature": {
+      "new_file": "src/components/landing/SplitFeature.tsx",
+      "description": "Replaces the centered NarrativeSection pattern with an image+text split matching the reference's second section",
+      "props": ["title", "body", "ctaLabel", "ctaHref", "imageSrc", "imageSide: 'left' | 'right'", "variant: 'light' | 'dark'"],
+      "layout": [
+        "grid grid-cols-1 md:grid-cols-2, image column full-height object-cover, text column padded and vertically centered",
+        "Text column: small uppercase eyebrow optional, serif headline sentence-case, body paragraph in muted color, a text-link CTA styled as 'OUR PHILOSOPHY +' -- label plus a thin plus/arrow icon, not a button"
+      ]
+    },
+    "FeatureStrip": {
+      "new_file": "src/components/landing/FeatureStrip.tsx",
+      "description": "Four-column dark photography grid with numbered micro-captions, matching reference image 1's 'CUIR ITALIEN / FINITIONS ARTISANALES / CONFORT NATUREL / STYLE INTEMPOREL' section",
+      "layout": [
+        "grid grid-cols-2 md:grid-cols-4, each cell: full-bleed close-up product photography background, dark gradient overlay at bottom for text legibility",
+        "Per cell: small numeral (01-04) top-left, short label (uppercase, tracked) and one-line description at bottom, cream text"
+      ]
+    },
+    "JournalSection": {
+      "new_file": "src/components/landing/JournalSection.tsx",
+      "description": "Editorial full-bleed section matching reference's 'JOURNAL -- Stories of craft and character' pattern",
+      "layout": [
+        "grid grid-cols-1 md:grid-cols-[1fr_1.3fr], left column near_black background with eyebrow 'JOURNAL', serif headline, text-link CTA 'DISCOVER JOURNAL' with arrow",
+        "right column full-bleed editorial lifestyle photography, object-cover"
+      ]
+    },
+    "ProductGrid": {
+      "file": "src/app/(shop)/shop/ShopContent.tsx / new landing preview variant",
+      "description": "Add a landing-page 'collection preview' variant of the existing product grid matching reference's 4-card layout with 'VIEW ALL' link",
+      "layout": [
+        "Section eyebrow 'COLLECTION', serif headline e.g. 'Essential forms. Endless occasions.', 'VIEW ALL' text-link top-right of the section header row",
+        "4-column grid on desktop, each card: product photography on warm_cream background (not pure white), product name uppercase small tracked, price, small '+' quick-add icon button bottom-right of image on hover"
+      ]
+    },
+    "Footer": {
+      "file": "src/components/layout/Footer.tsx",
+      "changes": [
+        "Background: warm_cream (light footer, matching reference) rather than dark -- note this differs from a fully dark footer if previously implemented; reference footer 2 and 3 use light footer, reference 1 uses dark footer, so a light footer with a dark logo lockup is the more common pattern across the three and is recommended default",
+        "Four columns: Brand (logo + tagline + one-line description), Shop links, Help links, Stay Connected (email input + subscribe + social icons)",
+        "Social icons: Instagram, Facebook, TikTok -- bare icon style matching reference",
+        "Bottom bar: copyright + Privacy Policy + Terms links, small tracked uppercase, centered or left-aligned per existing footer structure"
+      ]
+    }
+  },
+  "verification_steps": [
+    "Confirm the wordmark renders as the actual logo image asset in the navbar and footer, not as live CSS text, to guarantee exact letterform match",
+    "Confirm live-text instances of 'LYZANE' (metadata, loading states, favicon alt text) use the adjusted 0.35em tracking on Josefin Sans as the closest approximation",
+    "Confirm burgundy no longer appears as a primary CTA color anywhere on the landing page -- only on the cart badge and admin status pills",
+    "Confirm all section headlines are sentence-case serif, not tracked uppercase",
+    "Confirm the near_black (#0d0c0a) and warm_cream (#f2ede6) values replace the previous #1a1a1a / #f5f5f5 tokens consistently across landing components",
+    "Confirm CTA links in SplitFeature and JournalSection render as understated text-links with icons, not filled buttons -- reserve filled brass buttons for primary hero/product-grid actions only",
+    "Confirm the ProductGrid quick-add '+' button only appears on hover/focus, keeping the resting card state calm and photography-led",
+    "Cross-check that these visual changes do not regress the WhatsApp checkout flow, cart drawer logic, or admin panel from prior changesets -- this file is visual/typographic only"
+  ]
+}

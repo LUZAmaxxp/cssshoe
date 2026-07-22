@@ -1,0 +1,104 @@
+{
+  "task": "Upgrade Lyzane ShoeHero 3D scene from flat/static to cinematic (Spline-quality) motion",
+  "target_file": "src/components/landing/ShoeHero.tsx",
+  "context": "Existing stack: Three.js 0.185.1 via @react-three/fiber 9.6.1 + @react-three/drei 10.7.7. Current scene uses flat ambient+directional lighting, a rigid Math.sin rotation, no environment/reflections, no grounding shadow, no particles, no camera parallax. This changeset upgrades the scene without replacing the existing .obj model pipeline.",
+  "new_dependencies": [
+    {
+      "package": "@react-three/postprocessing",
+      "version": "^2.16.0",
+      "install": "npm install @react-three/postprocessing"
+    },
+    {
+      "package": "postprocessing",
+      "version": "^6.36.0",
+      "install": "npm install postprocessing",
+      "note": "peer dependency required by @react-three/postprocessing"
+    }
+  ],
+  "changes": [
+    {
+      "id": "damped-rotation",
+      "description": "Replace rigid sine-wave rotation with a layered, damped rotation so the shoe motion feels organic instead of mechanical",
+      "location": "Inside the useFrame callback that currently sets rotation.y",
+      "remove": "group.current.rotation.y = Math.sin(elapsedTime * 0.5) * 0.4",
+      "add": [
+        "const target = Math.sin(elapsedTime * 0.4) * 0.35 + Math.sin(elapsedTime * 0.13) * 0.1",
+        "group.current.rotation.y = THREE.MathUtils.damp(group.current.rotation.y, target, 4, delta)"
+      ],
+      "imports_needed": ["import * as THREE from 'three'"],
+      "notes": "delta must come from the useFrame(state, delta) signature; if not already destructured, add it"
+    },
+    {
+      "id": "environment-and-grounding",
+      "description": "Add environment reflections on the leather material and a soft contact shadow so the shoe reads as placed in a scene rather than floating on a flat gradient",
+      "location": "Inside the <Canvas> JSX, alongside existing lights",
+      "add_jsx": [
+        "<Environment preset=\"apartment\" />",
+        "<ContactShadows position={[0, 0, 0]} opacity={0.4} scale={6} blur={2} far={2} />"
+      ],
+      "imports_needed": ["import { Environment, ContactShadows } from '@react-three/drei'"],
+      "notes": "Both components are already available via the installed @react-three/drei package, no new dependency needed"
+    },
+    {
+      "id": "camera-parallax",
+      "description": "Add subtle cursor-driven camera parallax so the scene reacts to mouse movement, matching the interactive feel of Spline embeds",
+      "location": "New useFrame hook inside the Canvas scene component (can be same component as damped-rotation or a sibling)",
+      "add": [
+        "useFrame((state, delta) => {",
+        "  const x = state.mouse.x * 0.15",
+        "  const y = state.mouse.y * 0.1",
+        "  state.camera.position.x = THREE.MathUtils.damp(state.camera.position.x, x, 2, delta)",
+        "  state.camera.position.y = THREE.MathUtils.damp(state.camera.position.y, 2 + y, 2, delta)",
+        "  state.camera.lookAt(0, 1, 0)",
+        "})"
+      ],
+      "notes": "state.mouse is normalized [-1, 1] by r3f automatically from pointer position over the canvas, no extra event listeners needed"
+    },
+    {
+      "id": "postprocessing-bloom-vignette",
+      "description": "Add bloom on the brass rim light and a vignette to darken the edges — the single biggest contributor to the 'premium/cinematic' look in Spline exports",
+      "location": "Inside <Canvas>, as a sibling to the scene content, typically last child",
+      "add_jsx": [
+        "<EffectComposer>",
+        "  <Bloom intensity={0.4} luminanceThreshold={0.6} />",
+        "  <Vignette eskil={false} offset={0.3} darkness={0.6} />",
+        "</EffectComposer>"
+      ],
+      "imports_needed": ["import { EffectComposer, Bloom, Vignette } from '@react-three/postprocessing'"],
+      "requires_dependency": "@react-three/postprocessing"
+    },
+    {
+      "id": "ambient-particles",
+      "description": "Add slow-drifting brass-colored dust particles for atmospheric depth behind/around the shoe",
+      "location": "Inside <Canvas>, as a new sibling component, e.g. <DustParticles />",
+      "add_component": {
+        "name": "DustParticles",
+        "file_suggestion": "src/components/landing/DustParticles.tsx",
+        "implementation_notes": [
+          "Use drei's <Points> + <PointMaterial> with ~40-60 instances",
+          "Randomize initial position within a bounding box roughly matching the shoe's scene bounds (approx [-2,2] x, [0,3] y, [-2,2] z)",
+          "In useFrame, increment each point's y position slowly (e.g. delta * 0.05) and wrap back to y=0 when it exceeds y=3",
+          "Color: brass (#b5985a), size ~0.02, transparent, opacity ~0.4, depthWrite false"
+        ],
+        "imports_needed": ["import { Points, PointMaterial } from '@react-three/drei'"]
+      }
+    },
+    {
+      "id": "reduced-motion-fallback-check",
+      "description": "Verify canRun3D() and the reduced-motion fallback still apply — none of the above changes should run when canRun3D() returns false",
+      "location": "Existing canRun3D() gate around the Canvas render",
+      "action": "no code change required, only a regression check after implementing the above",
+      "notes": "Confirm ContactShadows, Environment, and postprocessing are not mounted at all in the fallback branch, since they are the most GPU-intensive additions"
+    }
+  ],
+  "verification_steps": [
+    "Run npm install for the two new packages before editing ShoeHero.tsx",
+    "Visually confirm the shoe rotation no longer looks like a rigid metronome swing",
+    "Confirm reflections are visible on the leather material from the Environment preset",
+    "Confirm a soft shadow appears beneath the shoe from ContactShadows",
+    "Move the mouse over the hero section and confirm the camera subtly shifts (parallax)",
+    "Confirm bloom is visible around bright highlights without over-blowing the whole scene (tune luminanceThreshold if too bright)",
+    "Confirm particles drift upward slowly and loop without popping/flickering",
+    "Test on a throttled/low-end device profile to confirm the reduced-motion/fallback path skips all of the above and still performs acceptably"
+  ]
+}

@@ -1,0 +1,185 @@
+{
+  "project": "Mouquassin — Classic Shoes E-commerce Platform",
+  "version": "v1",
+  "summary": "A Next.js e-commerce site for tuxedo/mocassin shoes with a cinematic 3D landing page, a public shop with no checkout payment, and a WhatsApp-based sales handoff. Includes an authenticated manager dashboard for order tracking, product management and analytics.",
+  "tech_stack": {
+    "framework": "Next.js 15 (App Router, Server Components by default, Client Components for interactivity)",
+    "language": "TypeScript",
+    "database": "MongoDB (Atlas) with Mongoose ODM",
+    "validation": "Zod (shared schemas used for both API route validation and react-hook-form client validation)",
+    "ui_customer_facing": "shadcn/ui + Tailwind CSS",
+    "ui_admin_only": "Material UI (MUI X Data Grid for tables, MUI X Charts for analytics) — kept isolated to /admin routes to avoid CSS conflicts with shadcn",
+    "animation": "Framer Motion (scroll reveals, page transitions, cart drawer, hover states)",
+    "3d": "Spline — shoe and abstract guide character hand-modeled from primitives (Bend/Boolean operations), animated via States + a shared scrollProgress Variable, embedded in React via @splinetool/react-spline",
+    "state_management": "Zustand for cart state (persisted to localStorage)",
+    "auth": "Auth.js (NextAuth v5) with JWT session strategy — admin/manager login only, customers remain guests",
+    "image_storage": "Cloudinary or UploadThing (Mongo stores only URLs, never binaries)",
+    "maps_location_picker": "react-leaflet (OpenStreetMap, no API key) or Google Maps JS API",
+    "deployment": "Vercel",
+    "forms": "react-hook-form + @hookform/resolvers/zod"
+  },
+  "design_notes": {
+    "color_direction": "Neutral, editorial palette — cream/off-white background, deep charcoal or black text, one accent color (e.g. burgundy or brass gold) reserved for CTAs to evoke tuxedo/formalwear luxury",
+    "typography": "Serif display font for headlines (evokes tailoring/heritage), clean sans-serif for body and UI",
+    "motion_principle": "Motion should feel deliberate and slow (luxury pacing), not bouncy — ease-out curves, scroll-linked reveals rather than autoplay loops",
+    "landing_page_structure": [
+      "Hero: rotating 3D shoe, brand name, one-line motto",
+      "Scroll section 1: Values — animated guide character gestures as text reveals word-by-word or line-by-line",
+      "Scroll section 2: Journey — timeline-style reveal, shoe rotates to show craftsmanship details (stitching, sole)",
+      "Scroll section 3: Purpose — closing statement, CTA fades in to 'Explore the collection'"
+    ]
+  },
+  "phases": [
+    {
+      "phase": 0,
+      "name": "Project setup",
+      "tasks": [
+        "Init Next.js 15 app with TypeScript, App Router, Tailwind",
+        "Install and configure shadcn/ui (customer routes) and MUI (admin routes only, scoped via route group)",
+        "Set up MongoDB Atlas cluster + Mongoose connection singleton (lib/db.ts)",
+        "Configure Auth.js v5 with Credentials provider + JWT session strategy for manager login",
+        "Set up Cloudinary/UploadThing account and upload API route",
+        "Set up Zustand store for cart with localStorage persistence",
+        "Configure environment variables (.env): MONGODB_URI, AUTH_SECRET, CLOUDINARY_*, NEXT_PUBLIC_WHATSAPP_NUMBER"
+      ]
+    },
+    {
+      "phase": 1,
+      "name": "Data models & validation",
+      "tasks": [
+        "Define Zod schema + Mongoose model: Product (name, description, price, images[], sizes[], category, isArchived, viewCount, likeCount, createdAt)",
+        "Define Zod schema + Mongoose model: Order (customerName, phone, deliveryLocation {lat, lng, address}, items [{productId, name, price, qty}], totalPrice, status enum ['new','contacted','confirmed','shipped','cancelled'], createdAt)",
+        "Define Zod schema + Mongoose model: AnalyticsEvent (type enum ['product_view','wishlist_add','whatsapp_redirect'], productId, createdAt, meta)",
+        "Define Zod schema + Mongoose model: AdminUser (email, passwordHash, role enum ['owner','staff'])"
+      ]
+    },
+    {
+      "phase": "1.5",
+      "name": "Spline 3D asset build (shoe + guide character)",
+      "tool": "Spline (spline.design)",
+      "tasks": [
+        {
+          "task": "Model the shoe from primitives",
+          "steps": [
+            "Block out sole: flattened Cuboid + Bend modifier (X-axis, slight angle) for toe curve",
+            "Duplicate/shrink for a stacked insole/welt layer",
+            "Block out upper: Sphere scaled into an elongated oval, Boolean subtract with a Cuboid to cut it into a shoe-shaped dome",
+            "Apply Bend modifier to upper to angle heel down / toe up, matching sole curve",
+            "Boolean union sole + upper into one continuous silhouette",
+            "Add collar/opening: thin bent Torus or Cuboid positioned at the foot-entry line; Boolean subtract for an open cavity if visible in shot",
+            "Fake stitching: thin cylinders bent along the sole/upper seam, arrayed with small gaps (cheaper alternative: bake stitch pattern into a normal/bump map instead of geometry)",
+            "Material: Physical type, roughness 0.25-0.35 for patent leather sheen (0.5-0.6 for matte suede variant), near-black with slight warm undertone, boost Fresnel/reflectivity at edges for a premium (non-plastic) look",
+            "Rotate camera continuously while building to catch asymmetry/boolean seam errors before finalizing; keep pieces as separate named layers until proportions are confirmed, then do final booleans"
+          ]
+        },
+        {
+          "task": "Model the abstract guide character",
+          "steps": [
+            "Single Sphere, slightly squashed for an organic (non-perfect) silhouette",
+            "Two small flattened ellipses/dark spheres for eyes, offset slightly proud of the surface on Z",
+            "States: idle loop (squash & stretch bob between a slightly-taller and slightly-wider state)",
+            "Separate state for scroll-linked lean/tilt reaction"
+          ]
+        },
+        {
+          "task": "Wire animations to scroll",
+          "steps": [
+            "Create States for shoe: 'Base' and 'Rotated' (360° Y rotation)",
+            "Create States for character: 'Idle' and 'Reacting/tilted'",
+            "Expose a numeric Variable (e.g. scrollProgress, 0-100) in Spline's Variables panel",
+            "Link shoe rotation state and character tilt state to scrollProgress instead of Spline's native scroll trigger, so both objects can be driven from one external source of truth",
+            "Keep a separate on-load Timeline keyframe animation (scale up + slight rotate) for the initial hero entrance, independent of the scroll-linked states"
+          ]
+        },
+        {
+          "task": "Optimize and export",
+          "steps": [
+            "Use Spline's Optimize panel (reduce texture resolution/geometry) before export, target under ~5MB scene size",
+            "Export as a Spline scene (.splinecode) via 'Export > Code Export > React'",
+            "Test scene on a low-end mobile device or throttled CPU before integrating"
+          ]
+        }
+      ]
+    },
+    {
+      "phase": 2,
+      "name": "Public site — landing page",
+      "tasks": [
+        "Install @splinetool/react-spline and @splinetool/runtime",
+        "Build ShoeHero client component embedding the Spline scene via <Spline scene='...scene.splinecode' onLoad={...} />",
+        "Use Framer Motion's useScroll() as the single source of truth for scroll progress; on each scroll tick call splineApp.setVariable('scrollProgress', value) to drive both the shoe rotation and character tilt in sync with the on-screen paragraph reveals",
+        "Build scroll-triggered narrative text sections (values/journey/purpose) using Framer Motion whileInView, reading from the same scroll progress value",
+        "Add capability check: skip/replace the Spline embed with a static hero image + CSS-only rotation on low-end devices or when prefers-reduced-motion is set (check navigator.hardwareConcurrency / basic WebGL support)"
+      ]
+    },
+    {
+      "phase": 3,
+      "name": "Public site — shop & product pages",
+      "tasks": [
+        "Build /shop grid page: server-rendered product list, filters (price range, size, category), skeleton loading states",
+        "Build /shop/[slug] product detail page: image gallery, size selector, price, related products, 'add to cart'",
+        "Log product_view AnalyticsEvent on detail page visit",
+        "Add wishlist heart icon (persisted per-session in Zustand, increments likeCount via API)"
+      ]
+    },
+    {
+      "phase": 4,
+      "name": "Cart & WhatsApp checkout handoff",
+      "tasks": [
+        "Build cart drawer (Zustand state, quantity edit, remove item)",
+        "Build checkout step 1: delivery location picker (map pin drop or browser geolocation) + optional name/phone field",
+        "On submit: create Order document in MongoDB with status 'new'",
+        "Generate wa.me deep link pre-filled with itemized message (products, quantities, prices, total, Google Maps link to pinned location)",
+        "Log whatsapp_redirect AnalyticsEvent, then redirect browser to the WhatsApp link",
+        "Clear cart after successful handoff"
+      ]
+    },
+    {
+      "phase": 5,
+      "name": "Manager authentication",
+      "tasks": [
+        "Build /admin/login page (Auth.js Credentials provider, JWT session)",
+        "Middleware to protect all /admin/* routes, redirect unauthenticated users to login",
+        "Seed script to create first owner AdminUser with hashed password (bcrypt)"
+      ]
+    },
+    {
+      "phase": 6,
+      "name": "Manager dashboard",
+      "tasks": [
+        "Build /admin dashboard home: metric cards (orders in process, most liked product, live product count) using MUI",
+        "Build /admin/orders: MUI Data Grid listing all orders, filterable by status, click row to view full order detail (items, location map, contact info), manual status update dropdown",
+        "Build /admin/analytics: MUI X Charts showing most-viewed and most-liked products ranked, view/like counts over time",
+        "Build /admin/products list: table of all products with edit/archive actions",
+        "Build /admin/products/new and /admin/products/[id]/edit: drag-and-drop image uploader (native HTML5 DnD + Cloudinary/UploadThing upload), Zod-validated form for name/description/price/sizes/category",
+        "Implement soft-delete (isArchived flag) instead of hard delete"
+      ]
+    },
+    {
+      "phase": 7,
+      "name": "Polish & launch",
+      "tasks": [
+        "SEO: metadata per page, OpenGraph images, JSON-LD Product schema on detail pages",
+        "Rate limiting on public API routes (order creation, analytics events) to prevent spam/abuse",
+        "Accessibility pass on customer-facing pages (motion-safe fallbacks, alt text, keyboard nav)",
+        "Cross-browser/device QA, especially 3D performance on lower-end mobile devices",
+        "Deploy to Vercel, connect custom domain, set production env vars"
+      ]
+    }
+  ],
+  "recommended_v1.5_features": [
+    "Admin roles: owner vs staff with different dashboard permissions",
+    "Order status change notifications (email or WhatsApp Business API webhook back to manager)",
+    "Discount codes / promotional pricing field on products",
+    "Multi-language support (French/Arabic/English) via next-intl",
+    "PWA support so mobile customers can 'install' the shop",
+    "Customer-optional accounts for order history (still guest-checkout by default)",
+    "Reviews/ratings on products once repeat customers exist",
+    "Inventory/stock count per size, auto-hide out-of-stock sizes"
+  ],
+  "open_decisions_for_user": [
+    "Choose image host: Cloudinary (more built-in transforms) vs UploadThing (simpler Next.js integration)",
+    "Choose map library: react-leaflet (free, no key) vs Google Maps (more familiar UX, needs billing key)",
+    "Confirm WhatsApp Business number and message template wording for the pre-filled handoff message"
+  ]
+}
