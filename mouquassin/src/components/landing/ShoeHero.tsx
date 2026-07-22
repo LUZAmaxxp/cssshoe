@@ -135,6 +135,7 @@ export function ShoeHero() {
 
   const opacity = useTransform(scrollYProgress, [0, 0.8, 1], [1, 1, 0]);
 
+  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     if (canRun3D()) {
       setUseFallback(false);

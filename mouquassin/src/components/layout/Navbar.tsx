@@ -7,20 +7,15 @@ import { Menu, X, ShoppingBag, Search, User, Globe } from "lucide-react";
 import { useCartStore } from "@/stores/cart";
 import { CartDrawer } from "@/components/shop/CartDrawer";
 import { useLocale } from "@/i18n/context";
-import { locales, localeMetadata, Locale } from "@/i18n/config";
+import { locales, localeMetadata } from "@/i18n/config";
 
 export function Navbar({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
-  const [cartCount, setCartCount] = useState(0);
   const [scrolled, setScrolled] = useState(false);
-  const totalItems = useCartStore((s) => s.totalItems);
+  const totalItemsCount = useCartStore((s) => s.totalItems());
   const { locale, setLocale, t } = useLocale();
-
-  useEffect(() => {
-    setCartCount(totalItems());
-  }, [totalItems]);
 
   useEffect(() => {
     if (alwaysSolid) return;
@@ -50,8 +45,8 @@ export function Navbar({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
             : "bg-transparent"
         }`}
       >
-        <div className="container mx-auto flex items-center justify-between h-20 px-4 md:px-8">
-          <Link href="/" className="flex items-center gap-2">
+        <div className="container mx-auto flex items-center justify-between h-16 md:h-20 px-4 md:px-8">
+          <Link href="/" className="flex items-center gap-1.5">
             <Image
               src="/images/logo1v1.png"
               alt="Lyzane"
@@ -65,7 +60,7 @@ export function Navbar({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
               alt="Lyzane"
               width={250}
               height={50}
-              className="h-5 md:h-6 w-auto"
+              className="h-5 md:h-6 w-auto hidden sm:block"
               priority
             />
           </Link>
@@ -85,11 +80,11 @@ export function Navbar({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
             </Link>
           </div>
 
-          <div className="flex items-center gap-5 text-cream/70">
-            <button className="hidden md:block hover:text-cream transition-colors">
+          <div className="flex items-center gap-3 text-cream/70">
+            <button className="hidden md:block p-2 hover:text-cream transition-colors">
               <Search className="w-4 h-4" />
             </button>
-            <button className="hidden md:block hover:text-cream transition-colors">
+            <button className="hidden md:block p-2 hover:text-cream transition-colors">
               <User className="w-4 h-4" />
             </button>
 
@@ -97,7 +92,7 @@ export function Navbar({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
             <div className="relative hidden md:block">
               <button
                 onClick={(e) => { e.stopPropagation(); setLangOpen(!langOpen); }}
-                className="hover:text-cream transition-colors flex items-center gap-1 text-[11px] tracking-[0.1em] uppercase"
+                className="p-2 hover:text-cream transition-colors flex items-center gap-1 text-[11px] tracking-[0.1em] uppercase"
               >
                 <Globe className="w-3.5 h-3.5" />
                 {locale.toUpperCase()}
@@ -119,23 +114,23 @@ export function Navbar({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
               )}
             </div>
 
-            <button onClick={() => setCartOpen(true)} className="relative hover:text-cream transition-colors">
+            <button onClick={() => setCartOpen(true)} className="relative p-2 hover:text-cream transition-colors">
               <ShoppingBag className="w-4 h-4" />
-              {cartCount > 0 && (
-                <span className="absolute -top-1.5 -right-1.5 w-3.5 h-3.5 bg-burgundy text-white text-[8px] rounded-full flex items-center justify-center">
-                  {cartCount}
+              {totalItemsCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-burgundy text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center">
+                  {totalItemsCount}
                 </span>
               )}
             </button>
 
-            <button className="md:hidden hover:text-cream transition-colors" onClick={() => setMenuOpen(!menuOpen)}>
+            <button className="md:hidden p-2 hover:text-cream transition-colors" onClick={() => setMenuOpen(!menuOpen)}>
               {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
         </div>
 
         {menuOpen && (
-          <div className="md:hidden bg-charcoal/95 backdrop-blur-sm border-t border-cream/10 px-4 py-6 space-y-4">
+          <div className="md:hidden bg-charcoal/95 backdrop-blur-sm border-t border-cream/10 px-4 py-6 min-h-[calc(100vh-64px)] space-y-4">
             <Link href="/shop" className="block text-[11px] tracking-[0.15em] uppercase text-cream/70 hover:text-cream" onClick={() => setMenuOpen(false)}>
               {t("nav.shop")}
             </Link>
@@ -149,9 +144,9 @@ export function Navbar({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
               {t("nav.journal")}
             </Link>
             {/* Mobile language switcher */}
-            <div className="pt-2 border-t border-cream/10">
-              <p className="text-[10px] tracking-[0.15em] uppercase text-cream/40 mb-2">Language</p>
-              <div className="flex gap-3">
+            <div className="pt-4 border-t border-cream/10">
+              <p className="text-[10px] tracking-[0.15em] uppercase text-cream/40 mb-3">Language</p>
+              <div className="flex gap-4">
                 {locales.map((loc) => (
                   <button
                     key={loc}

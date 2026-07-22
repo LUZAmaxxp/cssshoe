@@ -57,39 +57,45 @@ export default function OrdersPage() {
       field: "customerName",
       headerName: "Customer",
       flex: 1,
+      minWidth: 120,
       renderCell: (params) => {
-        const style = statusStyles["new"];
         return (
           <div className="flex items-center gap-2">
             <div
-              className="w-6 h-6 rounded-full flex items-center justify-center text-[10px]"
+              className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] flex-shrink-0"
               style={{ backgroundColor: "#ebebeb", color: "#6b6b6b" }}
             >
               {getInitials(params.value)}
             </div>
-            {params.value}
+            <span className="truncate">{params.value}</span>
           </div>
         );
       },
     },
-    { field: "phone", headerName: "Phone", flex: 1 },
+    { field: "phone", headerName: "Phone", flex: 1, minWidth: 100 },
     {
       field: "items",
       headerName: "Items",
       flex: 1,
-      renderCell: (params) =>
-        params.value?.map((i: { name: string; qty: number }) => `${i.name} x${i.qty}`).join(", "),
+      minWidth: 120,
+      renderCell: (params) => (
+        <span className="truncate">
+          {params.value?.map((i: { name: string; qty: number }) => `${i.name} x${i.qty}`).join(", ")}
+        </span>
+      ),
     },
     {
       field: "totalPrice",
       headerName: "Total",
       flex: 0.5,
+      minWidth: 70,
       renderCell: (params) => `$${params.value}`,
     },
     {
       field: "status",
       headerName: "Status",
       flex: 1,
+      minWidth: 120,
       renderCell: (params) => {
         const s = statusStyles[params.value] || statusStyles["new"];
         return (
@@ -120,6 +126,7 @@ export default function OrdersPage() {
       field: "createdAt",
       headerName: "Date",
       flex: 1,
+      minWidth: 90,
       renderCell: (params) => new Date(params.value).toLocaleDateString(),
     },
   ];
@@ -129,14 +136,16 @@ export default function OrdersPage() {
       <Typography variant="h4" sx={{ fontWeight: "bold", mb: 3 }}>
         Orders
       </Typography>
-      <div style={{ height: 600, width: "100%" }}>
-        <DataGrid
-          rows={orders}
-          columns={columns}
-          loading={loading}
-          getRowId={(row) => row._id}
-          pageSizeOptions={[10, 25, 50]}
-        />
+      <div className="w-full overflow-x-auto">
+        <div style={{ height: 500, minWidth: 700 }}>
+          <DataGrid
+            rows={orders}
+            columns={columns}
+            loading={loading}
+            getRowId={(row) => row._id}
+            pageSizeOptions={[10, 25, 50]}
+          />
+        </div>
       </div>
     </div>
   );

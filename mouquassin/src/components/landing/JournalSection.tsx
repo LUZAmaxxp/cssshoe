@@ -3,6 +3,7 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 interface JournalSectionProps {
@@ -34,13 +35,13 @@ export function JournalSection({ imageSrc }: JournalSectionProps) {
           </h2>
 
           {/* CTA */}
-          <a
+          <Link
             href="/shop"
             className="inline-flex items-center gap-2 text-[11px] tracking-[0.2em] uppercase text-cream/70 hover:text-brass transition-colors duration-300 group"
           >
             Discover Journal
             <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-          </a>
+          </Link>
         </motion.div>
       </div>
 

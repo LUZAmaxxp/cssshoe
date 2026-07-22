@@ -40,7 +40,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
           >
             <div className="flex items-center justify-between p-4 border-b">
               <h2 className="text-lg font-heading">{t("cart.title")}</h2>
-              <button onClick={onClose}>
+              <button onClick={onClose} className="p-2 -mr-2">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -70,7 +70,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                         </p>
                         <p className="text-sm mt-1">${item.price}</p>
 
-                        <div className="flex items-center gap-2 mt-2">
+                        <div className="flex items-center gap-3 mt-2">
                           <button
                             onClick={() =>
                               updateQuantity(
@@ -79,7 +79,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                                 item.quantity - 1
                               )
                             }
-                            className="p-1 border rounded"
+                            className="p-2 border rounded"
                           >
                             <Minus className="w-3 h-3" />
                           </button>
@@ -94,13 +94,13 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                                 item.quantity + 1
                               )
                             }
-                            className="p-1 border rounded"
+                            className="p-2 border rounded"
                           >
                             <Plus className="w-3 h-3" />
                           </button>
                           <button
                             onClick={() => removeItem(item.productId, item.size)}
-                            className="ml-auto p-1 text-muted-foreground hover:text-destructive"
+                            className="ml-auto p-2 text-muted-foreground hover:text-destructive"
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>
@@ -121,7 +121,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                 <Link
                   href="/checkout"
                   onClick={onClose}
-                  className="block w-full bg-burgundy text-white text-center py-3 text-sm tracking-widest uppercase hover:bg-charcoal transition-colors"
+                  className="block w-full bg-burgundy text-white text-center py-3.5 text-sm tracking-widest uppercase hover:bg-charcoal transition-colors"
                 >
                   {t("cart.checkout")}
                 </Link>

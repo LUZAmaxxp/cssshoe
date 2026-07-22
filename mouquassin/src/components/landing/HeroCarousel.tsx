@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { useScroll, useTransform, motion } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { useLocale } from "@/i18n/context";
 
@@ -19,7 +20,7 @@ export function HeroCarousel() {
   const imageScale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
 
   return (
-    <section ref={containerRef} className="relative h-[100vh] overflow-hidden bg-charcoal">
+    <section ref={containerRef} className="relative h-[100dvh] overflow-hidden bg-charcoal">
       {/* Background image */}
       <motion.div
         style={{ scale: imageScale }}
@@ -47,7 +48,7 @@ export function HeroCarousel() {
       {/* Text block - centered */}
       <motion.div
         style={{ opacity }}
-        className="absolute inset-0 z-10 flex flex-col items-center justify-center px-8"
+        className="absolute inset-0 z-10 flex flex-col items-center justify-center px-6 md:px-8"
       >
         <div className="text-center">
           {/* Brand name */}
@@ -62,7 +63,7 @@ export function HeroCarousel() {
               alt="Lyzane"
               width={1250}
               height={250}
-              className="h-10 md:h-20 lg:h-30 w-auto"
+              className="h-10 md:h-20 lg:h-[120px] w-auto"
               priority
             />
           </motion.div>
@@ -74,19 +75,19 @@ export function HeroCarousel() {
             transition={{ duration: 1, delay: 1 }}
             className="mt-6"
           >
-            <a
+            <Link
               href="/shop"
               className="inline-flex items-center gap-2 text-[11px] tracking-[0.2em] uppercase text-cream/70 hover:text-brass transition-colors duration-300 group"
             >
               {t("hero.exploreCollection")}
               <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-            </a>
+            </Link>
           </motion.div>
         </div>
       </motion.div>
 
       {/* Pagination indicator - bottom left */}
-      <div className="absolute bottom-8 left-8 md:left-16 z-10">
+      <div className="absolute bottom-6 left-6 md:bottom-8 md:left-16 z-10">
         <p
           className="text-[10px] tracking-[0.25em] uppercase"
           style={{ color: "rgba(242,237,230,0.4)" }}
@@ -95,8 +96,8 @@ export function HeroCarousel() {
         </p>
       </div>
 
-      {/* Scroll hint - bottom right */}
-      <div className="absolute bottom-8 right-8 md:right-16 z-10 flex flex-col items-center gap-2">
+      {/* Scroll hint - bottom right (hidden on mobile) */}
+      <div className="absolute bottom-6 right-6 md:bottom-8 md:right-16 z-10 hidden md:flex flex-col items-center gap-2">
         <p
           className="text-[10px] tracking-[0.2em] uppercase"
           style={{

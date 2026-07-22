@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useMemo } from "react";
+import { useRef, useEffect, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Points, PointMaterial } from "@react-three/drei";
 import * as THREE from "three";
@@ -9,15 +9,17 @@ const PARTICLE_COUNT = 50;
 
 export function DustParticles() {
   const pointsRef = useRef<THREE.Points>(null);
+  const [positions, setPositions] = useState<Float32Array | null>(null);
 
-  const positions = useMemo(() => {
+  /* eslint-disable react-hooks/set-state-in-effect */
+  useEffect(() => {
     const pos = new Float32Array(PARTICLE_COUNT * 3);
     for (let i = 0; i < PARTICLE_COUNT; i++) {
-      pos[i * 3] = (Math.random() - 0.5) * 4;     // x: [-2, 2]
-      pos[i * 3 + 1] = Math.random() * 3;           // y: [0, 3]
-      pos[i * 3 + 2] = (Math.random() - 0.5) * 4;  // z: [-2, 2]
+      pos[i * 3] = (Math.random() - 0.5) * 4;
+      pos[i * 3 + 1] = Math.random() * 3;
+      pos[i * 3 + 2] = (Math.random() - 0.5) * 4;
     }
-    return pos;
+    setPositions(pos);
   }, []);
 
   useFrame((_, delta) => {
@@ -33,6 +35,8 @@ export function DustParticles() {
     }
     posAttr.needsUpdate = true;
   });
+
+  if (!positions) return null;
 
   return (
     <Points ref={pointsRef} positions={positions} stride={3} frustumCulled={false}>

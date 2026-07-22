@@ -10,7 +10,7 @@ export default function AdminLayout({
   return (
     <div className="flex min-h-screen">
       <AdminSidebar />
-      <main className="flex-1 bg-[#faf9f7] p-8 overflow-auto">{children}</main>
+      <main className="flex-1 bg-[#faf9f7] p-4 md:p-8 overflow-auto">{children}</main>
     </div>
   );
 }

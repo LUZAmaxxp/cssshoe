@@ -137,7 +137,7 @@ export default function CheckoutPage() {
               required
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full border border-border px-3 py-2 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-ring"
+              className="w-full border border-border px-3 py-3 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-ring"
               placeholder={t("checkout.fullNamePlaceholder")}
             />
           </div>
@@ -151,7 +151,7 @@ export default function CheckoutPage() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full border border-border px-3 py-2 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-ring"
+              className="w-full border border-border px-3 py-3 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-ring"
               placeholder={t("checkout.emailPlaceholder")}
             />
           </div>
@@ -165,7 +165,7 @@ export default function CheckoutPage() {
               required
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              className="w-full border border-border px-3 py-2 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-ring"
+              className="w-full border border-border px-3 py-3 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-ring"
               placeholder={t("checkout.phonePlaceholder")}
             />
           </div>
@@ -178,7 +178,7 @@ export default function CheckoutPage() {
               required
               value={address}
               onChange={(e) => setAddress(e.target.value)}
-              className="w-full border border-border px-3 py-2 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-ring min-h-[80px]"
+              className="w-full border border-border px-3 py-3 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-ring min-h-[100px]"
               placeholder={t("checkout.addressPlaceholder")}
             />
           </div>

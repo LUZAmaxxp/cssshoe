@@ -2,6 +2,7 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
+import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { useLocale } from "@/i18n/context";
 
@@ -18,7 +19,7 @@ export function CraftSection({ id }: CraftSectionProps) {
     <section
       id={id}
       ref={ref}
-      className="relative min-h-[80vh] flex items-center overflow-hidden"
+      className="relative min-h-[70vh] md:min-h-[80vh] flex items-center overflow-hidden"
     >
       {/* Video background */}
       <video
@@ -35,31 +36,31 @@ export function CraftSection({ id }: CraftSectionProps) {
       <div className="absolute inset-0 bg-charcoal/60" />
 
       {/* Text content */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-8 md:px-16 lg:px-24">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-16 lg:px-24">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
           className="max-w-md"
         >
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-heading text-cream leading-[1.1] mb-6">
+          <h2 className="text-2xl md:text-4xl lg:text-5xl font-heading text-cream leading-[1.1] mb-4 md:mb-6">
             {t("craft.title")}
           </h2>
 
           <p
-            className="text-sm md:text-base leading-relaxed mb-8"
+            className="text-sm md:text-base leading-relaxed mb-6 md:mb-8"
             style={{ color: "rgba(242,237,230,0.55)" }}
           >
             {t("craft.body")}
           </p>
 
-          <a
+          <Link
             href="/shop"
             className="inline-flex items-center gap-2 text-[11px] tracking-[0.2em] uppercase text-cream/70 hover:text-brass transition-colors duration-300 group"
           >
             {t("craft.cta")}
             <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-          </a>
+          </Link>
         </motion.div>
       </div>
     </section>

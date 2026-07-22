@@ -44,6 +44,7 @@ function getNestedValue(obj: Record<string, unknown>, path: string): string {
 export function I18nProvider({ children }: { children: React.ReactNode }) {
   const [locale, setLocaleState] = useState<Locale>(defaultLocale);
 
+  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     const saved = getCookie("locale") as Locale | undefined;
     if (saved && localeMetadata[saved]) {

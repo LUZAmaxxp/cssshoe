@@ -1,7 +1,8 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
+import dotenv from "dotenv";
 
-require("dotenv").config();
+dotenv.config();
 
 const MONGODB_URI = process.env.MONGODB_URI!;
 

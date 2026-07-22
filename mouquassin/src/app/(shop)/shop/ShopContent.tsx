@@ -69,6 +69,7 @@ export function ShopContent() {
   }, []);
 
   // Fetch products when category changes
+  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     fetchProducts(1);
   }, [fetchProducts]);

@@ -65,7 +65,7 @@ export function SplitFeature({
       )}
 
       {/* Text column */}
-      <div className={`flex items-center p-8 md:p-12 lg:p-16 ${
+      <div className={`flex items-center p-6 md:p-12 lg:p-16 ${
         hasImage ? (imageOnLeft ? "order-2" : "order-1") : ""
       } ${hasImage ? (flushEdge && !imageOnLeft ? "md:w-[65%] lg:w-[60%]" : "md:w-1/2") : "w-full"}`}>
         <motion.div
