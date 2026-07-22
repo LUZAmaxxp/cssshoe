@@ -81,11 +81,21 @@ export function Footer() {
               </button>
             </div>
             <div className="flex gap-4">
-              <a href="#" className="text-muted-foreground hover:text-charcoal transition-colors text-[11px] tracking-[0.15em] uppercase">
+              <a
+                href="https://www.instagram.com/lyzane.co?igsh=Y3l1dHFweXY0MGJz&utm_source=qr"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-muted-foreground hover:text-charcoal transition-colors text-[11px] tracking-[0.15em] uppercase"
+              >
                 Instagram
               </a>
-              <a href="#" className="text-muted-foreground hover:text-charcoal transition-colors text-[11px] tracking-[0.15em] uppercase">
-                TikTok
+              <a
+                href="https://www.facebook.com/share/1BvUC9CRxt/?mibextid=wwXIfr"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-muted-foreground hover:text-charcoal transition-colors text-[11px] tracking-[0.15em] uppercase"
+              >
+                Facebook
               </a>
             </div>
           </div>
