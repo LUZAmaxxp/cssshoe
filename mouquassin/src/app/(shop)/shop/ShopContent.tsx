@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { ProductCard } from "@/components/shop/ProductCard";
 import { useLocale } from "@/i18n/context";
 
@@ -14,29 +14,72 @@ interface Product {
   likeCount: number;
 }
 
+interface Pagination {
+  page: number;
+  limit: number;
+  total: number;
+  pages: number;
+}
+
 export function ShopContent() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [category, setCategory] = useState("");
   const [categories, setCategories] = useState<string[]>([]);
+  const [pagination, setPagination] = useState<Pagination | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
   const { t } = useLocale();
 
-  useEffect(() => {
-    const url = category
-      ? `/api/products?category=${encodeURIComponent(category)}`
-      : "/api/products";
+  const fetchProducts = useCallback(
+    async (page: number, append: boolean = false) => {
+      if (append) setLoadingMore(true);
+      else setLoading(true);
 
-    fetch(url)
+      try {
+        const params = new URLSearchParams();
+        params.set("page", String(page));
+        params.set("limit", "24");
+        if (category) params.set("category", category);
+
+        const res = await fetch(`/api/products?${params}`);
+        const data = await res.json();
+
+        setProducts((prev) =>
+          append ? [...prev, ...data.products] : data.products
+        );
+        setPagination(data.pagination);
+        setCurrentPage(page);
+      } catch {
+        // silent
+      } finally {
+        setLoading(false);
+        setLoadingMore(false);
+      }
+    },
+    [category]
+  );
+
+  // Fetch categories once
+  useEffect(() => {
+    fetch("/api/products/categories")
       .then((res) => res.json())
-      .then((data) => {
-        setProducts(data);
-        if (!category) {
-          const cats = [...new Set(data.map((p: Product) => p.category))] as string[];
-          setCategories(cats);
-        }
-      })
-      .finally(() => setLoading(false));
-  }, [category]);
+      .then(setCategories)
+      .catch(() => {});
+  }, []);
+
+  // Fetch products when category changes
+  useEffect(() => {
+    fetchProducts(1);
+  }, [fetchProducts]);
+
+  const hasMore = pagination && currentPage < pagination.pages;
+
+  const handleLoadMore = () => {
+    if (hasMore && !loadingMore) {
+      fetchProducts(currentPage + 1, true);
+    }
+  };
 
   if (loading) {
     return (
@@ -90,11 +133,31 @@ export function ShopContent() {
           {t("shop.noProducts")}
         </div>
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-          {products.map((product) => (
-            <ProductCard key={product._id} {...product} />
-          ))}
-        </div>
+        <>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+            {products.map((product) => (
+              <ProductCard key={product._id} {...product} />
+            ))}
+          </div>
+
+          {hasMore && (
+            <div className="flex justify-center mt-8">
+              <button
+                onClick={handleLoadMore}
+                disabled={loadingMore}
+                className="px-8 py-3 text-sm tracking-wider uppercase border border-charcoal text-charcoal hover:bg-charcoal hover:text-white transition-colors disabled:opacity-50"
+              >
+                {loadingMore ? "Loading..." : "Load More"}
+              </button>
+            </div>
+          )}
+
+          {pagination && (
+            <p className="text-center text-xs text-muted-foreground mt-4">
+              Showing {products.length} of {pagination.total} products
+            </p>
+          )}
+        </>
       )}
     </>
   );

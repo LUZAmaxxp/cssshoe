@@ -29,9 +29,11 @@ const productSchema = new Schema<IProduct>(
   { timestamps: true }
 );
 
+// Compound index for common query patterns
+productSchema.index({ isArchived: 1, createdAt: -1 });
+productSchema.index({ isArchived: 1, category: 1, createdAt: -1 });
+productSchema.index({ isArchived: 1, price: 1 });
 productSchema.index({ category: 1 });
-productSchema.index({ isArchived: 1 });
-productSchema.index({ price: 1 });
 
 const Product: Model<IProduct> =
   mongoose.models.Product || mongoose.model<IProduct>("Product", productSchema);
