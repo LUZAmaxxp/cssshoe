@@ -49,6 +49,7 @@
   },
   "product": {
     "size": "Size",
+    "sizeGuide": "Size Guide",
     "color": "Color",
     "sizeRequired": "Please select a size",
     "quantity": "Quantity",
@@ -56,6 +57,12 @@
     "addedToCart": "Added to Cart",
     "buyNow": "Buy Now",
     "description": "Description",
+    "readMore": "Read more",
+    "showLess": "Show less",
+    "details": "Product Details",
+    "delivery": "Delivery",
+    "deliveryInfo": "Free delivery on orders over 1000 DH. Standard delivery takes 2-5 business days. Express delivery available at checkout.",
+    "category": "Category",
     "peopleLiked": "people liked this",
     "youMayAlsoLike": "You may also like",
     "notFound": "Product not found."

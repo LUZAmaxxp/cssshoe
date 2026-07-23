@@ -49,6 +49,7 @@
   },
   "product": {
     "size": "Taille",
+    "sizeGuide": "Guide des tailles",
     "color": "Couleur",
     "sizeRequired": "Veuillez choisir une taille",
     "quantity": "Quantité",
@@ -56,6 +57,12 @@
     "addedToCart": "Ajouté au Panier",
     "buyNow": "Acheter Maintenant",
     "description": "Description",
+    "readMore": "Lire la suite",
+    "showLess": "Voir moins",
+    "details": "Détails du produit",
+    "delivery": "Livraison",
+    "deliveryInfo": "Livraison gratuite pour les commandes de plus de 1000 DH. La livraison standard prend 2 à 5 jours ouvrables. Livraison express disponible au checkout.",
+    "category": "Catégorie",
     "peopleLiked": "personnes ont aimé",
     "youMayAlsoLike": "Vous aimerez aussi",
     "notFound": "Produit non trouvé."

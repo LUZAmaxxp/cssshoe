@@ -131,7 +131,7 @@ export function ProductCard({
               <div className="flex gap-2">
                 <button
                   onClick={handleBuyNow}
-                  className="flex-1 flex items-center justify-center gap-1.5 py-2.5 md:py-2 text-[10px] tracking-wider uppercase bg-charcoal text-white hover:bg-brass hover:text-charcoal transition-colors"
+                  className="flex-1 flex items-center justify-center gap-1.5 py-2.5 md:py-2 text-[10px] tracking-wider uppercase border border-charcoal text-charcoal hover:bg-charcoal hover:text-white transition-colors"
                 >
                   <Zap className="w-3 h-3" />
                   {t("shop.buyNow")}
