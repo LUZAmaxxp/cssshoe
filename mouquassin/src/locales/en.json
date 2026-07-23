@@ -62,7 +62,7 @@
     "empty": "Your cart is empty",
     "size": "Size",
     "total": "Total",
-    "checkout": "Checkout via WhatsApp"
+    "checkout": "Checkout"
   },
   "checkout": {
     "title": "Checkout",
@@ -78,9 +78,15 @@
     "phonePlaceholder": "+212 6XX XXX XXX",
     "address": "Delivery Address",
     "addressPlaceholder": "Full delivery address, city",
-    "orderViaWhatsapp": "Order via WhatsApp",
+    "placeOrder": "Place Order",
     "processing": "Processing...",
-    "error": "Failed to process order. Please try again."
+    "error": "Failed to process order. Please try again.",
+    "successTitle": "Order Placed Successfully",
+    "successMessage": "Your order has been received. We will contact you shortly to confirm delivery details.",
+    "orderId": "Order ID",
+    "continueShopping": "Continue Shopping",
+    "contactWhatsApp": "Contact on WhatsApp",
+    "optional": "optional"
   },
   "footer": {
     "tagline": "Timeless by nature",
@@ -94,7 +100,7 @@
     "help": {
       "title": "Help",
       "ourStory": "Our Story",
-      "orderViaWhatsapp": "Order via WhatsApp",
+      "placeOrder": "Place an Order",
       "shipping": "Shipping & Returns"
     },
     "connected": {

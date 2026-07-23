@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     template: "%s | Lyzane",
   },
   description:
-    "Handcrafted tuxedo and mocassin shoes. Luxury footwear, timeless elegance. Order via WhatsApp for a personal consultation.",
+    "Handcrafted tuxedo and mocassin shoes. Luxury footwear, timeless elegance.",
   openGraph: {
     type: "website",
     locale: "en_US",

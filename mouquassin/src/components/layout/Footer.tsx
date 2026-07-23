@@ -56,7 +56,7 @@ export function Footer() {
                 {t("footer.help.ourStory")}
               </Link>
               <Link href="/checkout" className="block hover:text-foreground transition-colors">
-                {t("footer.help.orderViaWhatsapp")}
+                {t("footer.help.placeOrder")}
               </Link>
               <p className="block">{t("footer.help.shipping")}</p>
             </div>

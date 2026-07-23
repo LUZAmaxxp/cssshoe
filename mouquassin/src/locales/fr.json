@@ -62,7 +62,7 @@
     "empty": "Votre panier est vide",
     "size": "Taille",
     "total": "Total",
-    "checkout": "Commander via WhatsApp"
+    "checkout": "Commander"
   },
   "checkout": {
     "title": "Commande",
@@ -78,9 +78,15 @@
     "phonePlaceholder": "+212 6XX XXX XXX",
     "address": "Adresse de Livraison",
     "addressPlaceholder": "Adresse complète de livraison, ville",
-    "orderViaWhatsapp": "Commander via WhatsApp",
+    "placeOrder": "Passer la Commande",
     "processing": "Traitement...",
-    "error": "Échec du traitement de la commande. Veuillez réessayer."
+    "error": "Échec du traitement de la commande. Veuillez réessayer.",
+    "successTitle": "Commande Passée avec Succès",
+    "successMessage": "Votre commande a été reçue. Nous vous contacterons bientôt pour confirmer les détails de livraison.",
+    "orderId": "Numéro de Commande",
+    "continueShopping": "Continuer les Achats",
+    "contactWhatsApp": "Contacter sur WhatsApp",
+    "optional": "optionnel"
   },
   "footer": {
     "tagline": "Intemporel par nature",
@@ -94,7 +100,7 @@
     "help": {
       "title": "Aide",
       "ourStory": "Notre Histoire",
-      "orderViaWhatsapp": "Commander via WhatsApp",
+      "placeOrder": "Passer une Commande",
       "shipping": "Livraison & Retours"
     },
     "connected": {

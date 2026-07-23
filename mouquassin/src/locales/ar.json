@@ -78,9 +78,15 @@
     "phonePlaceholder": "+212 6XX XXX XXX",
     "address": "عنوان التوصيل",
     "addressPlaceholder": "عنوان التوصيل الكامل، المدينة",
-    "orderViaWhatsapp": "اطلب عبر واتساب",
+    "placeOrder": "تأكيد الطلب",
     "processing": "جاري المعالجة...",
-    "error": "فشل في معالجة الطلب. يرجى المحاولة مرة أخرى."
+    "error": "فشل في معالجة الطلب. يرجى المحاولة مرة أخرى.",
+    "successTitle": "تم تأكيد الطلب بنجاح",
+    "successMessage": "تم استلام طلبك. سنتواصل معك قريباً لتأكيد تفاصيل التوصيل.",
+    "orderId": "رقم الطلب",
+    "continueShopping": "مواصفة التسوق",
+    "contactWhatsApp": "تواصل عبر واتساب",
+    "optional": "اختياري"
   },
   "footer": {
     "tagline": "خالد بطبيعته",
@@ -94,7 +100,7 @@
     "help": {
       "title": "المساعدة",
       "ourStory": "قصتنا",
-      "orderViaWhatsapp": "اطلب عبر واتساب",
+      "placeOrder": "تأكيد الطلب",
       "shipping": "الشحن والإرجاع"
     },
     "connected": {

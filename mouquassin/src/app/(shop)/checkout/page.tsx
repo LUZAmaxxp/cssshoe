@@ -6,7 +6,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { useCartStore } from "@/stores/cart";
 import { useLocale } from "@/i18n/context";
-import { MapPin, Phone, User, Mail, Loader2 } from "lucide-react";
+import { MapPin, Phone, User, Mail, Loader2, CheckCircle } from "lucide-react";
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -21,6 +21,8 @@ export default function CheckoutPage() {
   const [address, setAddress] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [orderSuccess, setOrderSuccess] = useState(false);
+  const [orderId, setOrderId] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -55,12 +57,12 @@ export default function CheckoutPage() {
       }
 
       const order = await res.json();
+      const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "212631604905";
 
-      const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "212600000000";
       const itemLines = items
         .map(
           (item) =>
-            `- ${item.name} (Size: ${item.size}) x${item.quantity} — $${item.price * item.quantity}`
+            `- ${item.name} (${item.size}) x${item.quantity} — $${item.price * item.quantity}`
         )
         .join("\n");
 
@@ -75,14 +77,51 @@ export default function CheckoutPage() {
       );
 
       clearCart();
+      setOrderId(order._id);
+      setOrderSuccess(true);
+
       window.open(`https://wa.me/${whatsappNumber}?text=${message}`, "_blank");
-      router.push("/shop");
     } catch {
       setError(t("checkout.error"));
     } finally {
       setLoading(false);
     }
   };
+
+  if (orderSuccess) {
+    return (
+      <>
+        <Navbar alwaysSolid />
+        <main className="container mx-auto px-4 py-8 pt-24 text-center min-h-[60vh] flex flex-col items-center justify-center">
+          <CheckCircle className="w-16 h-16 text-green-600 mb-6" />
+          <h1 className="text-3xl font-heading text-charcoal mb-4">{t("checkout.successTitle")}</h1>
+          <p className="text-muted-foreground mb-2 max-w-md">
+            {t("checkout.successMessage")}
+          </p>
+          <p className="text-sm text-muted-foreground mb-8">
+            {t("checkout.orderId")}: {orderId.slice(-8).toUpperCase()}
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <a
+              href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "212631604905"}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-green-600 text-white px-8 py-3 text-sm tracking-widest uppercase hover:bg-green-700 transition-colors"
+            >
+              {t("checkout.contactWhatsApp")}
+            </a>
+            <button
+              onClick={() => router.push("/shop")}
+              className="bg-charcoal text-cream px-8 py-3 text-sm tracking-widest uppercase hover:bg-brass hover:text-charcoal transition-colors"
+            >
+              {t("checkout.continueShopping")}
+            </button>
+          </div>
+        </main>
+        <Footer />
+      </>
+    );
+  }
 
   if (items.length === 0) {
     return (
@@ -144,11 +183,10 @@ export default function CheckoutPage() {
 
           <div>
             <label className="text-sm font-medium flex items-center gap-2 mb-1">
-              <Mail className="w-4 h-4" /> {t("checkout.email")}
+              <Mail className="w-4 h-4" /> {t("checkout.email")} <span className="text-muted-foreground text-xs">({t("checkout.optional")})</span>
             </label>
             <input
               type="email"
-              required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full border border-border px-3 py-3 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-ring"
@@ -188,14 +226,14 @@ export default function CheckoutPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-burgundy text-white py-3 text-sm tracking-widest uppercase hover:bg-charcoal transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+            className="w-full bg-burgundy text-white py-3.5 text-sm tracking-widest uppercase hover:bg-charcoal transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
           >
             {loading ? (
               <>
                 <Loader2 className="w-4 h-4 animate-spin" /> {t("checkout.processing")}
               </>
             ) : (
-              t("checkout.orderViaWhatsapp")
+              t("checkout.placeOrder")
             )}
           </button>
         </form>

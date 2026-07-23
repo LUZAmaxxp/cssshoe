@@ -6,7 +6,7 @@ interface OrderEmailData {
   customerName: string;
   email: string;
   phone: string;
-  items: { name: string; price: number; qty: number }[];
+  items: { name: string; price: number; qty: number; size?: string }[];
   totalPrice: number;
   deliveryLocation: { address: string };
 }
@@ -24,7 +24,7 @@ export async function sendOrderConfirmationEmail(order: OrderEmailData) {
       (item) => `
       <tr>
         <td style="padding: 8px 0; border-bottom: 1px solid #eee; color: #333;">
-          ${item.name}
+          ${item.name}${item.size ? ` (${item.size})` : ""}
         </td>
         <td style="padding: 8px 0; border-bottom: 1px solid #eee; color: #666; text-align: center;">
           ${item.qty}
@@ -52,7 +52,6 @@ export async function sendOrderConfirmationEmail(order: OrderEmailData) {
         <tr>
           <td align="center">
             <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
-              <!-- Header -->
               <tr>
                 <td style="background-color: #1a1a1a; padding: 32px 40px; text-align: center;">
                   <h1 style="margin: 0; color: #b5985a; font-size: 28px; font-weight: 500; letter-spacing: 0.25em; text-transform: uppercase;">
@@ -60,8 +59,6 @@ export async function sendOrderConfirmationEmail(order: OrderEmailData) {
                   </h1>
                 </td>
               </tr>
-              
-              <!-- Content -->
               <tr>
                 <td style="padding: 40px;">
                   <h2 style="margin: 0 0 8px 0; color: #1a1a1a; font-size: 24px; font-weight: 500;">
@@ -70,66 +67,36 @@ export async function sendOrderConfirmationEmail(order: OrderEmailData) {
                   <p style="margin: 0 0 24px 0; color: #666; font-size: 14px;">
                     Thank you for your purchase, ${order.customerName}!
                   </p>
-                  
-                  <!-- Order Items -->
                   <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 24px;">
                     <thead>
                       <tr style="border-bottom: 2px solid #1a1a1a;">
-                        <th style="padding: 12px 0; text-align: left; color: #1a1a1a; font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em;">
-                          Product
-                        </th>
-                        <th style="padding: 12px 0; text-align: center; color: #1a1a1a; font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em;">
-                          Qty
-                        </th>
-                        <th style="padding: 12px 0; text-align: right; color: #1a1a1a; font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em;">
-                          Price
-                        </th>
-                        <th style="padding: 12px 0; text-align: right; color: #1a1a1a; font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em;">
-                          Total
-                        </th>
+                        <th style="padding: 12px 0; text-align: left; color: #1a1a1a; font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em;">Product</th>
+                        <th style="padding: 12px 0; text-align: center; color: #1a1a1a; font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em;">Qty</th>
+                        <th style="padding: 12px 0; text-align: right; color: #1a1a1a; font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em;">Price</th>
+                        <th style="padding: 12px 0; text-align: right; color: #1a1a1a; font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em;">Total</th>
                       </tr>
                     </thead>
-                    <tbody>
-                      ${itemRows}
-                    </tbody>
+                    <tbody>${itemRows}</tbody>
                     <tfoot>
                       <tr style="border-top: 2px solid #1a1a1a;">
-                        <td colspan="3" style="padding: 16px 0; text-align: right; color: #1a1a1a; font-size: 16px; font-weight: 600;">
-                          Total
-                        </td>
-                        <td style="padding: 16px 0; text-align: right; color: #722f37; font-size: 18px; font-weight: 600;">
-                          $${order.totalPrice}
-                        </td>
+                        <td colspan="3" style="padding: 16px 0; text-align: right; color: #1a1a1a; font-size: 16px; font-weight: 600;">Total</td>
+                        <td style="padding: 16px 0; text-align: right; color: #722f37; font-size: 18px; font-weight: 600;">$${order.totalPrice}</td>
                       </tr>
                     </tfoot>
                   </table>
-                  
-                  <!-- Delivery Info -->
                   <div style="background-color: #f9f9f9; padding: 24px; border-radius: 8px; margin-bottom: 24px;">
-                    <h3 style="margin: 0 0 12px 0; color: #1a1a1a; font-size: 14px; text-transform: uppercase; letter-spacing: 0.1em;">
-                      Delivery Information
-                    </h3>
-                    <p style="margin: 0 0 8px 0; color: #333; font-size: 14px;">
-                      <strong>Address:</strong> ${order.deliveryLocation.address}
-                    </p>
-                    <p style="margin: 0; color: #333; font-size: 14px;">
-                      <strong>Phone:</strong> ${order.phone}
-                    </p>
+                    <h3 style="margin: 0 0 12px 0; color: #1a1a1a; font-size: 14px; text-transform: uppercase; letter-spacing: 0.1em;">Delivery Information</h3>
+                    <p style="margin: 0 0 8px 0; color: #333; font-size: 14px;"><strong>Address:</strong> ${order.deliveryLocation.address}</p>
+                    <p style="margin: 0; color: #333; font-size: 14px;"><strong>Phone:</strong> ${order.phone}</p>
                   </div>
-                  
-                  <!-- Contact -->
                   <p style="margin: 0; color: #666; font-size: 13px; text-align: center;">
                     Questions about your order? Contact us on WhatsApp for instant support.
                   </p>
                 </td>
               </tr>
-              
-              <!-- Footer -->
               <tr>
                 <td style="background-color: #f9f9f9; padding: 24px 40px; text-align: center; border-top: 1px solid #eee;">
-                  <p style="margin: 0; color: #999; font-size: 12px;">
-                    © ${new Date().getFullYear()} Lyzane. All rights reserved.
-                  </p>
+                  <p style="margin: 0; color: #999; font-size: 12px;">© ${new Date().getFullYear()} Lyzane. All rights reserved.</p>
                 </td>
               </tr>
             </table>
@@ -149,5 +116,114 @@ export async function sendOrderConfirmationEmail(order: OrderEmailData) {
     });
   } catch (error) {
     console.error("Failed to send order confirmation email:", error);
+  }
+}
+
+export async function sendAdminOrderEmail(order: OrderEmailData & { _id: string }) {
+  if (!process.env.RESEND_API_KEY) {
+    console.warn("RESEND_API_KEY not set, skipping admin email");
+    return;
+  }
+
+  const fromEmail = process.env.RESEND_FROM_EMAIL || "orders@lyzane.com";
+  const adminEmail = "Yuubi.jad@email.com";
+
+  const itemRows = order.items
+    .map(
+      (item) => `
+      <tr>
+        <td style="padding: 8px 0; border-bottom: 1px solid #eee; color: #333;">
+          ${item.name}${item.size ? ` (${item.size})` : ""}
+        </td>
+        <td style="padding: 8px 0; border-bottom: 1px solid #eee; color: #666; text-align: center;">
+          ${item.qty}
+        </td>
+        <td style="padding: 8px 0; border-bottom: 1px solid #eee; color: #333; text-align: right; font-weight: 500;">
+          $${item.price * item.qty}
+        </td>
+      </tr>
+    `
+    )
+    .join("");
+
+  const html = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+    </head>
+    <body style="margin: 0; padding: 0; background-color: #f5f5f5; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+      <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f5f5f5; padding: 40px 20px;">
+        <tr>
+          <td align="center">
+            <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+              <tr>
+                <td style="background-color: #1a1a1a; padding: 24px 40px; text-align: center;">
+                  <h1 style="margin: 0; color: #b5985a; font-size: 24px; font-weight: 500; letter-spacing: 0.25em; text-transform: uppercase;">
+                    NEW ORDER
+                  </h1>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding: 32px 40px;">
+                  <div style="background-color: #722f37; color: white; padding: 12px 20px; border-radius: 6px; text-align: center; margin-bottom: 24px;">
+                    <span style="font-size: 20px; font-weight: 600;">$${order.totalPrice}</span>
+                    <span style="font-size: 13px; opacity: 0.8; margin-left: 8px;">— ${order.items.length} item(s)</span>
+                  </div>
+
+                  <h3 style="margin: 0 0 12px 0; color: #1a1a1a; font-size: 13px; text-transform: uppercase; letter-spacing: 0.1em;">Customer</h3>
+                  <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 20px;">
+                    <tr>
+                      <td style="padding: 6px 0; color: #666; font-size: 14px;"><strong>Name:</strong> ${order.customerName}</td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 6px 0; color: #666; font-size: 14px;"><strong>Phone:</strong> ${order.phone}</td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 6px 0; color: #666; font-size: 14px;"><strong>Email:</strong> ${order.email}</td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 6px 0; color: #666; font-size: 14px;"><strong>Delivery:</strong> ${order.deliveryLocation.address}</td>
+                    </tr>
+                  </table>
+
+                  <h3 style="margin: 0 0 12px 0; color: #1a1a1a; font-size: 13px; text-transform: uppercase; letter-spacing: 0.1em;">Items</h3>
+                  <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 20px;">
+                    <thead>
+                      <tr style="border-bottom: 2px solid #1a1a1a;">
+                        <th style="padding: 8px 0; text-align: left; color: #1a1a1a; font-size: 11px; text-transform: uppercase;">Product</th>
+                        <th style="padding: 8px 0; text-align: center; color: #1a1a1a; font-size: 11px; text-transform: uppercase;">Qty</th>
+                        <th style="padding: 8px 0; text-align: right; color: #1a1a1a; font-size: 11px; text-transform: uppercase;">Total</th>
+                      </tr>
+                    </thead>
+                    <tbody>${itemRows}</tbody>
+                    <tfoot>
+                      <tr style="border-top: 2px solid #1a1a1a;">
+                        <td colspan="2" style="padding: 12px 0; text-align: right; color: #1a1a1a; font-size: 15px; font-weight: 600;">Total</td>
+                        <td style="padding: 12px 0; text-align: right; color: #722f37; font-size: 17px; font-weight: 600;">$${order.totalPrice}</td>
+                      </tr>
+                    </tfoot>
+                  </table>
+
+                  <p style="margin: 0; color: #999; font-size: 12px; text-align: center;">Order ID: ${order._id}</p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </body>
+    </html>
+  `;
+
+  try {
+    await resend.emails.send({
+      from: fromEmail,
+      to: adminEmail,
+      subject: `New Order — $${order.totalPrice} — ${order.customerName}`,
+      html,
+    });
+  } catch (error) {
+    console.error("Failed to send admin order email:", error);
   }
 }

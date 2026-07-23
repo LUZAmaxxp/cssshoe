@@ -4,7 +4,8 @@ import Order from "@/models/Order";
 import AnalyticsEvent from "@/models/AnalyticsEvent";
 import { orderSchema } from "@/lib/validations/order";
 import { rateLimiters, getClientIp, getRateLimitHeaders } from "@/lib/rate-limit";
-import { sendOrderConfirmationEmail } from "@/lib/email";
+import { sendOrderConfirmationEmail, sendAdminOrderEmail } from "@/lib/email";
+import { sendOrderNotification } from "@/lib/notify";
 
 export async function GET(request: NextRequest) {
   const ip = getClientIp(request);
@@ -53,7 +54,7 @@ export async function POST(request: NextRequest) {
 
     const order = await Order.create(parsed.data);
 
-    // Send confirmation email (fire-and-forget)
+    // Send confirmation email to customer (fire-and-forget)
     sendOrderConfirmationEmail({
       customerName: order.customerName,
       email: order.email,
@@ -62,6 +63,35 @@ export async function POST(request: NextRequest) {
       totalPrice: order.totalPrice,
       deliveryLocation: order.deliveryLocation,
     });
+
+    // Send notification email to admin (fire-and-forget)
+    sendAdminOrderEmail({
+      _id: order._id.toString(),
+      customerName: order.customerName,
+      email: order.email,
+      phone: order.phone,
+      items: order.items.map((item: { name: string; price: number; qty: number }) => ({
+        name: item.name,
+        price: item.price,
+        qty: item.qty,
+      })),
+      totalPrice: order.totalPrice,
+      deliveryLocation: order.deliveryLocation,
+    }).catch((err) => console.error("Admin email failed:", err));
+
+    // Send WhatsApp notification to admin via CallMeBot (fire-and-forget)
+    sendOrderNotification({
+      _id: order._id.toString(),
+      customerName: order.customerName,
+      phone: order.phone,
+      items: order.items.map((item: { name: string; price: number; qty: number }) => ({
+        name: item.name,
+        price: item.price,
+        qty: item.qty,
+      })),
+      totalPrice: order.totalPrice,
+      deliveryLocation: order.deliveryLocation,
+    }).catch((err) => console.error("WhatsApp notification failed:", err));
 
     await AnalyticsEvent.create({
       type: "whatsapp_redirect",
