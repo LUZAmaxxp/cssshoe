@@ -37,14 +37,14 @@ export function BrandGrid() {
 
   return (
     <section ref={ref} className="bg-charcoal">
-      <div className="grid grid-cols-1 sm:grid-cols-2">
+      <div className="grid grid-cols-2 md:grid-cols-4">
         {cards.map((card, i) => (
           <motion.div
             key={i}
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.2 + i * 0.15, ease: [0.25, 0.1, 0.25, 1] }}
-            className="relative aspect-square overflow-hidden group"
+            className="relative aspect-[3/4] overflow-hidden group"
           >
             <Image
               src={card.image}
@@ -56,14 +56,14 @@ export function BrandGrid() {
 
             <div className="absolute inset-0 bg-black/50 transition-opacity duration-500 group-hover:bg-black/60" />
 
-            <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-10">
-              <p className="text-brass text-[10px] tracking-[0.2em] mb-2">
+            <div className="absolute inset-0 flex flex-col justify-end p-4 md:p-6">
+              <p className="text-brass text-[9px] md:text-[10px] tracking-[0.2em] mb-1 md:mb-2">
                 {card.num}
               </p>
-              <h3 className="text-cream text-xl md:text-2xl font-heading uppercase tracking-wider mb-3">
+              <h3 className="text-cream text-sm md:text-lg font-heading uppercase tracking-wider mb-1 md:mb-2">
                 {card.title}
               </h3>
-              <p className="text-cream/60 text-sm leading-relaxed max-w-xs">
+              <p className="text-cream/60 text-[11px] md:text-sm leading-relaxed max-w-xs">
                 {card.desc}
               </p>
             </div>
