@@ -17,68 +17,51 @@ export function ArtOfShoe({ id }: ArtOfShoeProps) {
   const { t } = useLocale();
 
   return (
-    <section
-      id={id}
-      ref={ref}
-      className="relative min-h-[60vh] md:min-h-[80vh] bg-cream overflow-hidden"
-    >
-      {/* Desktop: absolute layout. Mobile: relative stacked layout */}
-      <div className="hidden md:flex absolute inset-0 items-center">
-        <div className="w-full max-w-7xl mx-auto px-8 md:px-16 lg:px-24 grid grid-cols-2 gap-8 items-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
-            className="max-w-md z-10"
+    <section id={id} ref={ref} className="bg-charcoal overflow-hidden">
+      {/* Desktop: split layout */}
+      <div className="hidden md:flex w-full max-w-7xl mx-auto h-[65vh] lg:h-[60vh]">
+        {/* Left: text */}
+        <motion.div
+          initial={{ opacity: 0, x: -40 }}
+          animate={isInView ? { opacity: 1, x: 0 } : {}}
+          transition={{ duration: 1, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
+          className="w-1/2 flex flex-col justify-center px-8 lg:px-16"
+        >
+          <p className="text-brass text-[11px] tracking-[0.3em] uppercase mb-4">
+            {t("artOfShoe.subtitle")}
+          </p>
+          <h2 className="text-3xl lg:text-4xl xl:text-5xl font-heading text-cream leading-[1.05] mb-6">
+            {t("artOfShoe.title")}
+          </h2>
+          <p className="text-sm md:text-base leading-relaxed mb-8 text-cream/60 max-w-md">
+            {t("artOfShoe.body")}
+          </p>
+          <Link
+            href="/shop"
+            className="inline-flex items-center gap-2 px-6 py-3 border border-brass text-brass text-[11px] tracking-[0.2em] uppercase hover:bg-brass hover:text-charcoal transition-all duration-300 self-start group"
           >
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-heading text-charcoal leading-[1.1] mb-6">
-              {t("artOfShoe.title")}
-            </h2>
-            <p className="text-sm md:text-base leading-relaxed mb-8 text-muted-foreground">
-              {t("artOfShoe.body")}
-            </p>
-            <Link
-              href="/shop"
-              className="inline-flex items-center gap-2 text-[11px] tracking-[0.2em] uppercase text-charcoal/70 hover:text-brass transition-colors duration-300 group"
-            >
-              {t("artOfShoe.cta")}
-              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-            </Link>
-          </motion.div>
+            {t("artOfShoe.cta")}
+            <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+          </Link>
+        </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 1.2, delay: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-            className="relative flex justify-center"
-          >
-            <div className="relative bg-[#f2ede6]">
-              <div
-                className="absolute -bottom-8 left-[-10%] right-[-10%] h-[50px] rounded-[50%]"
-                style={{
-                  background: "radial-gradient(ellipse at center, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.25) 50%, transparent 75%)",
-                  filter: "blur(18px)",
-                }}
-              />
-              <div
-                className="absolute top-[5%] -left-[10%] -right-[10%] bottom-[0%] rounded-full"
-                style={{
-                  background: "radial-gradient(ellipse at center, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.05) 50%, transparent 70%)",
-                  filter: "blur(25px)",
-                  transform: "scaleY(0.95)",
-                }}
-              />
-              <Image
-                src="https://res.cloudinary.com/dzrsbjdma/image/upload/v1784804011/lyzane/don2.jpg"
-                alt="Man wearing Lyzane shoes"
-                width={600}
-                height={800}
-                className="w-full h-auto object-contain mix-blend-multiply relative z-10 max-w-[400px]"
-                priority
-              />
-            </div>
-          </motion.div>
-        </div>
+        {/* Right: image */}
+        <motion.div
+          initial={{ opacity: 0, x: 40 }}
+          animate={isInView ? { opacity: 1, x: 0 } : {}}
+          transition={{ duration: 1.2, delay: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+          className="w-1/2 h-full relative"
+        >
+          <Image
+            src="https://res.cloudinary.com/dzrsbjdma/image/upload/v1784812813/lyzane/craftyman.png"
+            alt="Artisan crafting Lyzane shoes"
+            fill
+            className="object-cover object-center"
+            priority
+            quality={90}
+            sizes="50vw"
+          />
+        </motion.div>
       </div>
 
       {/* Mobile: stacked layout */}
@@ -87,17 +70,20 @@ export function ArtOfShoe({ id }: ArtOfShoeProps) {
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="px-6 py-12"
+          className="px-6 py-10"
         >
-          <h2 className="text-2xl font-heading text-charcoal leading-[1.1] mb-4">
+          <p className="text-brass text-[10px] tracking-[0.3em] uppercase mb-3">
+            {t("artOfShoe.subtitle")}
+          </p>
+          <h2 className="text-2xl font-heading text-cream leading-[1.1] mb-4">
             {t("artOfShoe.title")}
           </h2>
-          <p className="text-sm leading-relaxed mb-6 text-muted-foreground">
+          <p className="text-sm leading-relaxed mb-6 text-cream/60">
             {t("artOfShoe.body")}
           </p>
           <Link
             href="/shop"
-            className="inline-flex items-center gap-2 text-[11px] tracking-[0.2em] uppercase text-charcoal/70 hover:text-brass transition-colors duration-300 group"
+            className="inline-flex items-center gap-2 px-5 py-2.5 border border-brass text-brass text-[11px] tracking-[0.2em] uppercase hover:bg-brass hover:text-charcoal transition-all duration-300 group"
           >
             {t("artOfShoe.cta")}
             <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
@@ -108,15 +94,16 @@ export function ArtOfShoe({ id }: ArtOfShoeProps) {
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 1, delay: 0.4 }}
-          className="px-6 pb-12 flex justify-center bg-[#f2ede6]"
+          className="relative w-full aspect-[16/9]"
         >
           <Image
-            src="https://res.cloudinary.com/dzrsbjdma/image/upload/v1784804011/lyzane/don2.jpg"
-            alt="Man wearing Lyzane shoes"
-            width={600}
-            height={800}
-            className="w-full h-auto object-contain mix-blend-multiply max-w-[300px]"
+            src="https://res.cloudinary.com/dzrsbjdma/image/upload/v1784812813/lyzane/craftyman.png"
+            alt="Artisan crafting Lyzane shoes"
+            fill
+            className="object-cover object-center"
             priority
+            quality={85}
+            sizes="100vw"
           />
         </motion.div>
       </div>
