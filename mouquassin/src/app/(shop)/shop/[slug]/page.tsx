@@ -47,7 +47,6 @@ export default function ProductDetailPage() {
   const [selectedColorIdx, setSelectedColorIdx] = useState(0);
   const [selectedSize, setSelectedSize] = useState("");
   const [relatedProducts, setRelatedProducts] = useState<RelatedProduct[]>([]);
-  const [added, setAdded] = useState(false);
   const [liked, setLiked] = useState(false);
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [deliveryOpen, setDeliveryOpen] = useState(false);
@@ -87,22 +86,6 @@ export default function ProductDetailPage() {
   const isSizeAvailable = (size: string) => {
     if (!hasColors) return true;
     return activeColor ? activeColor.sizes.includes(size) : false;
-  };
-
-  const handleAddToCart = () => {
-    if (!product) return;
-    if (allSizes.length > 0 && !selectedSize) return;
-
-    addItem({
-      productId: product._id,
-      name: product.name,
-      price: product.price,
-      size: selectedSize || "One Size",
-      image: displayImages[0] || "",
-    });
-
-    setAdded(true);
-    setTimeout(() => setAdded(false), 2000);
   };
 
   const handleBuyNow = () => {
@@ -179,9 +162,9 @@ export default function ProductDetailPage() {
         }}
       />
       <main className="pt-20">
-        <div className="grid grid-cols-1 md:grid-cols-2">
+        <div className="flex flex-col md:flex-row">
           {/* Left: Image */}
-          <div className="bg-[#f5f5f5] relative md:sticky md:top-20 md:h-[calc(100vh-5rem)]">
+          <div className="w-full md:w-1/2 bg-[#f5f5f5] h-[50vh] md:h-[calc(100vh-5rem)] md:sticky md:top-20 overflow-hidden">
             <ProductGallery images={displayImages} name={product.name} />
           </div>
 
@@ -276,19 +259,14 @@ export default function ProductDetailPage() {
                 </div>
               )}
 
-              {/* Add to Cart + Wishlist */}
+              {/* Buy Now + Wishlist */}
               <div className="flex gap-3 mb-6">
                 <button
-                  onClick={handleAddToCart}
+                  onClick={handleBuyNow}
                   disabled={allSizes.length > 0 && !selectedSize}
-                  className={`flex-1 flex items-center justify-center gap-2 py-3.5 text-sm tracking-widest uppercase transition-colors ${
-                    added
-                      ? "bg-green-700 text-white"
-                      : "bg-charcoal text-white hover:bg-brass hover:text-charcoal disabled:bg-muted disabled:text-muted-foreground"
-                  }`}
+                  className="flex-1 flex items-center justify-center gap-2 py-3.5 text-sm tracking-widest uppercase bg-charcoal text-white hover:bg-brass hover:text-charcoal transition-colors disabled:bg-muted disabled:text-muted-foreground"
                 >
-                  <ShoppingBag className="w-4 h-4" />
-                  {added ? t("product.addedToCart") : t("product.addToCart")}
+                  <ShoppingBag className="w-4 h-4" /> {t("product.buyNow")}
                 </button>
                 <button
                   onClick={() => setLiked(!liked)}

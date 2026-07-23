@@ -16,7 +16,6 @@ export function ProductGallery({ images, name }: ProductGalleryProps) {
   const prev = () => setSelected((s) => (s === 0 ? images.length - 1 : s - 1));
   const next = () => setSelected((s) => (s === images.length - 1 ? 0 : s + 1));
 
-  // Lock body scroll in fullscreen
   useEffect(() => {
     if (fullscreen) {
       document.body.style.overflow = "hidden";
@@ -26,24 +25,22 @@ export function ProductGallery({ images, name }: ProductGalleryProps) {
     return () => { document.body.style.overflow = ""; };
   }, [fullscreen]);
 
-  // Close on Escape key
   useEffect(() => {
+    if (!fullscreen) return;
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setFullscreen(false);
       if (e.key === "ArrowLeft") prev();
       if (e.key === "ArrowRight") next();
     };
-    if (fullscreen) {
-      window.addEventListener("keydown", handleKey);
-      return () => window.removeEventListener("keydown", handleKey);
-    }
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
   }, [fullscreen]);
 
   return (
     <>
-      <div className="relative w-full h-full flex flex-col">
-        {/* Main image */}
-        <div className="relative flex-1 w-full min-h-[50vh] md:min-h-0 cursor-zoom-in" onClick={() => setFullscreen(true)}>
+      {/* Main image */}
+      <div className="relative w-full h-full">
+        <div className="relative w-full h-full cursor-zoom-in" onClick={() => setFullscreen(true)}>
           {images[selected] ? (
             <Image
               src={images[selected]}
@@ -57,50 +54,50 @@ export function ProductGallery({ images, name }: ProductGalleryProps) {
               M
             </div>
           )}
-
-          {/* Fullscreen button */}
-          <button
-            onClick={(e) => { e.stopPropagation(); setFullscreen(true); }}
-            className="absolute top-3 right-3 w-9 h-9 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center shadow-md hover:bg-white transition-colors z-10"
-          >
-            <Maximize2 className="w-4 h-4 text-charcoal" />
-          </button>
-
-          {/* Navigation arrows */}
-          {images.length > 1 && (
-            <>
-              <button
-                onClick={(e) => { e.stopPropagation(); prev(); }}
-                className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center shadow-md hover:bg-white transition-colors z-10"
-              >
-                <ChevronLeft className="w-5 h-5 text-charcoal" />
-              </button>
-              <button
-                onClick={(e) => { e.stopPropagation(); next(); }}
-                className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center shadow-md hover:bg-white transition-colors z-10"
-              >
-                <ChevronRight className="w-5 h-5 text-charcoal" />
-              </button>
-            </>
-          )}
-
-          {/* Image counter */}
-          {images.length > 1 && (
-            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-charcoal/60 backdrop-blur-sm rounded-full text-white text-xs z-10">
-              {selected + 1} / {images.length}
-            </div>
-          )}
         </div>
+
+        {/* Fullscreen button */}
+        <button
+          onClick={() => setFullscreen(true)}
+          className="absolute top-3 right-3 w-9 h-9 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center shadow-md hover:bg-white transition-colors z-10"
+        >
+          <Maximize2 className="w-4 h-4 text-charcoal" />
+        </button>
+
+        {/* Navigation arrows */}
+        {images.length > 1 && (
+          <>
+            <button
+              onClick={prev}
+              className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center shadow-md hover:bg-white transition-colors z-10"
+            >
+              <ChevronLeft className="w-5 h-5 text-charcoal" />
+            </button>
+            <button
+              onClick={next}
+              className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center shadow-md hover:bg-white transition-colors z-10"
+            >
+              <ChevronRight className="w-5 h-5 text-charcoal" />
+            </button>
+          </>
+        )}
+
+        {/* Image counter */}
+        {images.length > 1 && (
+          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-charcoal/60 backdrop-blur-sm rounded-full text-white text-xs z-10">
+            {selected + 1} / {images.length}
+          </div>
+        )}
 
         {/* Thumbnails */}
         {images.length > 1 && (
-          <div className="flex gap-2 p-3 justify-center">
+          <div className="absolute bottom-14 left-1/2 -translate-x-1/2 flex gap-2 z-10">
             {images.map((img, i) => (
               <button
                 key={i}
                 onClick={() => setSelected(i)}
-                className={`relative w-14 h-14 overflow-hidden border-2 transition-colors ${
-                  i === selected ? "border-charcoal" : "border-transparent opacity-60 hover:opacity-100"
+                className={`relative w-12 h-12 overflow-hidden border-2 transition-colors ${
+                  i === selected ? "border-charcoal" : "border-white/50 opacity-60 hover:opacity-100"
                 }`}
               >
                 <Image src={img} alt={`${name} ${i + 1}`} fill className="object-cover" />
@@ -114,20 +111,19 @@ export function ProductGallery({ images, name }: ProductGalleryProps) {
       {fullscreen && (
         <div
           className="fixed inset-0 bg-black/95 flex items-center justify-center"
-          style={{ zIndex: 9999 }}
-          onClick={() => setFullscreen(false)}
+          style={{ zIndex: 99999 }}
         >
           {/* Close button */}
           <button
             onClick={() => setFullscreen(false)}
-            className="absolute top-4 right-4 w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"
-            style={{ zIndex: 10001 }}
+            className="fixed top-4 right-4 w-12 h-12 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-colors"
+            style={{ zIndex: 100000 }}
           >
-            <X className="w-5 h-5 text-white" />
+            <X className="w-6 h-6 text-white" />
           </button>
 
           {/* Image */}
-          <div className="relative w-full h-full flex items-center justify-center p-16" onClick={(e) => e.stopPropagation()}>
+          <div className="relative w-full h-full flex items-center justify-center p-4 md:p-16">
             <Image
               src={images[selected]}
               alt={name}
@@ -141,16 +137,16 @@ export function ProductGallery({ images, name }: ProductGalleryProps) {
           {images.length > 1 && (
             <>
               <button
-                onClick={(e) => { e.stopPropagation(); prev(); }}
-                className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"
-                style={{ zIndex: 10001 }}
+                onClick={prev}
+                className="fixed left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"
+                style={{ zIndex: 100000 }}
               >
                 <ChevronLeft className="w-6 h-6 text-white" />
               </button>
               <button
-                onClick={(e) => { e.stopPropagation(); next(); }}
-                className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"
-                style={{ zIndex: 10001 }}
+                onClick={next}
+                className="fixed right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"
+                style={{ zIndex: 100000 }}
               >
                 <ChevronRight className="w-6 h-6 text-white" />
               </button>
@@ -159,18 +155,18 @@ export function ProductGallery({ images, name }: ProductGalleryProps) {
 
           {/* Counter */}
           {images.length > 1 && (
-            <div className="absolute bottom-20 left-1/2 -translate-x-1/2 px-4 py-1.5 bg-white/10 backdrop-blur-sm rounded-full text-white text-sm" style={{ zIndex: 10001 }}>
+            <div className="fixed bottom-20 left-1/2 -translate-x-1/2 px-4 py-1.5 bg-white/10 backdrop-blur-sm rounded-full text-white text-sm" style={{ zIndex: 100000 }}>
               {selected + 1} / {images.length}
             </div>
           )}
 
           {/* Thumbnails in lightbox */}
           {images.length > 1 && (
-            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2" style={{ zIndex: 10001 }}>
+            <div className="fixed bottom-6 left-1/2 -translate-x-1/2 flex gap-2" style={{ zIndex: 100000 }}>
               {images.map((img, i) => (
                 <button
                   key={i}
-                  onClick={(e) => { e.stopPropagation(); setSelected(i); }}
+                  onClick={() => setSelected(i)}
                   className={`relative w-12 h-12 overflow-hidden border-2 transition-colors ${
                     i === selected ? "border-white" : "border-transparent opacity-50 hover:opacity-100"
                   }`}
