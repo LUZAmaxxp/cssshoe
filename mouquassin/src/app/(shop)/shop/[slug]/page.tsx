@@ -191,17 +191,16 @@ export default function ProductDetailPage() {
                         <button
                           key={i}
                           onClick={() => {
+                            if (!hasStock) return;
                             setSelectedColorIdx(i);
                             setSelectedSize("");
                           }}
-                          title={color.name}
+                          title={hasStock ? color.name : `${color.name} — Unavailable`}
                           className={`relative w-9 h-9 rounded-full transition-all ${
                             isActive
                               ? "ring-2 ring-offset-2 ring-charcoal"
-                              : hasStock
-                              ? "hover:ring-2 hover:ring-offset-1 hover:ring-charcoal/30"
-                              : "opacity-30 cursor-not-allowed"
-                          }`}
+                              : "hover:ring-2 hover:ring-offset-1 hover:ring-charcoal/30"
+                          } ${!hasStock ? "opacity-40" : ""}`}
                           disabled={!hasStock}
                         >
                           <span
@@ -210,7 +209,7 @@ export default function ProductDetailPage() {
                           />
                           {!hasStock && (
                             <span className="absolute inset-0 flex items-center justify-center">
-                              <span className="w-7 h-px bg-red-500 rotate-45" />
+                              <span className="w-[120%] h-[1.5px] bg-red-600 -rotate-45 absolute" />
                             </span>
                           )}
                         </button>
