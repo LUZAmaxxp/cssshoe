@@ -9,25 +9,25 @@ const cards = [
     num: "01",
     title: "Cuir Italien",
     desc: "Sélectionné avec soin pour sa qualité exceptionnelle et sa durabilité.",
-    image: "/images/grid1.png",
+    image: "/images/grid1.PNG",
   },
   {
     num: "02",
     title: "Finitions Artisanales",
     desc: "Chaque paire est travaillée avec précision par des mains expérimentées.",
-    image: "/images/grid2.png",
+    image: "/images/grid2.PNG",
   },
   {
     num: "03",
     title: "Confort Naturel",
     desc: "Conçu pour épouser la forme du pied et offrir un confort au quotidien.",
-    image: "/images/grid3.png",
+    image: "/images/grid3.PNG",
   },
   {
     num: "04",
     title: "Style Intemporel",
     desc: "Des lignes épurées pour un style qui ne se démode jamais.",
-    image: "/images/grid4.png",
+    image: "/images/grid4.PNG",
   },
 ];
 
