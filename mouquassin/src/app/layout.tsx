@@ -66,12 +66,12 @@ export default function RootLayout({
     <html
       lang="en"
       dir="ltr"
-      className={`${playfair.variable} ${inter.variable} ${montserrat.variable} ${notoArabic.variable} h-full antialiased`}
+      className={`${playfair.variable} ${inter.variable} ${montserrat.variable} ${notoArabic.variable} h-full antialiased overflow-x-hidden`}
     >
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
       </head>
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col overflow-x-hidden">
         <ClientProviders>{children}</ClientProviders>
       </body>
     </html>
