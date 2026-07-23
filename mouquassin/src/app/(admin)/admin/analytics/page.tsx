@@ -1,8 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Typography, Grid, Card, CardContent } from "@mui/material";
-import { BarChart } from "@mui/x-charts/BarChart";
 
 interface Product {
   _id: string;
@@ -17,7 +15,8 @@ export default function AnalyticsPage() {
   useEffect(() => {
     fetch("/api/products?limit=100")
       .then((res) => res.json())
-      .then((data) => setProducts(data.products || data));
+      .then((data) => setProducts(data.products || data))
+      .catch(() => setProducts([]));
   }, []);
 
   const topViewed = [...products]
@@ -28,81 +27,64 @@ export default function AnalyticsPage() {
     .sort((a, b) => b.likeCount - a.likeCount)
     .slice(0, 5);
 
+  const maxViews = Math.max(...topViewed.map((p) => p.viewCount), 1);
+  const maxLikes = Math.max(...topLiked.map((p) => p.likeCount), 1);
+
   return (
     <div>
-      <Typography variant="h4" sx={{ fontWeight: "bold", mb: 3 }}>
-        Analytics
-      </Typography>
+      <h1 className="text-2xl font-bold mb-6">Analytics</h1>
 
-      <Grid container spacing={3}>
-        <Grid size={{ xs: 12, md: 6 }}>
-          <Card>
-            <CardContent>
-              <Typography variant="h6" sx={{ mb: 2 }}>
-                Most Viewed Products
-              </Typography>
-              {topViewed.length > 0 ? (
-                <BarChart
-                  height={300}
-                  colors={["#722f37"]}
-                  series={[
-                    {
-                      data: topViewed.map((p) => p.viewCount),
-                      label: "Views",
-                    },
-                  ]}
-                  xAxis={[
-                    {
-                      scaleType: "band",
-                      data: topViewed.map((p) =>
-                        p.name.length > 15
-                          ? p.name.substring(0, 15) + "..."
-                          : p.name
-                      ),
-                    },
-                  ]}
-                />
-              ) : (
-                <Typography color="text.secondary">No data yet</Typography>
-              )}
-            </CardContent>
-          </Card>
-        </Grid>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Most Viewed */}
+        <div className="bg-white rounded-lg border p-6">
+          <h2 className="text-lg font-semibold mb-4">Most Viewed Products</h2>
+          {topViewed.length > 0 ? (
+            <div className="space-y-3">
+              {topViewed.map((p) => (
+                <div key={p._id}>
+                  <div className="flex justify-between text-sm mb-1">
+                    <span className="truncate mr-2">{p.name}</span>
+                    <span className="font-medium shrink-0">{p.viewCount}</span>
+                  </div>
+                  <div className="w-full bg-muted rounded-full h-2">
+                    <div
+                      className="bg-[#722f37] h-2 rounded-full transition-all"
+                      style={{ width: `${(p.viewCount / maxViews) * 100}%` }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-muted-foreground text-sm">No data yet</p>
+          )}
+        </div>
 
-        <Grid size={{ xs: 12, md: 6 }}>
-          <Card>
-            <CardContent>
-              <Typography variant="h6" sx={{ mb: 2 }}>
-                Most Liked Products
-              </Typography>
-              {topLiked.length > 0 ? (
-                <BarChart
-                  height={300}
-                  colors={["#b5985a"]}
-                  series={[
-                    {
-                      data: topLiked.map((p) => p.likeCount),
-                      label: "Likes",
-                    },
-                  ]}
-                  xAxis={[
-                    {
-                      scaleType: "band",
-                      data: topLiked.map((p) =>
-                        p.name.length > 15
-                          ? p.name.substring(0, 15) + "..."
-                          : p.name
-                      ),
-                    },
-                  ]}
-                />
-              ) : (
-                <Typography color="text.secondary">No data yet</Typography>
-              )}
-            </CardContent>
-          </Card>
-        </Grid>
-      </Grid>
+        {/* Most Liked */}
+        <div className="bg-white rounded-lg border p-6">
+          <h2 className="text-lg font-semibold mb-4">Most Liked Products</h2>
+          {topLiked.length > 0 ? (
+            <div className="space-y-3">
+              {topLiked.map((p) => (
+                <div key={p._id}>
+                  <div className="flex justify-between text-sm mb-1">
+                    <span className="truncate mr-2">{p.name}</span>
+                    <span className="font-medium shrink-0">{p.likeCount}</span>
+                  </div>
+                  <div className="w-full bg-muted rounded-full h-2">
+                    <div
+                      className="bg-[#c9a876] h-2 rounded-full transition-all"
+                      style={{ width: `${(p.likeCount / maxLikes) * 100}%` }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-muted-foreground text-sm">No data yet</p>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
