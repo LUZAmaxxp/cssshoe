@@ -3,12 +3,12 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import Image from "next/image";
-import { useTranslation } from "@/i18n/context";
+import { useLocale } from "@/i18n/context";
 
 export function BrandGrid() {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-50px" });
-  const { t } = useTranslation();
+  const { tArray } = useLocale();
 
   const cards = [
     { image: "https://res.cloudinary.com/dzrsbjdma/image/upload/v1784803996/lyzane/grid1.png" },
@@ -17,7 +17,7 @@ export function BrandGrid() {
     { image: "https://res.cloudinary.com/dzrsbjdma/image/upload/v1784804010/lyzane/grid4.png" },
   ];
 
-  const titles = t("brandGrid.items") as Array<{ num: string; title: string; desc: string }>;
+  const titles = tArray("brandGrid.items") as unknown as Array<{ num: string; title: string; desc: string }>;
 
   return (
     <section ref={ref} className="bg-charcoal">

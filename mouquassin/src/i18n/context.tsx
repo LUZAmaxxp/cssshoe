@@ -12,6 +12,7 @@ interface I18nContextType {
   locale: Locale;
   setLocale: (locale: Locale) => void;
   t: (key: string) => string;
+  tArray: (key: string) => string[];
   dir: "ltr" | "rtl";
 }
 
@@ -28,7 +29,7 @@ function setCookie(name: string, value: string, days: number) {
   document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/`;
 }
 
-function getNestedValue(obj: Record<string, unknown>, path: string): string {
+function getNestedValue(obj: Record<string, unknown>, path: string): unknown {
   const keys = path.split(".");
   let current: unknown = obj;
   for (const key of keys) {
@@ -38,7 +39,7 @@ function getNestedValue(obj: Record<string, unknown>, path: string): string {
       return path;
     }
   }
-  return typeof current === "string" ? current : path;
+  return current;
 }
 
 export function I18nProvider({ children }: { children: React.ReactNode }) {
@@ -65,7 +66,16 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
 
   const t = useCallback(
     (key: string): string => {
-      return getNestedValue(translations[locale], key);
+      const val = getNestedValue(translations[locale], key);
+      return typeof val === "string" ? val : key;
+    },
+    [locale]
+  );
+
+  const tArray = useCallback(
+    (key: string): string[] => {
+      const val = getNestedValue(translations[locale], key);
+      return Array.isArray(val) ? val : [];
     },
     [locale]
   );
@@ -73,7 +83,7 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
   const dir = localeMetadata[locale].dir;
 
   return (
-    <I18nContext.Provider value={{ locale, setLocale, t, dir }}>
+    <I18nContext.Provider value={{ locale, setLocale, t, tArray, dir }}>
       {children}
     </I18nContext.Provider>
   );
