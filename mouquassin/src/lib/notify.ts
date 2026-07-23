@@ -5,6 +5,8 @@ interface OrderItem {
   size?: string;
 }
 
+const NTFY_URLS = ["https://ntfy.sh", "https://ntfy.liamcycle.com"];
+
 export async function sendOrderNotification(order: {
   _id: string;
   customerName: string;
@@ -36,24 +38,28 @@ export async function sendOrderNotification(order: {
     `💰 Total: $${order.totalPrice}\n` +
     `🆔 ${order._id}`;
 
-  try {
-    const response = await fetch(`https://ntfy.sh/${topic}`, {
-      method: "POST",
-      headers: {
-        Title: `New Order — $${order.totalPrice}`,
-        Priority: "high",
-        Tags: "shopping_cart,white_check_mark",
-      },
-      body: message,
-    });
+  for (const baseUrl of NTFY_URLS) {
+    try {
+      const response = await fetch(`${baseUrl}/${topic}`, {
+        method: "POST",
+        headers: {
+          Title: `New Order — $${order.totalPrice}`,
+          Priority: "high",
+          Tags: "shopping_cart,white_check_mark",
+        },
+        body: message,
+      });
 
-    if (!response.ok) {
-      console.error("ntfy.sh notification failed:", response.status);
-      return;
+      if (response.ok) {
+        console.log(`ntfy.sh notification sent via ${baseUrl}`);
+        return;
+      }
+
+      console.error(`ntfy.sh failed via ${baseUrl}:`, response.status);
+    } catch (error) {
+      console.error(`ntfy.sh error via ${baseUrl}:`, error);
     }
-
-    console.log("ntfy.sh notification sent");
-  } catch (error) {
-    console.error("ntfy.sh notification error:", error);
   }
+
+  console.error("All ntfy.sh notification attempts failed");
 }
