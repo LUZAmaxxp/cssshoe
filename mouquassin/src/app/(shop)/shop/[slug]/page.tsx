@@ -321,7 +321,7 @@ export default function ProductDetailPage() {
 
               {/* Description - editorial style */}
               <p className="text-xs text-muted-foreground italic leading-relaxed mb-6">
-                Handcrafted with pure Italian leather, designed for the bold and the timeless.
+                {t("product.editorialDesc")}
               </p>
             </div>
 

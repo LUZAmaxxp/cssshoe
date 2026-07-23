@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import { useLocale } from "@/i18n/context";
 import { locales, localeMetadata, Locale } from "@/i18n/config";
 
@@ -42,10 +43,23 @@ export function LanguageSelector() {
     >
       {/* Brand */}
       <div className="mb-12 text-center animate-[fadeInUp_0.6s_ease_0.2s_both]">
-        <h1 className="text-cream text-2xl md:text-3xl font-heading tracking-wide">
-          Lyzane
-        </h1>
-        <p className="text-cream/40 text-[10px] tracking-[0.3em] uppercase mt-2">
+        <Image
+          src="https://res.cloudinary.com/dzrsbjdma/image/upload/v1784804013/lyzane/logo1v1.png"
+          alt="Lyzane"
+          width={80}
+          height={80}
+          className="w-16 h-16 mx-auto mb-4"
+          priority
+        />
+        <Image
+          src="https://res.cloudinary.com/dzrsbjdma/image/upload/v1784804014/lyzane/title-nobg.png"
+          alt="Lyzane"
+          width={400}
+          height={80}
+          className="h-8 md:h-10 w-auto mx-auto"
+          priority
+        />
+        <p className="text-cream/40 text-[10px] tracking-[0.3em] uppercase mt-4">
           Choose your language
         </p>
       </div>

@@ -66,7 +66,8 @@
     "category": "Category",
     "peopleLiked": "people liked this",
     "youMayAlsoLike": "You may also like",
-    "notFound": "Product not found."
+    "notFound": "Product not found.",
+    "editorialDesc": "Handcrafted with pure Italian leather, designed for the bold and the timeless."
   },
   "cart": {
     "title": "Cart",
