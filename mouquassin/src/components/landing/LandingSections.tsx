@@ -9,7 +9,7 @@ export function LandingSections() {
 
   return (
     <>
-      <BrandGrid imageSrc="/images/section.jpg" />
+      <BrandGrid />
 
       <SplitFeature
         title={t("splitFeature.title")}
