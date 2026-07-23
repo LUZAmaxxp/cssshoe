@@ -17,24 +17,26 @@ export function HeroCarousel() {
   });
 
   const opacity = useTransform(scrollYProgress, [0, 0.8, 1], [1, 1, 0]);
-  const imageScale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
+  const videoScale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
 
   return (
     <section ref={containerRef} className="relative h-[100dvh] overflow-hidden bg-charcoal">
-      {/* Background image */}
+      {/* Background video */}
       <motion.div
-        style={{ scale: imageScale }}
+        style={{ scale: videoScale }}
         className="absolute inset-0 z-0"
       >
-        <Image
-          src="https://res.cloudinary.com/dzrsbjdma/image/upload/v1784803988/lyzane/branding7.png"
-          alt="Lyzane"
-          fill
-          className="object-cover"
-          priority
-          quality={100}
-          sizes="100vw"
-        />
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          controls={false}
+          preload="auto"
+          className="w-full h-full object-cover"
+        >
+          <source src="https://res.cloudinary.com/dzrsbjdma/video/upload/v1784844238/lyzane/hero-video.mp4" type="video/mp4" />
+        </video>
       </motion.div>
 
       {/* Dark gradient overlay for text legibility */}
