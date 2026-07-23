@@ -15,9 +15,9 @@ export default function AnalyticsPage() {
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    fetch("/api/products")
+    fetch("/api/products?limit=100")
       .then((res) => res.json())
-      .then(setProducts);
+      .then((data) => setProducts(data.products || data));
   }, []);
 
   const topViewed = [...products]
