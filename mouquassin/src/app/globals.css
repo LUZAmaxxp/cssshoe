@@ -140,3 +140,14 @@
 [dir="rtl"] h6 {
   font-family: var(--font-arabic), var(--font-playfair), serif !important;
 }
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
