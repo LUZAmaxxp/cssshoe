@@ -1,21 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Card, CardContent, Typography, Grid } from "@mui/material";
-import {
-  ShoppingCart as OrderIcon,
-  Favorite as LikeIcon,
-  Inventory as ProductIcon,
-} from "@mui/icons-material";
-
-interface Metrics {
-  totalOrders: number;
-  totalProducts: number;
-  mostLikedProduct: string;
-}
+import { ShoppingBag, Heart, Package } from "lucide-react";
 
 export default function AdminDashboardPage() {
-  const [metrics, setMetrics] = useState<Metrics>({
+  const [metrics, setMetrics] = useState({
     totalOrders: 0,
     totalProducts: 0,
     mostLikedProduct: "N/A",
@@ -23,74 +12,39 @@ export default function AdminDashboardPage() {
 
   useEffect(() => {
     Promise.all([
-      fetch("/api/products").then((r) => r.json()),
-    ]).then(([products]) => {
+      fetch("/api/products?limit=100").then((r) => r.json()),
+      fetch("/api/orders").then((r) => r.json()),
+    ]).then(([productsData, orders]) => {
+      const products = productsData.products || productsData;
+      const mostLiked = [...products].sort((a: { likeCount: number }, b: { likeCount: number }) => b.likeCount - a.likeCount)[0];
       setMetrics({
-        totalOrders: 0,
+        totalOrders: orders.length,
         totalProducts: products.length,
-        mostLikedProduct:
-          products.sort((a: { likeCount: number }, b: { likeCount: number }) => b.likeCount - a.likeCount)[0]
-            ?.name || "N/A",
+        mostLikedProduct: mostLiked?.name || "N/A",
       });
     });
   }, []);
 
   const cards = [
-    {
-      label: "Orders in Process",
-      value: metrics.totalOrders,
-      icon: <OrderIcon sx={{ fontSize: 20 }} />,
-      iconBg: "rgba(114,47,55,0.1)",
-      iconColor: "#722f37",
-    },
-    {
-      label: "Most Liked Product",
-      value: metrics.mostLikedProduct,
-      icon: <LikeIcon sx={{ fontSize: 20 }} />,
-      iconBg: "rgba(181,152,90,0.15)",
-      iconColor: "#8a6d2f",
-    },
-    {
-      label: "Live Products",
-      value: metrics.totalProducts,
-      icon: <ProductIcon sx={{ fontSize: 20 }} />,
-      iconBg: "rgba(26,26,26,0.06)",
-      iconColor: "#1a1a1a",
-    },
+    { label: "Total Orders", value: metrics.totalOrders, icon: ShoppingBag, color: "text-burgundy", bg: "bg-burgundy/10" },
+    { label: "Most Liked", value: metrics.mostLikedProduct, icon: Heart, color: "text-brass", bg: "bg-brass/10" },
+    { label: "Live Products", value: metrics.totalProducts, icon: Package, color: "text-charcoal", bg: "bg-charcoal/5" },
   ];
 
   return (
     <div>
-      <Typography variant="h4" sx={{ fontWeight: "bold", mb: 3 }}>
-        Dashboard
-      </Typography>
-
-      <Grid container spacing={3}>
+      <h1 className="text-2xl font-bold text-charcoal mb-6">Dashboard</h1>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {cards.map((card) => (
-          <Grid size={{ xs: 12, sm: 4 }} key={card.label}>
-            <Card>
-              <CardContent>
-                <div className="flex items-center gap-3">
-                  <div
-                    className="w-8 h-8 rounded-full flex items-center justify-center"
-                    style={{ backgroundColor: card.iconBg, color: card.iconColor }}
-                  >
-                    {card.icon}
-                  </div>
-                  <div>
-                    <Typography variant="h5" sx={{ fontWeight: 500 }}>
-                      {card.value}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary" sx={{ fontSize: 12 }}>
-                      {card.label}
-                    </Typography>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </Grid>
+          <div key={card.label} className="bg-white rounded-xl border border-border p-5">
+            <div className={`w-10 h-10 rounded-xl ${card.bg} flex items-center justify-center mb-3`}>
+              <card.icon className={`w-5 h-5 ${card.color}`} />
+            </div>
+            <p className="text-2xl font-bold text-charcoal">{card.value}</p>
+            <p className="text-[11px] tracking-wider uppercase text-muted-foreground mt-1">{card.label}</p>
+          </div>
         ))}
-      </Grid>
+      </div>
     </div>
   );
 }
