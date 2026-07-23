@@ -49,6 +49,7 @@
   },
   "product": {
     "size": "المقاس",
+    "color": "اللون",
     "sizeRequired": "يرجى اختيار مقاس",
     "quantity": "الكمية",
     "addToCart": "أضف إلى السلة",
@@ -56,6 +57,7 @@
     "buyNow": "اشترِ الآن",
     "description": "الوصف",
     "peopleLiked": "أعجبهم هذا المنتج",
+    "youMayAlsoLike": "قد يعجبك أيضاً",
     "notFound": "المنتج غير موجود."
   },
   "cart": {

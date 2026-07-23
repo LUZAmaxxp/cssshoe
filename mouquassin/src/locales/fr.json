@@ -49,6 +49,7 @@
   },
   "product": {
     "size": "Taille",
+    "color": "Couleur",
     "sizeRequired": "Veuillez choisir une taille",
     "quantity": "Quantité",
     "addToCart": "Ajouter au Panier",
@@ -56,6 +57,7 @@
     "buyNow": "Acheter Maintenant",
     "description": "Description",
     "peopleLiked": "personnes ont aimé",
+    "youMayAlsoLike": "Vous aimerez aussi",
     "notFound": "Produit non trouvé."
   },
   "cart": {

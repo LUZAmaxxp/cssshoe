@@ -1,11 +1,19 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
 
+export interface IColorVariant {
+  name: string;
+  hex: string;
+  images: string[];
+  sizes: string[];
+}
+
 export interface IProduct extends Document {
   name: string;
   description: string;
   price: number;
   images: string[];
   sizes: string[];
+  colors: IColorVariant[];
   category: string;
   isArchived: boolean;
   viewCount: number;
@@ -14,13 +22,24 @@ export interface IProduct extends Document {
   updatedAt: Date;
 }
 
+const colorVariantSchema = new Schema<IColorVariant>(
+  {
+    name: { type: String, required: true },
+    hex: { type: String, default: "#000000" },
+    images: { type: [String], default: [] },
+    sizes: { type: [String], default: [] },
+  },
+  { _id: false }
+);
+
 const productSchema = new Schema<IProduct>(
   {
     name: { type: String, required: true, maxlength: 200 },
     description: { type: String, required: true, maxlength: 2000 },
     price: { type: Number, required: true, min: 0 },
-    images: { type: [String], required: true, validate: (v: string[]) => v.length > 0 },
-    sizes: { type: [String], required: true, validate: (v: string[]) => v.length > 0 },
+    images: { type: [String], default: [] },
+    sizes: { type: [String], default: [] },
+    colors: { type: [colorVariantSchema], default: [] },
     category: { type: String, required: true },
     isArchived: { type: Boolean, default: false },
     viewCount: { type: Number, default: 0 },
