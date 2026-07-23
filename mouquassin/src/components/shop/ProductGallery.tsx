@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight, Maximize2, X } from "lucide-react";
 
@@ -15,6 +15,29 @@ export function ProductGallery({ images, name }: ProductGalleryProps) {
 
   const prev = () => setSelected((s) => (s === 0 ? images.length - 1 : s - 1));
   const next = () => setSelected((s) => (s === images.length - 1 ? 0 : s + 1));
+
+  // Lock body scroll in fullscreen
+  useEffect(() => {
+    if (fullscreen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => { document.body.style.overflow = ""; };
+  }, [fullscreen]);
+
+  // Close on Escape key
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setFullscreen(false);
+      if (e.key === "ArrowLeft") prev();
+      if (e.key === "ArrowRight") next();
+    };
+    if (fullscreen) {
+      window.addEventListener("keydown", handleKey);
+      return () => window.removeEventListener("keydown", handleKey);
+    }
+  }, [fullscreen]);
 
   return (
     <>
@@ -90,19 +113,21 @@ export function ProductGallery({ images, name }: ProductGalleryProps) {
       {/* Fullscreen lightbox */}
       {fullscreen && (
         <div
-          className="fixed inset-0 z-[200] bg-black/95 flex items-center justify-center"
+          className="fixed inset-0 bg-black/95 flex items-center justify-center"
+          style={{ zIndex: 9999 }}
           onClick={() => setFullscreen(false)}
         >
           {/* Close button */}
           <button
             onClick={() => setFullscreen(false)}
-            className="absolute top-4 right-4 w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors z-20"
+            className="absolute top-4 right-4 w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"
+            style={{ zIndex: 10001 }}
           >
             <X className="w-5 h-5 text-white" />
           </button>
 
           {/* Image */}
-          <div className="relative w-full h-full flex items-center justify-center p-8" onClick={(e) => e.stopPropagation()}>
+          <div className="relative w-full h-full flex items-center justify-center p-16" onClick={(e) => e.stopPropagation()}>
             <Image
               src={images[selected]}
               alt={name}
@@ -117,13 +142,15 @@ export function ProductGallery({ images, name }: ProductGalleryProps) {
             <>
               <button
                 onClick={(e) => { e.stopPropagation(); prev(); }}
-                className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors z-20"
+                className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"
+                style={{ zIndex: 10001 }}
               >
                 <ChevronLeft className="w-6 h-6 text-white" />
               </button>
               <button
                 onClick={(e) => { e.stopPropagation(); next(); }}
-                className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors z-20"
+                className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"
+                style={{ zIndex: 10001 }}
               >
                 <ChevronRight className="w-6 h-6 text-white" />
               </button>
@@ -132,14 +159,14 @@ export function ProductGallery({ images, name }: ProductGalleryProps) {
 
           {/* Counter */}
           {images.length > 1 && (
-            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 px-4 py-1.5 bg-white/10 backdrop-blur-sm rounded-full text-white text-sm z-20">
+            <div className="absolute bottom-20 left-1/2 -translate-x-1/2 px-4 py-1.5 bg-white/10 backdrop-blur-sm rounded-full text-white text-sm" style={{ zIndex: 10001 }}>
               {selected + 1} / {images.length}
             </div>
           )}
 
           {/* Thumbnails in lightbox */}
           {images.length > 1 && (
-            <div className="absolute bottom-14 left-1/2 -translate-x-1/2 flex gap-2 z-20">
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2" style={{ zIndex: 10001 }}>
               {images.map((img, i) => (
                 <button
                   key={i}
