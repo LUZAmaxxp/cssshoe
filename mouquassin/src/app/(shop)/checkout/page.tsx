@@ -57,30 +57,9 @@ export default function CheckoutPage() {
       }
 
       const order = await res.json();
-      const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "212631604905";
-
-      const itemLines = items
-        .map(
-          (item) =>
-            `- ${item.name} (${item.size}) x${item.quantity} — $${item.price * item.quantity}`
-        )
-        .join("\n");
-
-      const message = encodeURIComponent(
-        `New Order from Lyzane\n\n` +
-          `Customer: ${name}\n` +
-          `Phone: ${phone}\n` +
-          `Delivery: ${address}\n\n` +
-          `Items:\n${itemLines}\n\n` +
-          `Total: $${totalPrice()}\n\n` +
-          `Order ID: ${order._id}`
-      );
-
       clearCart();
       setOrderId(order._id);
       setOrderSuccess(true);
-
-      window.open(`https://wa.me/${whatsappNumber}?text=${message}`, "_blank");
     } catch {
       setError(t("checkout.error"));
     } finally {
