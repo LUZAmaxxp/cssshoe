@@ -14,7 +14,7 @@ export function Footer() {
           {/* Brand column */}
           <div>
             <Image
-              src="/images/logo1v1.png"
+              src="https://res.cloudinary.com/dzrsbjdma/image/upload/v1784804013/lyzane/logo1v1.png"
               alt="Lyzane"
               width={100}
               height={35}

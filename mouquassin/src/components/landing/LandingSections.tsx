@@ -16,7 +16,7 @@ export function LandingSections() {
         body={t("splitFeature.body")}
         ctaLabel={t("splitFeature.cta")}
         ctaHref="/shop"
-        imageSrc="/images/logo.jpg"
+        imageSrc="https://res.cloudinary.com/dzrsbjdma/image/upload/v1784804012/lyzane/logo.jpg"
         imageSide="right"
         variant="light"
       />

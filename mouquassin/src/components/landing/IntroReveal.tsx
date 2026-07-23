@@ -39,7 +39,7 @@ export function IntroReveal({ children }: IntroRevealProps) {
               className="relative w-full h-full"
             >
               <Image
-                src="/images/first.PNG"
+                src="https://res.cloudinary.com/dzrsbjdma/image/upload/v1784803992/lyzane/first.png"
                 alt="Lyzane"
                 fill
                 className="object-contain object-center md:object-cover"

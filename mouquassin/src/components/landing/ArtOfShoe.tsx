@@ -69,7 +69,7 @@ export function ArtOfShoe({ id }: ArtOfShoeProps) {
                 }}
               />
               <Image
-                src="/images/don2.jpg"
+                src="https://res.cloudinary.com/dzrsbjdma/image/upload/v1784804011/lyzane/don2.jpg"
                 alt="Man wearing Lyzane shoes"
                 width={600}
                 height={800}
@@ -111,7 +111,7 @@ export function ArtOfShoe({ id }: ArtOfShoeProps) {
           className="px-6 pb-12 flex justify-center"
         >
           <Image
-            src="/images/don2.jpg"
+            src="https://res.cloudinary.com/dzrsbjdma/image/upload/v1784804011/lyzane/don2.jpg"
             alt="Man wearing Lyzane shoes"
             width={600}
             height={800}

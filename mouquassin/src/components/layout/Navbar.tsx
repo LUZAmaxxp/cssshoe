@@ -48,7 +48,7 @@ export function Navbar({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
         <div className="container mx-auto flex items-center justify-between h-16 md:h-20 px-4 md:px-8">
           <Link href="/" className="flex items-center gap-1.5">
             <Image
-              src="/images/logo1v1.png"
+              src="https://res.cloudinary.com/dzrsbjdma/image/upload/v1784804013/lyzane/logo1v1.png"
               alt="Lyzane"
               width={120}
               height={40}
@@ -56,7 +56,7 @@ export function Navbar({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
               priority
             />
             <Image
-              src="/images/title-nobg.png"
+              src="https://res.cloudinary.com/dzrsbjdma/image/upload/v1784804014/lyzane/title-nobg.png"
               alt="Lyzane"
               width={250}
               height={50}

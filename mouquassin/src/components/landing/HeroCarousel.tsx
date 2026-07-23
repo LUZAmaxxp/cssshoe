@@ -27,7 +27,7 @@ export function HeroCarousel() {
         className="absolute inset-0 z-0"
       >
         <Image
-          src="/images/branding7.png"
+          src="https://res.cloudinary.com/dzrsbjdma/image/upload/v1784803988/lyzane/branding7.png"
           alt="Lyzane"
           fill
           className="object-cover"
@@ -59,7 +59,7 @@ export function HeroCarousel() {
             className="flex justify-center"
           >
             <Image
-              src="/images/title-nobg.png"
+              src="https://res.cloudinary.com/dzrsbjdma/image/upload/v1784804014/lyzane/title-nobg.png"
               alt="Lyzane"
               width={1250}
               height={250}
