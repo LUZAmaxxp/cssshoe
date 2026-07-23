@@ -79,7 +79,8 @@ export async function POST(request: NextRequest) {
       deliveryLocation: order.deliveryLocation,
     }).catch((err) => console.error("Admin email failed:", err));
 
-    // Send WhatsApp notification to admin via CallMeBot (fire-and-forget)
+    // Send push notification to admin via ntfy.sh (fire-and-forget)
+    console.log("Attempting ntfy.sh notification for order:", order._id.toString());
     sendOrderNotification({
       _id: order._id.toString(),
       customerName: order.customerName,
@@ -91,7 +92,8 @@ export async function POST(request: NextRequest) {
       })),
       totalPrice: order.totalPrice,
       deliveryLocation: order.deliveryLocation,
-    }).catch((err) => console.error("WhatsApp notification failed:", err));
+    }).then(() => console.log("ntfy.sh notification completed for order:", order._id.toString()))
+      .catch((err) => console.error("ntfy.sh notification failed:", err));
 
     await AnalyticsEvent.create({
       type: "whatsapp_redirect",
