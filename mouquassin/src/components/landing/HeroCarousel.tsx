@@ -77,7 +77,7 @@ export function HeroCarousel() {
           >
             <Link
               href="/shop"
-              className="inline-flex items-center gap-2 text-[11px] tracking-[0.2em] uppercase text-cream/70 hover:text-brass transition-colors duration-300 group"
+              className="inline-flex items-center gap-2 px-6 py-3 border border-brass text-brass text-[11px] tracking-[0.2em] uppercase hover:bg-brass hover:text-charcoal transition-all duration-300 group"
             >
               {t("hero.exploreCollection")}
               <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
