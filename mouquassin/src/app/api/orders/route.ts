@@ -54,15 +54,17 @@ export async function POST(request: NextRequest) {
 
     const order = await Order.create(parsed.data);
 
-    // Send confirmation email to customer (fire-and-forget)
-    sendOrderConfirmationEmail({
-      customerName: order.customerName,
-      email: order.email,
-      phone: order.phone,
-      items: order.items,
-      totalPrice: order.totalPrice,
-      deliveryLocation: order.deliveryLocation,
-    });
+    // Send confirmation email to customer (fire-and-forget, only if email provided)
+    if (order.email) {
+      sendOrderConfirmationEmail({
+        customerName: order.customerName,
+        email: order.email,
+        phone: order.phone,
+        items: order.items,
+        totalPrice: order.totalPrice,
+        deliveryLocation: order.deliveryLocation,
+      });
+    }
 
     // Send notification email to admin (fire-and-forget)
     sendAdminOrderEmail({

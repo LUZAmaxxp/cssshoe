@@ -2,7 +2,10 @@ import { z } from "zod";
 
 export const orderSchema = z.object({
   customerName: z.string().min(1, "Name is required"),
-  email: z.string().email("Valid email is required"),
+  email: z.preprocess(
+    (val) => (val === "" || val === undefined || val === null ? undefined : val),
+    z.string().email("Valid email is required").optional()
+  ),
   phone: z.string().min(1, "Phone is required"),
   deliveryLocation: z.object({
     lat: z.number(),
