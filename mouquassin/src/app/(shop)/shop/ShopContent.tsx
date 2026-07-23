@@ -83,7 +83,7 @@ export function ShopContent() {
 
   if (loading) {
     return (
-      <div className="grid gap-5 [grid-template-columns:repeat(auto-fit,minmax(220px,260px))]">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-5">
         {Array.from({ length: 8 }).map((_, i) => (
           <div key={i} className="animate-pulse">
             <div className="aspect-square bg-muted rounded" />
@@ -137,7 +137,7 @@ export function ShopContent() {
         </div>
       ) : (
         <>
-          <div className="grid gap-5 [grid-template-columns:repeat(auto-fit,minmax(220px,260px))]">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-5">
             {products.map((product) => (
               <ProductCard key={product._id} {...product} />
             ))}

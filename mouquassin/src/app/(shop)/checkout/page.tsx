@@ -71,16 +71,16 @@ export default function CheckoutPage() {
     return (
       <>
         <Navbar alwaysSolid />
-        <main className="container mx-auto px-4 py-8 pt-24 text-center min-h-[60vh] flex flex-col items-center justify-center">
-          <CheckCircle className="w-16 h-16 text-green-600 mb-6" />
-          <h1 className="text-3xl font-heading text-charcoal mb-4">{t("checkout.successTitle")}</h1>
+        <main className="container mx-auto px-4 py-6 pt-20 md:py-8 md:pt-24 text-center min-h-[60vh] flex flex-col items-center justify-center">
+          <CheckCircle className="w-12 h-12 md:w-16 md:h-16 text-green-600 mb-4 md:mb-6" />
+          <h1 className="text-2xl md:text-3xl font-heading text-charcoal mb-3 md:mb-4">{t("checkout.successTitle")}</h1>
           <p className="text-muted-foreground mb-2 max-w-md">
             {t("checkout.successMessage")}
           </p>
           <p className="text-sm text-muted-foreground mb-8">
             {t("checkout.orderId")}: {orderId.slice(-8).toUpperCase()}
           </p>
-          <div className="flex flex-col sm:flex-row gap-3">
+          <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
             <a
               href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "212631604905"}`}
               target="_blank"
@@ -106,8 +106,8 @@ export default function CheckoutPage() {
     return (
       <>
         <Navbar alwaysSolid />
-        <main className="container mx-auto px-4 py-8 pt-24 text-center">
-          <h1 className="text-3xl font-heading text-charcoal mb-4">{t("checkout.title")}</h1>
+        <main className="container mx-auto px-4 py-6 pt-20 md:py-8 md:pt-24 text-center">
+          <h1 className="text-2xl md:text-3xl font-heading text-charcoal mb-3 md:mb-4">{t("checkout.title")}</h1>
           <p className="text-muted-foreground mb-6">{t("checkout.empty")}</p>
           <button
             onClick={() => router.push("/shop")}
@@ -124,8 +124,8 @@ export default function CheckoutPage() {
   return (
     <>
       <Navbar alwaysSolid />
-      <main className="container mx-auto px-4 py-8 pt-24 max-w-2xl">
-        <h1 className="text-3xl font-heading text-charcoal mb-8">{t("checkout.title")}</h1>
+      <main className="container mx-auto px-4 py-6 pt-20 md:py-8 md:pt-24 max-w-2xl">
+        <h1 className="text-2xl md:text-3xl font-heading text-charcoal mb-6 md:mb-8">{t("checkout.title")}</h1>
 
         <div className="space-y-3 mb-8">
           {items.map((item) => (

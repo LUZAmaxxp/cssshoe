@@ -179,23 +179,23 @@ export default function ProductDetailPage() {
           }),
         }}
       />
-      <main className="pt-20">
+      <main className="pt-16 md:pt-20">
         <div className="grid grid-cols-1 md:grid-cols-[1fr_0.85fr] gap-0">
           {/* Left: Image */}
-          <div className="w-full bg-[#f5f5f5] h-[40vh] md:h-[55vh] overflow-hidden flex items-center justify-center self-center">
+          <div className="w-full bg-[#f5f5f5] h-[45vh] md:h-[55vh] overflow-hidden flex items-center justify-center md:self-center">
             <ProductGallery images={displayImages} name={product.name} />
           </div>
 
           {/* Right: Info */}
-          <div className="p-6 md:p-8 lg:p-12 flex flex-col">
+          <div className="p-5 md:p-8 lg:p-12 flex flex-col">
             {/* Name & Price */}
-            <h1 className="text-2xl md:text-3xl font-heading text-charcoal">
+            <h1 className="text-xl md:text-3xl font-heading text-charcoal">
               {product.name}
             </h1>
-            <p className="text-xl text-charcoal mt-2">{product.price} DH</p>
+            <p className="text-lg md:text-xl text-charcoal mt-1.5 md:mt-2">{product.price} DH</p>
 
             {/* Trust icons */}
-            <div className="flex gap-4 mt-4 text-[10px] text-muted-foreground">
+            <div className="flex gap-4 mt-3 md:mt-4 text-[10px] text-muted-foreground">
               <span className="flex items-center gap-1.5">
                 <Truck className="w-3.5 h-3.5" />Free delivery
               </span>
@@ -292,7 +292,7 @@ export default function ProductDetailPage() {
               )}
 
               {/* CTA buttons */}
-              <div className="flex gap-3 mb-6">
+              <div className="flex gap-2 sm:gap-3 mb-4 md:mb-6">
                 <button
                   onClick={handleAddToCart}
                   className="flex-1 flex items-center justify-center gap-2 py-3 text-xs tracking-widest uppercase bg-charcoal text-cream hover:bg-brass hover:text-charcoal transition-colors"
@@ -301,7 +301,7 @@ export default function ProductDetailPage() {
                 </button>
                 <button
                   onClick={() => setLiked(!liked)}
-                  className={`w-12 h-12 border flex items-center justify-center transition-colors ${
+                  className={`w-11 h-11 sm:w-12 sm:h-12 border flex items-center justify-center transition-colors flex-shrink-0 ${
                     liked
                       ? "border-burgundy text-burgundy bg-burgundy/5"
                       : "border-charcoal text-charcoal hover:bg-charcoal hover:text-cream"
@@ -314,7 +314,7 @@ export default function ProductDetailPage() {
               {/* Buy Now */}
               <button
                 onClick={handleBuyNow}
-                className="w-full py-3 text-xs tracking-widest uppercase border border-charcoal text-charcoal hover:bg-charcoal hover:text-cream transition-colors mb-6"
+                className="w-full py-3 text-xs tracking-widest uppercase border border-charcoal text-charcoal hover:bg-charcoal hover:text-cream transition-colors mb-4 md:mb-6"
               >
                 {t("product.buyNow")}
               </button>
