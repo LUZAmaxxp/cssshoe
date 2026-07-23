@@ -42,7 +42,7 @@ export function IntroReveal({ children }: IntroRevealProps) {
                 src="/images/first.PNG"
                 alt="Lyzane"
                 fill
-                className="object-cover"
+                className="object-contain object-center md:object-cover"
                 priority
                 quality={100}
                 sizes="100vw"
