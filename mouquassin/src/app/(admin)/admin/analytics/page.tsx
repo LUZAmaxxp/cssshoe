@@ -29,18 +29,18 @@ export default function AnalyticsPage() {
       fetch("/api/orders").then((r) => r.json()),
     ]).then(([productsData, ordersData]) => {
       setProducts(productsData.products || productsData);
-      setOrders(ordersData);
+      setOrders(ordersData.orders || ordersData);
     });
   }, []);
 
-  const topViewed = [...products].sort((a, b) => b.viewCount - a.viewCount).slice(0, 5);
-  const topLiked = [...products].sort((a, b) => b.likeCount - a.likeCount).slice(0, 5);
-  const maxViews = Math.max(...topViewed.map((p) => p.viewCount), 1);
-  const maxLikes = Math.max(...topLiked.map((p) => p.likeCount), 1);
+  const topViewed = [...products].sort((a, b) => (b.viewCount || 0) - (a.viewCount || 0)).slice(0, 5);
+  const topLiked = [...products].sort((a, b) => (b.likeCount || 0) - (a.likeCount || 0)).slice(0, 5);
+  const maxViews = Math.max(...topViewed.map((p) => p.viewCount || 0), 1);
+  const maxLikes = Math.max(...topLiked.map((p) => p.likeCount || 0), 1);
 
-  const totalViews = products.reduce((sum, p) => sum + p.viewCount, 0);
-  const totalLikes = products.reduce((sum, p) => sum + p.likeCount, 0);
-  const totalRevenue = orders.filter((o) => o.status !== "cancelled").reduce((sum, o) => sum + o.totalPrice, 0);
+  const totalViews = products.reduce((sum, p) => sum + (p.viewCount || 0), 0);
+  const totalLikes = products.reduce((sum, p) => sum + (p.likeCount || 0), 0);
+  const totalRevenue = orders.filter((o) => o.status !== "cancelled").reduce((sum, o) => sum + (o.totalPrice || 0), 0);
   const totalOrders = orders.length;
 
   const recentOrders = [...orders].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).slice(0, 5);
