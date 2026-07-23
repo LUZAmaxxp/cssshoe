@@ -32,17 +32,45 @@ export function IntroReveal({ children }: IntroRevealProps) {
             }}
             className="fixed inset-0 z-[100] bg-charcoal"
           >
+            {/* Mobile: logo centered on dark background */}
+            <div className="md:hidden w-full h-full flex flex-col items-center justify-center">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, ease: [0.25, 0.1, 0.25, 1] }}
+                className="flex flex-col items-center"
+              >
+                <Image
+                  src="https://res.cloudinary.com/dzrsbjdma/image/upload/v1784804013/lyzane/logo1v1.png"
+                  alt="Lyzane"
+                  width={80}
+                  height={80}
+                  className="w-16 h-16 mb-4"
+                  priority
+                />
+                <Image
+                  src="https://res.cloudinary.com/dzrsbjdma/image/upload/v1784804014/lyzane/title-nobg.png"
+                  alt="Lyzane"
+                  width={400}
+                  height={80}
+                  className="w-48 h-auto"
+                  priority
+                />
+              </motion.div>
+            </div>
+
+            {/* Desktop: image background */}
             <motion.div
               initial={{ opacity: 0, scale: 1.1 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1.5, ease: [0.25, 0.1, 0.25, 1] }}
-              className="relative w-full h-full"
+              className="hidden md:block relative w-full h-full"
             >
               <Image
                 src="https://res.cloudinary.com/dzrsbjdma/image/upload/v1784803992/lyzane/first.png"
                 alt="Lyzane"
                 fill
-                className="object-contain object-center md:object-cover"
+                className="object-cover"
                 priority
                 quality={100}
                 sizes="100vw"
