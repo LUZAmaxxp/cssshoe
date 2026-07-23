@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Heart, ShoppingBag, Zap } from "lucide-react";
+import { Heart, Zap } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useCartStore } from "@/stores/cart";
@@ -30,7 +30,6 @@ export function ProductCard({
   const [liked, setLiked] = useState(false);
   const [likes, setLikes] = useState(likeCount);
   const [selectedSize, setSelectedSize] = useState("");
-  const [added, setAdded] = useState(false);
   const [showActions, setShowActions] = useState(false);
   const addItem = useCartStore((s) => s.addItem);
   const router = useRouter();
@@ -50,27 +49,6 @@ export function ProductCard({
     } catch {
       // silently fail
     }
-  };
-
-  const handleAddToCart = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    if (sizes.length > 0 && !selectedSize) {
-      setShowActions(true);
-      return;
-    }
-
-    addItem({
-      productId: _id,
-      name,
-      price,
-      size: selectedSize || "One Size",
-      image: images[0] || "",
-    });
-
-    setAdded(true);
-    setTimeout(() => setAdded(false), 2000);
   };
 
   const handleBuyNow = (e: React.MouseEvent) => {
@@ -152,19 +130,8 @@ export function ProductCard({
             ) : (
               <div className="flex gap-2">
                 <button
-                  onClick={handleAddToCart}
-                  className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 md:py-2 text-[10px] tracking-wider uppercase transition-colors ${
-                    added
-                      ? "bg-green-700 text-white"
-                      : "bg-charcoal text-white hover:bg-brass hover:text-charcoal"
-                  }`}
-                >
-                  <ShoppingBag className="w-3 h-3" />
-                  {added ? t("shop.added") : t("shop.addToCart")}
-                </button>
-                <button
                   onClick={handleBuyNow}
-                  className="flex-1 flex items-center justify-center gap-1.5 py-2.5 md:py-2 text-[10px] tracking-wider uppercase border border-charcoal text-charcoal hover:bg-charcoal hover:text-white transition-colors"
+                  className="flex-1 flex items-center justify-center gap-1.5 py-2.5 md:py-2 text-[10px] tracking-wider uppercase bg-charcoal text-white hover:bg-brass hover:text-charcoal transition-colors"
                 >
                   <Zap className="w-3 h-3" />
                   {t("shop.buyNow")}

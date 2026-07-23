@@ -8,7 +8,7 @@ import { Footer } from "@/components/layout/Footer";
 import { ProductGallery } from "@/components/shop/ProductGallery";
 import { useCartStore } from "@/stores/cart";
 import { useLocale } from "@/i18n/context";
-import { Check, Minus, Plus, ShoppingBag, Zap } from "lucide-react";
+import { Minus, Plus, Zap } from "lucide-react";
 
 interface ColorVariant {
   name: string;
@@ -47,7 +47,6 @@ export default function ProductDetailPage() {
   const [selectedColorIdx, setSelectedColorIdx] = useState(0);
   const [selectedSize, setSelectedSize] = useState("");
   const [quantity, setQuantity] = useState(1);
-  const [added, setAdded] = useState(false);
   const [relatedProducts, setRelatedProducts] = useState<RelatedProduct[]>([]);
   const addItem = useCartStore((s) => s.addItem);
 
@@ -87,24 +86,6 @@ export default function ProductDetailPage() {
   const allSizes = hasColors
     ? [...new Set(product.colors.flatMap((c) => c.sizes))]
     : product?.sizes || [];
-
-  const handleAddToCart = () => {
-    if (!product) return;
-    if (displaySizes.length > 0 && !selectedSize) return;
-
-    for (let i = 0; i < quantity; i++) {
-      addItem({
-        productId: product._id,
-        name: product.name,
-        price: product.price,
-        size: selectedSize || "One Size",
-        image: displayImages[0] || "",
-      });
-    }
-
-    setAdded(true);
-    setTimeout(() => setAdded(false), 2000);
-  };
 
   const handleBuyNow = () => {
     if (!product) return;
@@ -298,31 +279,11 @@ export default function ProductDetailPage() {
             </div>
 
             {/* Action buttons */}
-            <div className="mt-8 flex gap-3">
-              <button
-                onClick={handleAddToCart}
-                disabled={displaySizes.length > 0 && !selectedSize}
-                className={`flex-1 flex items-center justify-center gap-2 py-3 text-sm tracking-widest uppercase transition-colors ${
-                  added
-                    ? "bg-green-700 text-white"
-                    : "bg-charcoal text-white hover:bg-brass hover:text-charcoal disabled:bg-muted disabled:text-muted-foreground"
-                }`}
-              >
-                {added ? (
-                  <>
-                    <Check className="w-4 h-4" /> {t("product.addedToCart")}
-                  </>
-                ) : (
-                  <>
-                    <ShoppingBag className="w-4 h-4" /> {t("product.addToCart")}
-                  </>
-                )}
-              </button>
-
+            <div className="mt-8">
               <button
                 onClick={handleBuyNow}
                 disabled={displaySizes.length > 0 && !selectedSize}
-                className="flex-1 flex items-center justify-center gap-2 py-3 text-sm tracking-widest uppercase border-2 border-charcoal text-charcoal hover:bg-charcoal hover:text-white transition-colors disabled:border-muted disabled:text-muted-foreground"
+                className="w-full flex items-center justify-center gap-2 py-3 text-sm tracking-widest uppercase bg-charcoal text-white hover:bg-brass hover:text-charcoal transition-colors disabled:bg-muted disabled:text-muted-foreground"
               >
                 <Zap className="w-4 h-4" /> {t("product.buyNow")}
               </button>
