@@ -39,7 +39,7 @@ export function IntroReveal({ children }: IntroRevealProps) {
               className="relative w-full h-full"
             >
               <Image
-                src="/images/first.png"
+                src="/images/first.PNG"
                 alt="Lyzane"
                 fill
                 className="object-cover"
