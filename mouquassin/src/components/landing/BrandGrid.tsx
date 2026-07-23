@@ -3,37 +3,21 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import Image from "next/image";
-
-const cards = [
-  {
-    num: "01",
-    title: "Cuir Italien",
-    desc: "Sélectionné avec soin pour sa qualité exceptionnelle et sa durabilité.",
-    image: "https://res.cloudinary.com/dzrsbjdma/image/upload/v1784803996/lyzane/grid1.png",
-  },
-  {
-    num: "02",
-    title: "Finitions Artisanales",
-    desc: "Chaque paire est travaillée avec précision par des mains expérimentées.",
-    image: "https://res.cloudinary.com/dzrsbjdma/image/upload/v1784804001/lyzane/grid2.png",
-  },
-  {
-    num: "03",
-    title: "Confort Naturel",
-    desc: "Conçu pour épouser la forme du pied et offrir un confort au quotidien.",
-    image: "https://res.cloudinary.com/dzrsbjdma/image/upload/v1784804006/lyzane/grid3.png",
-  },
-  {
-    num: "04",
-    title: "Style Intemporel",
-    desc: "Des lignes épurées pour un style qui ne se démode jamais.",
-    image: "https://res.cloudinary.com/dzrsbjdma/image/upload/v1784804010/lyzane/grid4.png",
-  },
-];
+import { useTranslation } from "@/i18n/context";
 
 export function BrandGrid() {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-50px" });
+  const { t } = useTranslation();
+
+  const cards = [
+    { image: "https://res.cloudinary.com/dzrsbjdma/image/upload/v1784803996/lyzane/grid1.png" },
+    { image: "https://res.cloudinary.com/dzrsbjdma/image/upload/v1784804001/lyzane/grid2.png" },
+    { image: "https://res.cloudinary.com/dzrsbjdma/image/upload/v1784804006/lyzane/grid3.png" },
+    { image: "https://res.cloudinary.com/dzrsbjdma/image/upload/v1784804010/lyzane/grid4.png" },
+  ];
+
+  const titles = t("brandGrid.items") as Array<{ num: string; title: string; desc: string }>;
 
   return (
     <section ref={ref} className="bg-charcoal">
@@ -48,7 +32,7 @@ export function BrandGrid() {
           >
             <Image
               src={card.image}
-              alt={card.title}
+              alt={titles[i]?.title || ""}
               fill
               className="object-cover transition-transform duration-700 group-hover:scale-105"
               sizes="(max-width: 640px) 100vw, 50vw"
@@ -58,13 +42,13 @@ export function BrandGrid() {
 
             <div className="absolute inset-0 flex flex-col justify-end p-4 md:p-6">
               <p className="text-brass text-[9px] md:text-[10px] tracking-[0.2em] mb-1 md:mb-2">
-                {card.num}
+                {titles[i]?.num}
               </p>
               <h3 className="text-cream text-sm md:text-lg font-heading uppercase tracking-wider mb-1 md:mb-2">
-                {card.title}
+                {titles[i]?.title}
               </h3>
               <p className="text-cream/60 text-[11px] md:text-sm leading-relaxed max-w-xs">
-                {card.desc}
+                {titles[i]?.desc}
               </p>
             </div>
           </motion.div>
