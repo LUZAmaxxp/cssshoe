@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { ProductCard } from "@/components/shop/ProductCard";
 import { useLocale } from "@/i18n/context";
+import { PackageOpen } from "lucide-react";
 
 interface Product {
   _id: string;
@@ -60,7 +61,6 @@ export function ShopContent() {
     [category]
   );
 
-  // Fetch categories once
   useEffect(() => {
     fetch("/api/products/categories")
       .then((res) => res.json())
@@ -68,7 +68,6 @@ export function ShopContent() {
       .catch(() => {});
   }, []);
 
-  // Fetch products when category changes
   /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     fetchProducts(1);
@@ -84,7 +83,7 @@ export function ShopContent() {
 
   if (loading) {
     return (
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+      <div className="grid gap-5 [grid-template-columns:repeat(auto-fit,minmax(220px,260px))]">
         {Array.from({ length: 8 }).map((_, i) => (
           <div key={i} className="animate-pulse">
             <div className="aspect-square bg-muted rounded" />
@@ -101,31 +100,34 @@ export function ShopContent() {
 
   return (
     <>
+      {/* Category filters */}
       {categories.length > 0 && (
-        <div className="flex flex-wrap gap-2 mb-6">
-          <button
-            onClick={() => setCategory("")}
-            className={`px-3 py-1 text-sm border transition-colors ${
-              !category
-                ? "bg-charcoal text-white border-charcoal"
-                : "border-border hover:border-charcoal"
-            }`}
-          >
-            {t("shop.all")}
-          </button>
-          {categories.map((cat) => (
+        <div className="mb-8">
+          <div className="flex flex-wrap gap-4 md:gap-6 pb-3 border-b border-border">
             <button
-              key={cat}
-              onClick={() => setCategory(cat)}
-              className={`px-3 py-1 text-sm border transition-colors ${
-                category === cat
-                  ? "bg-charcoal text-white border-charcoal"
-                  : "border-border hover:border-charcoal"
+              onClick={() => setCategory("")}
+              className={`text-xs tracking-[0.1em] uppercase pb-2 transition-colors ${
+                !category
+                  ? "text-charcoal border-b-2 border-brass -mb-[1px]"
+                  : "text-muted-foreground hover:text-charcoal"
               }`}
             >
-              {cat}
+              {t("shop.all")}
             </button>
-          ))}
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setCategory(cat)}
+                className={`text-xs tracking-[0.1em] uppercase pb-2 transition-colors ${
+                  category === cat
+                    ? "text-charcoal border-b-2 border-brass -mb-[1px]"
+                    : "text-muted-foreground hover:text-charcoal"
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
         </div>
       )}
 
@@ -135,10 +137,19 @@ export function ShopContent() {
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+          <div className="grid gap-5 [grid-template-columns:repeat(auto-fit,minmax(220px,260px))]">
             {products.map((product) => (
               <ProductCard key={product._id} {...product} />
             ))}
+
+            {/* Sparse state placeholder */}
+            {products.length < 4 && (
+              <div className="bg-white rounded-xl border border-dashed border-border flex flex-col items-center justify-center text-center p-8 min-h-[280px]">
+                <PackageOpen className="w-7 h-7 text-brass mb-2.5" />
+                <p className="text-sm text-muted-foreground mb-1">More arriving soon</p>
+                <p className="text-xs text-muted-foreground/70">New styles added regularly</p>
+              </div>
+            )}
           </div>
 
           {hasMore && (
@@ -151,12 +162,6 @@ export function ShopContent() {
                 {loadingMore ? "Loading..." : "Load More"}
               </button>
             </div>
-          )}
-
-          {pagination && (
-            <p className="text-center text-xs text-muted-foreground mt-4">
-              Showing {products.length} of {pagination.total} products
-            </p>
           )}
         </>
       )}

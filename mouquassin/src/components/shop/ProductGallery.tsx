@@ -119,7 +119,7 @@ export function ProductGallery({ images, name }: ProductGalleryProps) {
               src={images[selected]}
               alt={name}
               fill
-              className="object-cover"
+              className="object-contain"
               sizes="50vw"
             />
           ) : (

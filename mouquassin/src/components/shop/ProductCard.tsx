@@ -2,9 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Heart, Zap } from "lucide-react";
+import { Heart, ShoppingBag } from "lucide-react";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { useCartStore } from "@/stores/cart";
 import { useLocale } from "@/i18n/context";
 
@@ -31,8 +30,8 @@ export function ProductCard({
   const [likes, setLikes] = useState(likeCount);
   const [selectedSize, setSelectedSize] = useState("");
   const [showActions, setShowActions] = useState(false);
+  const [added, setAdded] = useState(false);
   const addItem = useCartStore((s) => s.addItem);
-  const router = useRouter();
   const { t } = useLocale();
 
   const handleLike = async (e: React.MouseEvent) => {
@@ -51,7 +50,7 @@ export function ProductCard({
     }
   };
 
-  const handleBuyNow = (e: React.MouseEvent) => {
+  const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
 
@@ -68,7 +67,8 @@ export function ProductCard({
       image: images[0] || "",
     });
 
-    router.push("/checkout");
+    setAdded(true);
+    setTimeout(() => setAdded(false), 2000);
   };
 
   return (
@@ -106,10 +106,17 @@ export function ProductCard({
         <Link href={`/shop/${_id}`}>
           <h3 className="text-sm font-medium mt-1 hover:text-brass transition-colors line-clamp-1">{name}</h3>
         </Link>
-        <p className="text-sm font-medium mt-0.5">${price}</p>
-        <p className="text-[10px] md:text-xs text-muted-foreground">{likes} {t("shop.likes")}</p>
 
-        {/* Size selector + Action buttons */}
+        {/* Price + Likes row */}
+        <div className="flex items-center justify-between mt-0.5">
+          <p className="text-sm font-medium">${price}</p>
+          <span className="text-xs text-muted-foreground flex items-center gap-1">
+            <Heart className="w-3 h-3" />
+            {likes}
+          </span>
+        </div>
+
+        {/* Size selector + Add to Cart */}
         {sizes.length > 0 && (
           <div className="mt-2 md:mt-3 space-y-2">
             {!selectedSize && showActions ? (
@@ -128,15 +135,17 @@ export function ProductCard({
                 </div>
               </div>
             ) : (
-              <div className="flex gap-2">
-                <button
-                  onClick={handleBuyNow}
-                  className="flex-1 flex items-center justify-center gap-1.5 py-2.5 md:py-2 text-[10px] tracking-wider uppercase border border-charcoal text-charcoal hover:bg-charcoal hover:text-white transition-colors"
-                >
-                  <Zap className="w-3 h-3" />
-                  {t("shop.buyNow")}
-                </button>
-              </div>
+              <button
+                onClick={handleAddToCart}
+                className={`w-full flex items-center justify-center gap-1.5 py-2.5 md:py-2 text-[10px] tracking-wider uppercase transition-colors ${
+                  added
+                    ? "bg-green-700 text-white"
+                    : "border border-charcoal text-charcoal hover:bg-charcoal hover:text-white"
+                }`}
+              >
+                <ShoppingBag className="w-3 h-3" />
+                {added ? t("shop.added") : t("shop.addToCart")}
+              </button>
             )}
           </div>
         )}

@@ -8,7 +8,7 @@ import { Footer } from "@/components/layout/Footer";
 import { ProductGallery } from "@/components/shop/ProductGallery";
 import { useCartStore } from "@/stores/cart";
 import { useLocale } from "@/i18n/context";
-import { ShoppingBag, Heart, ChevronDown, Truck, Info } from "lucide-react";
+import { ShoppingBag, Heart, ChevronDown, Truck, Info, RefreshCw } from "lucide-react";
 
 interface ColorVariant {
   name: string;
@@ -50,7 +50,8 @@ export default function ProductDetailPage() {
   const [liked, setLiked] = useState(false);
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [deliveryOpen, setDeliveryOpen] = useState(false);
-  const [descExpanded, setDescExpanded] = useState(false);
+  const [showSizeError, setShowSizeError] = useState(false);
+  const [added, setAdded] = useState(false);
   const addItem = useCartStore((s) => s.addItem);
 
   useEffect(() => {
@@ -88,9 +89,31 @@ export default function ProductDetailPage() {
     return activeColor ? activeColor.sizes.includes(size) : false;
   };
 
+  const handleAddToCart = () => {
+    if (!product) return;
+    if (allSizes.length > 0 && !selectedSize) {
+      setShowSizeError(true);
+      return;
+    }
+
+    addItem({
+      productId: product._id,
+      name: product.name,
+      price: product.price,
+      size: selectedSize || "One Size",
+      image: displayImages[0] || "",
+    });
+
+    setAdded(true);
+    setTimeout(() => setAdded(false), 2000);
+  };
+
   const handleBuyNow = () => {
     if (!product) return;
-    if (allSizes.length > 0 && !selectedSize) return;
+    if (allSizes.length > 0 && !selectedSize) {
+      setShowSizeError(true);
+      return;
+    }
 
     addItem({
       productId: product._id,
@@ -101,11 +124,6 @@ export default function ProductDetailPage() {
     });
 
     router.push("/checkout");
-  };
-
-  const truncateDescription = (text: string, maxLength = 150) => {
-    if (text.length <= maxLength) return text;
-    return text.slice(0, maxLength).trim() + "...";
   };
 
   if (loading) {
@@ -162,19 +180,29 @@ export default function ProductDetailPage() {
         }}
       />
       <main className="pt-20">
-        <div className="flex flex-col md:flex-row">
+        <div className="grid grid-cols-1 md:grid-cols-[1fr_0.85fr] gap-0">
           {/* Left: Image */}
-          <div className="w-full md:w-1/2 bg-[#f5f5f5] h-[50vh] md:h-[calc(100vh-5rem)] md:sticky md:top-20 overflow-hidden">
+          <div className="w-full bg-[#f5f5f5] h-[40vh] md:h-[55vh] overflow-hidden flex items-center justify-center self-center">
             <ProductGallery images={displayImages} name={product.name} />
           </div>
 
           {/* Right: Info */}
-          <div className="p-6 md:p-10 lg:p-14 flex flex-col">
+          <div className="p-6 md:p-8 lg:p-12 flex flex-col">
             {/* Name & Price */}
             <h1 className="text-2xl md:text-3xl font-heading text-charcoal">
               {product.name}
             </h1>
             <p className="text-xl text-charcoal mt-2">{product.price} DH</p>
+
+            {/* Trust icons */}
+            <div className="flex gap-4 mt-4 text-[10px] text-muted-foreground">
+              <span className="flex items-center gap-1.5">
+                <Truck className="w-3.5 h-3.5" />Free delivery
+              </span>
+              <span className="flex items-center gap-1.5">
+                <RefreshCw className="w-3.5 h-3.5" />14-day returns
+              </span>
+            </div>
 
             <div className="border-t border-border mt-6 pt-6">
               {/* Color selector */}
@@ -194,6 +222,7 @@ export default function ProductDetailPage() {
                             if (!hasStock) return;
                             setSelectedColorIdx(i);
                             setSelectedSize("");
+                            setShowSizeError(false);
                           }}
                           title={hasStock ? color.name : `${color.name} — Unavailable`}
                           className={`relative w-9 h-9 rounded-full transition-all ${
@@ -219,27 +248,31 @@ export default function ProductDetailPage() {
                 </div>
               )}
 
-              {/* Size selector */}
+              {/* Size chips */}
               {allSizes.length > 0 && (
                 <div className="mb-6">
                   <div className="flex items-center justify-between mb-3">
                     <p className="text-xs tracking-wider uppercase text-charcoal">{t("product.size")}</p>
                     <button className="text-xs text-brass hover:underline">+ {t("product.sizeGuide")}</button>
                   </div>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex gap-2">
                     {allSizes.map((size) => {
                       const available = isSizeAvailable(size);
                       return (
                         <button
                           key={size}
-                          onClick={() => available && setSelectedSize(size)}
+                          onClick={() => {
+                            if (!available) return;
+                            setSelectedSize(size);
+                            setShowSizeError(false);
+                          }}
                           disabled={!available}
-                          className={`min-w-[48px] h-12 px-3 text-sm border transition-all relative ${
+                          className={`w-10 h-10 text-sm border transition-colors relative ${
                             !available
                               ? "border-border text-muted-foreground/30 cursor-not-allowed"
                               : selectedSize === size
-                              ? "border-charcoal bg-charcoal text-white"
-                              : "border-border hover:border-charcoal"
+                              ? "border-charcoal text-charcoal bg-charcoal/5"
+                              : "border-border text-muted-foreground hover:border-charcoal"
                           }`}
                         >
                           {size}
@@ -252,47 +285,44 @@ export default function ProductDetailPage() {
                       );
                     })}
                   </div>
-                  {allSizes.length > 0 && !selectedSize && (
-                    <p className="text-xs text-burgundy mt-2">{t("product.sizeRequired")}</p>
+                  {showSizeError && allSizes.length > 0 && !selectedSize && (
+                    <p className="text-xs text-burgundy mt-2">Select a size to continue</p>
                   )}
                 </div>
               )}
 
-              {/* Buy Now + Wishlist */}
+              {/* CTA buttons */}
               <div className="flex gap-3 mb-6">
                 <button
-                  onClick={handleBuyNow}
-                  disabled={allSizes.length > 0 && !selectedSize}
-                  className="flex-1 flex items-center justify-center gap-2 py-3.5 text-sm tracking-widest uppercase bg-charcoal text-white hover:bg-brass hover:text-charcoal transition-colors disabled:bg-muted disabled:text-muted-foreground"
+                  onClick={handleAddToCart}
+                  className="flex-1 flex items-center justify-center gap-2 py-3 text-xs tracking-widest uppercase bg-charcoal text-cream hover:bg-brass hover:text-charcoal transition-colors"
                 >
-                  <ShoppingBag className="w-4 h-4" /> {t("product.buyNow")}
+                  <ShoppingBag className="w-4 h-4" /> {added ? t("product.addedToCart") : t("product.addToCart")}
                 </button>
                 <button
                   onClick={() => setLiked(!liked)}
                   className={`w-12 h-12 border flex items-center justify-center transition-colors ${
                     liked
                       ? "border-burgundy text-burgundy bg-burgundy/5"
-                      : "border-border hover:border-charcoal"
+                      : "border-charcoal text-charcoal hover:bg-charcoal hover:text-cream"
                   }`}
                 >
                   <Heart className={`w-5 h-5 ${liked ? "fill-current" : ""}`} />
                 </button>
               </div>
 
-              {/* Description */}
-              <div className="mb-6">
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  {descExpanded ? product.description : truncateDescription(product.description)}
-                  {product.description.length > 150 && (
-                    <button
-                      onClick={() => setDescExpanded(!descExpanded)}
-                      className="text-charcoal ml-1 hover:underline"
-                    >
-                      {descExpanded ? t("product.showLess") : t("product.readMore")}
-                    </button>
-                  )}
-                </p>
-              </div>
+              {/* Buy Now */}
+              <button
+                onClick={handleBuyNow}
+                className="w-full py-3 text-xs tracking-widest uppercase border border-charcoal text-charcoal hover:bg-charcoal hover:text-cream transition-colors mb-6"
+              >
+                {t("product.buyNow")}
+              </button>
+
+              {/* Description - editorial style */}
+              <p className="text-xs text-muted-foreground italic leading-relaxed mb-6">
+                Handcrafted with pure Italian leather, designed for the bold and the timeless.
+              </p>
             </div>
 
             {/* Expandable: Product Details */}
@@ -302,10 +332,10 @@ export default function ProductDetailPage() {
                 className="w-full flex items-center justify-between py-4 text-xs tracking-wider uppercase text-charcoal"
               >
                 <span className="flex items-center gap-2">
-                  <Info className="w-4 h-4" />
+                  <Info className="w-4 h-4 text-charcoal" />
                   {t("product.details")}
                 </span>
-                <ChevronDown className={`w-4 h-4 transition-transform ${detailsOpen ? "rotate-180" : ""}`} />
+                <ChevronDown className={`w-4 h-4 text-charcoal transition-transform ${detailsOpen ? "rotate-180" : ""}`} />
               </button>
               {detailsOpen && (
                 <div className="pb-4 text-sm text-muted-foreground leading-relaxed">
@@ -322,10 +352,10 @@ export default function ProductDetailPage() {
                 className="w-full flex items-center justify-between py-4 text-xs tracking-wider uppercase text-charcoal"
               >
                 <span className="flex items-center gap-2">
-                  <Truck className="w-4 h-4" />
+                  <Truck className="w-4 h-4 text-charcoal" />
                   {t("product.delivery")}
                 </span>
-                <ChevronDown className={`w-4 h-4 transition-transform ${deliveryOpen ? "rotate-180" : ""}`} />
+                <ChevronDown className={`w-4 h-4 text-charcoal transition-transform ${deliveryOpen ? "rotate-180" : ""}`} />
               </button>
               {deliveryOpen && (
                 <div className="pb-4 text-sm text-muted-foreground leading-relaxed">

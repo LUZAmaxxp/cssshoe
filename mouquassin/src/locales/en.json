@@ -38,6 +38,7 @@
   },
   "shop": {
     "title": "Shop",
+    "collectionTitle": "The Collection",
     "subtitle": "Handcrafted tuxedo and mocassin shoes",
     "all": "All",
     "noProducts": "No products found. Check back soon.",

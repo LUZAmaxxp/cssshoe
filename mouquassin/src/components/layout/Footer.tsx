@@ -30,17 +30,17 @@ export function Footer() {
 
           {/* Shop column */}
           <div>
-            <h4 className="text-[11px] tracking-[0.15em] uppercase font-sans font-normal text-charcoal mb-4">
+            <h4 className="text-[10px] tracking-[0.15em] uppercase font-sans font-normal text-charcoal mb-3">
               {t("footer.shop.title")}
             </h4>
-            <div className="space-y-2.5 text-sm text-muted-foreground">
-              <Link href="/shop" className="block hover:text-foreground transition-colors">
+            <div className="space-y-2">
+              <Link href="/shop" className="block text-xs text-muted-foreground hover:text-charcoal transition-colors no-underline">
                 {t("footer.shop.allProducts")}
               </Link>
-              <Link href="/shop?category=loafers" className="block hover:text-foreground transition-colors">
+              <Link href="/shop?category=loafers" className="block text-xs text-muted-foreground hover:text-charcoal transition-colors no-underline">
                 {t("footer.shop.loafers")}
               </Link>
-              <Link href="/shop?category=oxfords" className="block hover:text-foreground transition-colors">
+              <Link href="/shop?category=oxfords" className="block text-xs text-muted-foreground hover:text-charcoal transition-colors no-underline">
                 {t("footer.shop.oxfords")}
               </Link>
             </div>
@@ -48,33 +48,33 @@ export function Footer() {
 
           {/* Help column */}
           <div>
-            <h4 className="text-[11px] tracking-[0.15em] uppercase font-sans font-normal text-charcoal mb-4">
+            <h4 className="text-[10px] tracking-[0.15em] uppercase font-sans font-normal text-charcoal mb-3">
               {t("footer.help.title")}
             </h4>
-            <div className="space-y-2.5 text-sm text-muted-foreground">
-              <Link href="/#values" className="block hover:text-foreground transition-colors">
+            <div className="space-y-2">
+              <Link href="/#values" className="block text-xs text-muted-foreground hover:text-charcoal transition-colors no-underline">
                 {t("footer.help.ourStory")}
               </Link>
-              <Link href="/checkout" className="block hover:text-foreground transition-colors">
+              <Link href="/checkout" className="block text-xs text-muted-foreground hover:text-charcoal transition-colors no-underline">
                 {t("footer.help.placeOrder")}
               </Link>
-              <p className="block">{t("footer.help.shipping")}</p>
+              <p className="block text-xs text-muted-foreground">{t("footer.help.shipping")}</p>
             </div>
           </div>
 
           {/* Stay Connected column */}
           <div>
-            <h4 className="text-[11px] tracking-[0.15em] uppercase font-sans font-normal text-charcoal mb-4">
+            <h4 className="text-[10px] tracking-[0.15em] uppercase font-sans font-normal text-charcoal mb-3">
               {t("footer.connected.title")}
             </h4>
-            <p className="text-sm text-muted-foreground mb-4">
+            <p className="text-xs text-muted-foreground mb-4">
               {t("footer.connected.subscribe")}
             </p>
             <div className="flex gap-2 mb-6">
               <input
                 type="email"
                 placeholder={t("footer.connected.emailPlaceholder")}
-                className="flex-1 bg-transparent border border-border px-3 py-2 text-sm text-charcoal placeholder:text-muted-foreground focus:outline-none focus:border-brass transition-colors"
+                className="flex-1 bg-transparent border border-border px-3 py-2 text-xs text-charcoal placeholder:text-muted-foreground focus:outline-none focus:border-brass transition-colors"
               />
               <button className="bg-charcoal text-cream px-4 py-2 text-[10px] tracking-[0.15em] uppercase hover:bg-brass hover:text-charcoal transition-colors">
                 {t("footer.connected.subscribeButton")}
@@ -85,7 +85,7 @@ export function Footer() {
                 href="https://www.instagram.com/lyzane.co?igsh=Y3l1dHFweXY0MGJz&utm_source=qr"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-charcoal transition-colors text-[11px] tracking-[0.15em] uppercase"
+                className="text-xs text-muted-foreground hover:text-charcoal transition-colors no-underline"
               >
                 Instagram
               </a>
@@ -93,7 +93,7 @@ export function Footer() {
                 href="https://www.facebook.com/share/1BvUC9CRxt/?mibextid=wwXIfr"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-charcoal transition-colors text-[11px] tracking-[0.15em] uppercase"
+                className="text-xs text-muted-foreground hover:text-charcoal transition-colors no-underline"
               >
                 Facebook
               </a>
@@ -106,9 +106,9 @@ export function Footer() {
           <p className="text-[10px] tracking-[0.15em] uppercase text-muted-foreground">
             &copy; {new Date().getFullYear()} Lyzane. {t("footer.copyright")}
           </p>
-          <div className="flex gap-6 text-[10px] tracking-[0.15em] uppercase text-muted-foreground">
-            <a href="#" className="hover:text-charcoal transition-colors">{t("footer.privacy")}</a>
-            <a href="#" className="hover:text-charcoal transition-colors">{t("footer.terms")}</a>
+          <div className="flex gap-6">
+            <a href="#" className="text-[10px] tracking-[0.15em] uppercase text-muted-foreground hover:text-charcoal transition-colors no-underline">{t("footer.privacy")}</a>
+            <a href="#" className="text-[10px] tracking-[0.15em] uppercase text-muted-foreground hover:text-charcoal transition-colors no-underline">{t("footer.terms")}</a>
           </div>
         </div>
       </div>

@@ -38,6 +38,7 @@
   },
   "shop": {
     "title": "Boutique",
+    "collectionTitle": "La Collection",
     "subtitle": "Chaussures classiques de smoking et mocassins artisanales",
     "all": "Tout",
     "noProducts": "Aucun produit trouvé. Revenez bientôt.",

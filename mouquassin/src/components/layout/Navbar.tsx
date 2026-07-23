@@ -66,16 +66,16 @@ export function Navbar({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
           </Link>
 
           <div className="hidden md:flex items-center gap-8 text-[11px] tracking-[0.15em] uppercase text-cream/70">
-            <Link href="/shop" className="hover:text-cream transition-colors">
+            <Link href="/shop" className="text-cream/70 hover:text-cream transition-colors">
               {t("nav.shop")}
             </Link>
-            <Link href="/#philosophy" className="hover:text-cream transition-colors">
+            <Link href="/#philosophy" className="text-cream/70 hover:text-cream transition-colors">
               {t("nav.ourStory")}
             </Link>
-            <Link href="/#craft" className="hover:text-cream transition-colors">
+            <Link href="/#craft" className="text-cream/70 hover:text-cream transition-colors">
               {t("nav.craft")}
             </Link>
-            <Link href="/#journal" className="hover:text-cream transition-colors">
+            <Link href="/#journal" className="text-cream/70 hover:text-cream transition-colors">
               {t("nav.journal")}
             </Link>
           </div>
