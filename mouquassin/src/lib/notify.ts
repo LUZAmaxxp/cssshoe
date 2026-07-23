@@ -43,7 +43,7 @@ export async function sendOrderNotification(order: {
       const response = await fetch(`${baseUrl}/${topic}`, {
         method: "POST",
         headers: {
-          Title: `New Order — $${order.totalPrice}`,
+          Title: `New Order - $${order.totalPrice}`,
           Priority: "high",
           Tags: "shopping_cart,white_check_mark",
         },
