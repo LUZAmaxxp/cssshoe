@@ -1,30 +1,34 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { Typography, Select, MenuItem } from "@mui/material";
+import { ChevronDown } from "lucide-react";
 
 interface Order {
   _id: string;
   customerName: string;
   phone: string;
+  email: string;
   totalPrice: number;
   status: string;
-  items: { name: string; qty: number }[];
+  items: { name: string; qty: number; price: number; size?: string }[];
+  deliveryLocation?: { address?: string };
   createdAt: string;
 }
 
-const statusStyles: Record<string, { bg: string; text: string }> = {
-  new: { bg: "rgba(26,26,26,0.06)", text: "#1a1a1a" },
-  contacted: { bg: "rgba(181,152,90,0.15)", text: "#8a6d2f" },
-  confirmed: { bg: "rgba(99,153,34,0.12)", text: "#3b6d11" },
-  shipped: { bg: "rgba(114,47,55,0.1)", text: "#722f37" },
-  cancelled: { bg: "rgba(220,38,38,0.1)", text: "#dc2626" },
+const statuses = ["new", "contacted", "confirmed", "shipped", "cancelled"] as const;
+
+const statusConfig: Record<string, { bg: string; dot: string; text: string }> = {
+  new: { bg: "bg-blue-50", dot: "bg-blue-500", text: "text-blue-700" },
+  contacted: { bg: "bg-amber-50", dot: "bg-amber-500", text: "text-amber-700" },
+  confirmed: { bg: "bg-green-50", dot: "bg-green-500", text: "text-green-700" },
+  shipped: { bg: "bg-purple-50", dot: "bg-purple-500", text: "text-purple-700" },
+  cancelled: { bg: "bg-red-50", dot: "bg-red-500", text: "text-red-700" },
 };
 
 export default function OrdersPage() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
+  const [expandedOrder, setExpandedOrder] = useState<string | null>(null);
 
   useEffect(() => {
     fetch("/api/orders")
@@ -39,113 +43,127 @@ export default function OrdersPage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ status }),
     });
-    setOrders((prev) =>
-      prev.map((o) => (o._id === orderId ? { ...o, status } : o))
-    );
+    setOrders((prev) => prev.map((o) => (o._id === orderId ? { ...o, status } : o)));
   };
 
   const getInitials = (name: string) =>
-    name
-      .split(" ")
-      .map((w) => w[0])
-      .join("")
-      .slice(0, 2)
-      .toUpperCase();
+    name.split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase();
 
-  const columns: GridColDef[] = [
-    {
-      field: "customerName",
-      headerName: "Customer",
-      flex: 1,
-      minWidth: 120,
-      renderCell: (params) => {
-        return (
-          <div className="flex items-center gap-2">
-            <div
-              className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] flex-shrink-0"
-              style={{ backgroundColor: "#ebebeb", color: "#6b6b6b" }}
-            >
-              {getInitials(params.value)}
-            </div>
-            <span className="truncate">{params.value}</span>
-          </div>
-        );
-      },
-    },
-    { field: "phone", headerName: "Phone", flex: 1, minWidth: 100 },
-    {
-      field: "items",
-      headerName: "Items",
-      flex: 1,
-      minWidth: 120,
-      renderCell: (params) => (
-        <span className="truncate">
-          {params.value?.map((i: { name: string; qty: number }) => `${i.name} x${i.qty}`).join(", ")}
-        </span>
-      ),
-    },
-    {
-      field: "totalPrice",
-      headerName: "Total",
-      flex: 0.5,
-      minWidth: 70,
-      renderCell: (params) => `$${params.value}`,
-    },
-    {
-      field: "status",
-      headerName: "Status",
-      flex: 1,
-      minWidth: 120,
-      renderCell: (params) => {
-        const s = statusStyles[params.value] || statusStyles["new"];
-        return (
-          <Select
-            size="small"
-            fullWidth
-            value={params.value}
-            onChange={(e) => updateStatus(params.row._id, e.target.value)}
-            renderValue={() => (
-              <span
-                className="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-medium"
-                style={{ backgroundColor: s.bg, color: s.text }}
-              >
-                {params.value}
-              </span>
-            )}
-          >
-            <MenuItem value="new">New</MenuItem>
-            <MenuItem value="contacted">Contacted</MenuItem>
-            <MenuItem value="confirmed">Confirmed</MenuItem>
-            <MenuItem value="shipped">Shipped</MenuItem>
-            <MenuItem value="cancelled">Cancelled</MenuItem>
-          </Select>
-        );
-      },
-    },
-    {
-      field: "createdAt",
-      headerName: "Date",
-      flex: 1,
-      minWidth: 90,
-      renderCell: (params) => new Date(params.value).toLocaleDateString(),
-    },
-  ];
+  const stats = {
+    total: orders.length,
+    new: orders.filter((o) => o.status === "new").length,
+    revenue: orders.filter((o) => o.status !== "cancelled").reduce((sum, o) => sum + o.totalPrice, 0),
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="w-8 h-8 border-2 border-charcoal border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <div>
-      <Typography variant="h4" sx={{ fontWeight: "bold", mb: 3 }}>
-        Orders
-      </Typography>
-      <div className="w-full overflow-x-auto">
-        <div style={{ height: 500, minWidth: 700 }}>
-          <DataGrid
-            rows={orders}
-            columns={columns}
-            loading={loading}
-            getRowId={(row) => row._id}
-            pageSizeOptions={[10, 25, 50]}
-          />
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold text-charcoal">Orders</h1>
+        <p className="text-sm text-muted-foreground mt-1">Manage customer orders</p>
+      </div>
+
+      {/* Stats */}
+      <div className="grid grid-cols-3 gap-4 mb-6">
+        <div className="bg-white rounded-xl border border-border p-4">
+          <p className="text-[11px] tracking-wider uppercase text-muted-foreground mb-1">Total Orders</p>
+          <p className="text-2xl font-bold text-charcoal">{stats.total}</p>
         </div>
+        <div className="bg-white rounded-xl border border-border p-4">
+          <p className="text-[11px] tracking-wider uppercase text-muted-foreground mb-1">New Orders</p>
+          <p className="text-2xl font-bold text-blue-600">{stats.new}</p>
+        </div>
+        <div className="bg-white rounded-xl border border-border p-4">
+          <p className="text-[11px] tracking-wider uppercase text-muted-foreground mb-1">Revenue</p>
+          <p className="text-2xl font-bold text-charcoal">${stats.revenue}</p>
+        </div>
+      </div>
+
+      {/* Orders list */}
+      <div className="space-y-3">
+        {orders.map((order) => {
+          const sc = statusConfig[order.status] || statusConfig.new;
+          const isExpanded = expandedOrder === order._id;
+
+          return (
+            <div key={order._id} className="bg-white rounded-xl border border-border overflow-hidden">
+              {/* Main row */}
+              <div
+                className="flex items-center gap-4 p-4 cursor-pointer hover:bg-muted/30 transition-colors"
+                onClick={() => setExpandedOrder(isExpanded ? null : order._id)}
+              >
+                <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center text-xs font-medium text-muted-foreground flex-shrink-0">
+                  {getInitials(order.customerName)}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-medium truncate">{order.customerName}</span>
+                    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium ${sc.bg} ${sc.text}`}>
+                      <span className={`w-1.5 h-1.5 rounded-full ${sc.dot}`} />
+                      {order.status}
+                    </span>
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-0.5">{order.items.length} item(s) — {new Date(order.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })}</p>
+                </div>
+                <span className="text-sm font-semibold text-charcoal shrink-0">${order.totalPrice}</span>
+                <ChevronDown className={`w-4 h-4 text-muted-foreground transition-transform ${isExpanded ? "rotate-180" : ""}`} />
+              </div>
+
+              {/* Expanded details */}
+              {isExpanded && (
+                <div className="border-t border-border/50 p-4 bg-muted/10">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                    <div>
+                      <p className="text-[10px] tracking-wider uppercase text-muted-foreground mb-1">Contact</p>
+                      <p className="text-sm">{order.phone}</p>
+                      {order.email && <p className="text-sm text-muted-foreground">{order.email}</p>}
+                    </div>
+                    <div>
+                      <p className="text-[10px] tracking-wider uppercase text-muted-foreground mb-1">Delivery</p>
+                      <p className="text-sm">{order.deliveryLocation?.address || "Not provided"}</p>
+                    </div>
+                  </div>
+
+                  <div className="mb-4">
+                    <p className="text-[10px] tracking-wider uppercase text-muted-foreground mb-2">Items</p>
+                    <div className="space-y-1">
+                      {order.items.map((item, i) => (
+                        <div key={i} className="flex justify-between text-sm">
+                          <span className="text-muted-foreground">{item.name}{item.size ? ` (${item.size})` : ""} x{item.qty}</span>
+                          <span className="font-medium">${item.price * item.qty}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <p className="text-[10px] tracking-wider uppercase text-muted-foreground mr-2">Status:</p>
+                    {statuses.map((s) => {
+                      const config = statusConfig[s];
+                      const isActive = order.status === s;
+                      return (
+                        <button
+                          key={s}
+                          onClick={() => updateStatus(order._id, s)}
+                          className={`px-3 py-1.5 rounded-lg text-[11px] font-medium transition-all ${isActive ? `${config.bg} ${config.text} ring-1 ring-inset ring-current/20` : "bg-muted/50 text-muted-foreground hover:bg-muted"}`}
+                        >
+                          {s}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
+          );
+        })}
       </div>
     </div>
   );
