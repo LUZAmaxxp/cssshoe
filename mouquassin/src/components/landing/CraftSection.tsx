@@ -21,6 +21,14 @@ export function CraftSection({ id }: CraftSectionProps) {
       ref={ref}
       className="relative min-h-[70vh] md:min-h-[80vh] flex items-center overflow-hidden"
     >
+      {/* Ghost numeral watermark */}
+      <span
+        className="absolute top-4 right-8 lg:right-16 font-heading text-[90px] md:text-[120px] leading-none pointer-events-none select-none z-0"
+        style={{ color: "rgba(242,237,230,0.05)" }}
+      >
+        03
+      </span>
+
       {/* Video background */}
       <video
         autoPlay

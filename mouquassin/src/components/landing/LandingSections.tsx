@@ -19,6 +19,7 @@ export function LandingSections() {
         imageSrc="https://res.cloudinary.com/dzrsbjdma/image/upload/v1784804012/lyzane/logo.jpg"
         imageSide="right"
         variant="light"
+        numeral="02"
       />
     </>
   );

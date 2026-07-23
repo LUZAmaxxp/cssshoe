@@ -15,6 +15,7 @@ interface SplitFeatureProps {
   imageSide?: "left" | "right";
   variant?: "light" | "dark";
   flushEdge?: boolean;
+  numeral?: string;
 }
 
 export function SplitFeature({
@@ -27,6 +28,7 @@ export function SplitFeature({
   imageSide = "left",
   variant = "light",
   flushEdge = false,
+  numeral,
 }: SplitFeatureProps) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
@@ -39,8 +41,19 @@ export function SplitFeature({
     <section
       id={id}
       ref={ref}
-      className={`min-h-[80vh] flex flex-col ${hasImage ? "md:flex-row" : ""} ${isDark ? "bg-charcoal" : "bg-cream"}`}
+      className={`relative min-h-[80vh] flex flex-col ${hasImage ? "md:flex-row" : ""} ${isDark ? "bg-charcoal" : "bg-cream"}`}
     >
+      {/* Ghost numeral watermark */}
+      {numeral && (
+        <span
+          className={`absolute top-4 font-heading text-[90px] md:text-[120px] leading-none pointer-events-none select-none z-0 ${
+            isDark ? "" : ""
+          } ${imageOnLeft ? "right-8 lg:right-16" : "left-8 lg:left-16"}`}
+          style={{ color: isDark ? "rgba(242,237,230,0.05)" : "rgba(13,12,10,0.04)" }}
+        >
+          {numeral}
+        </span>
+      )}
       {/* Image column */}
       {hasImage && (
         <motion.div
