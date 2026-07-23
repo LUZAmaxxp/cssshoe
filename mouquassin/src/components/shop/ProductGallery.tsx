@@ -116,7 +116,7 @@ export function ProductGallery({ images, name }: ProductGalleryProps) {
           {/* Close button */}
           <button
             onClick={() => setFullscreen(false)}
-            className="fixed top-4 right-4 w-12 h-12 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-colors"
+            className="fixed top-4 right-4 w-12 h-12 bg-black/60 hover:bg-black/80 border border-white/30 rounded-full flex items-center justify-center transition-colors"
             style={{ zIndex: 100000 }}
           >
             <X className="w-6 h-6 text-white" />
@@ -138,14 +138,14 @@ export function ProductGallery({ images, name }: ProductGalleryProps) {
             <>
               <button
                 onClick={prev}
-                className="fixed left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"
+                className="fixed left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-black/60 hover:bg-black/80 border border-white/30 rounded-full flex items-center justify-center transition-colors"
                 style={{ zIndex: 100000 }}
               >
                 <ChevronLeft className="w-6 h-6 text-white" />
               </button>
               <button
                 onClick={next}
-                className="fixed right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"
+                className="fixed right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-black/60 hover:bg-black/80 border border-white/30 rounded-full flex items-center justify-center transition-colors"
                 style={{ zIndex: 100000 }}
               >
                 <ChevronRight className="w-6 h-6 text-white" />
