@@ -52,7 +52,7 @@ export function ArtOfShoe({ id }: ArtOfShoeProps) {
             transition={{ duration: 1.2, delay: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
             className="relative flex justify-center"
           >
-            <div className="relative">
+            <div className="relative bg-[#f2ede6]">
               <div
                 className="absolute -bottom-8 left-[-10%] right-[-10%] h-[50px] rounded-[50%]"
                 style={{
@@ -108,7 +108,7 @@ export function ArtOfShoe({ id }: ArtOfShoeProps) {
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 1, delay: 0.4 }}
-          className="px-6 pb-12 flex justify-center"
+          className="px-6 pb-12 flex justify-center bg-[#f2ede6]"
         >
           <Image
             src="https://res.cloudinary.com/dzrsbjdma/image/upload/v1784804011/lyzane/don2.jpg"
