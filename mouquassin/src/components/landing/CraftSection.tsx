@@ -27,7 +27,9 @@ export function CraftSection({ id }: CraftSectionProps) {
         loop
         muted
         playsInline
-        className="absolute inset-0 w-full h-full object-cover"
+        controls={false}
+        preload="auto"
+        className="absolute inset-0 w-full h-full object-cover pointer-events-none"
       >
         <source src="https://res.cloudinary.com/dzrsbjdma/video/upload/craft-video.mp4" type="video/mp4" />
       </video>
