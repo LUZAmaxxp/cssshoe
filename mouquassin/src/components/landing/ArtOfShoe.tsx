@@ -64,7 +64,7 @@ export function ArtOfShoe({ id }: ArtOfShoeProps) {
           <div
             className="absolute inset-0 z-0 pointer-events-none"
             style={{
-              background: "radial-gradient(ellipse 60% 50% at 65% 55%, rgba(13,12,10,0.10) 0%, transparent 70%)",
+              background: "radial-gradient(ellipse 55% 45% at 65% 50%, rgba(13,12,10,0.15) 0%, transparent 65%)",
             }}
           />
           <Image
@@ -78,9 +78,9 @@ export function ArtOfShoe({ id }: ArtOfShoeProps) {
           />
           {/* Floor shadow — elliptical gradient at bottom */}
           <div
-            className="absolute bottom-0 right-0 w-[80%] h-[30%] z-0 pointer-events-none"
+            className="absolute bottom-0 right-0 w-[90%] h-[35%] z-0 pointer-events-none"
             style={{
-              background: "radial-gradient(ellipse 70% 100% at 50% 100%, rgba(13,12,10,0.12) 0%, transparent 65%)",
+              background: "radial-gradient(ellipse 65% 90% at 50% 100%, rgba(13,12,10,0.25) 0%, rgba(13,12,10,0.08) 40%, transparent 70%)",
             }}
           />
           {/* Gradient bridge — blends image into cream text panel */}
@@ -159,7 +159,7 @@ export function ArtOfShoe({ id }: ArtOfShoeProps) {
           <div
             className="absolute inset-0 z-0 pointer-events-none"
             style={{
-              background: "radial-gradient(ellipse 60% 50% at 50% 55%, rgba(13,12,10,0.10) 0%, transparent 70%)",
+              background: "radial-gradient(ellipse 55% 45% at 50% 50%, rgba(13,12,10,0.15) 0%, transparent 65%)",
             }}
           />
           <Image
@@ -173,9 +173,9 @@ export function ArtOfShoe({ id }: ArtOfShoeProps) {
           />
           {/* Floor shadow — mobile */}
           <div
-            className="absolute bottom-0 left-0 right-0 h-[25%] z-0 pointer-events-none"
+            className="absolute bottom-0 left-0 right-0 h-[30%] z-0 pointer-events-none"
             style={{
-              background: "radial-gradient(ellipse 80% 100% at 50% 100%, rgba(13,12,10,0.12) 0%, transparent 65%)",
+              background: "radial-gradient(ellipse 75% 90% at 50% 100%, rgba(13,12,10,0.25) 0%, rgba(13,12,10,0.08) 40%, transparent 70%)",
             }}
           />
           {/* Gradient bridge — mobile top edge */}
