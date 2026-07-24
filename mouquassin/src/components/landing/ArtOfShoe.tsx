@@ -60,14 +60,28 @@ export function ArtOfShoe({ id }: ArtOfShoeProps) {
           transition={{ duration: 1.2, delay: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
           className="absolute top-0 right-0 w-1/2 h-full"
         >
+          {/* Ambient shadow behind person */}
+          <div
+            className="absolute inset-0 z-0 pointer-events-none"
+            style={{
+              background: "radial-gradient(ellipse 60% 50% at 65% 55%, rgba(13,12,10,0.10) 0%, transparent 70%)",
+            }}
+          />
           <Image
             src="https://res.cloudinary.com/dzrsbjdma/image/upload/v1784913479/lyzane/shoeart-no-bg.png"
             alt="Artisan wearing Lyzane classic shoe"
             fill
-            className="object-contain object-right"
+            className="object-contain object-right relative z-[1]"
             priority
             quality={90}
             sizes="50vw"
+          />
+          {/* Floor shadow — elliptical gradient at bottom */}
+          <div
+            className="absolute bottom-0 right-0 w-[80%] h-[30%] z-0 pointer-events-none"
+            style={{
+              background: "radial-gradient(ellipse 70% 100% at 50% 100%, rgba(13,12,10,0.12) 0%, transparent 65%)",
+            }}
           />
           {/* Gradient bridge — blends image into cream text panel */}
           <div
@@ -141,14 +155,28 @@ export function ArtOfShoe({ id }: ArtOfShoeProps) {
           transition={{ duration: 1, delay: 0.4 }}
           className="relative w-full aspect-[16/9]"
         >
+          {/* Ambient shadow behind person — mobile */}
+          <div
+            className="absolute inset-0 z-0 pointer-events-none"
+            style={{
+              background: "radial-gradient(ellipse 60% 50% at 50% 55%, rgba(13,12,10,0.10) 0%, transparent 70%)",
+            }}
+          />
           <Image
             src="https://res.cloudinary.com/dzrsbjdma/image/upload/v1784913479/lyzane/shoeart-no-bg.png"
             alt="Artisan wearing Lyzane classic shoe"
             fill
-            className="object-contain object-bottom"
+            className="object-contain object-bottom relative z-[1]"
             priority
             quality={85}
             sizes="100vw"
+          />
+          {/* Floor shadow — mobile */}
+          <div
+            className="absolute bottom-0 left-0 right-0 h-[25%] z-0 pointer-events-none"
+            style={{
+              background: "radial-gradient(ellipse 80% 100% at 50% 100%, rgba(13,12,10,0.12) 0%, transparent 65%)",
+            }}
           />
           {/* Gradient bridge — mobile top edge */}
           <div
