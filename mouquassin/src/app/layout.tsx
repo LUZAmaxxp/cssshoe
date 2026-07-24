@@ -70,7 +70,7 @@ export default function RootLayout({
       className={`${playfair.variable} ${inter.variable} ${tenorSans.variable} ${notoArabic.variable} h-full antialiased overflow-x-hidden`}
     >
       <head>
-        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="https://res.cloudinary.com/dzrsbjdma/image/upload/v1784804013/lyzane/logo1v1.png" type="image/png" />
       </head>
       <body className="min-h-full flex flex-col overflow-x-hidden">
         <ClientProviders>{children}</ClientProviders>
