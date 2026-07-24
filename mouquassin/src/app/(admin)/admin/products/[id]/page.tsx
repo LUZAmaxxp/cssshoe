@@ -275,7 +275,7 @@ export default function EditProductPage() {
             <div>
               <label className="block text-sm font-medium text-charcoal mb-1.5">Price</label>
               <div className="relative">
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground">$</span>
+                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground">DH</span>
                 <input
                   type="number"
                   value={price}
@@ -477,7 +477,7 @@ export default function EditProductPage() {
               </div>
               <div className="p-4 bg-muted/50 rounded-lg">
                 <p className="text-xs text-muted-foreground mb-1">Price</p>
-                <p className="text-sm font-medium text-charcoal">${price || "0"}</p>
+                <p className="text-sm font-medium text-charcoal">{price || "0"} DH</p>
               </div>
               <div className="p-4 bg-muted/50 rounded-lg">
                 <p className="text-xs text-muted-foreground mb-1">Colors</p>

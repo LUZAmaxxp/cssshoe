@@ -68,7 +68,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                         <p className="text-xs text-muted-foreground">
                           {t("cart.size")}: {item.size}
                         </p>
-                        <p className="text-sm mt-1">${item.price}</p>
+                        <p className="text-sm mt-1">{item.price} DH</p>
 
                         <div className="flex items-center gap-3 mt-2">
                           <button
@@ -116,7 +116,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
               <div className="border-t p-4 space-y-4">
                 <div className="flex justify-between text-lg font-medium">
                   <span>{t("cart.total")}</span>
-                  <span>${totalPrice()}</span>
+                  <span>{totalPrice()} DH</span>
                 </div>
                 <Link
                   href="/checkout"

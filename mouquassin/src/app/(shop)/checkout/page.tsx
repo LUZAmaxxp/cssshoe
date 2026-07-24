@@ -136,12 +136,12 @@ export default function CheckoutPage() {
               <span>
                 {item.name} ({t("checkout.size")}: {item.size}) x{item.quantity}
               </span>
-              <span>${item.price * item.quantity}</span>
+              <span>{item.price * item.quantity} DH</span>
             </div>
           ))}
           <div className="border-t pt-3 flex justify-between font-medium text-lg">
             <span>{t("checkout.total")}</span>
-            <span>${totalPrice()}</span>
+            <span>{totalPrice()} DH</span>
           </div>
         </div>
 

@@ -116,7 +116,7 @@ export function SearchModal() {
                         <p className="text-cream text-sm truncate">{product.name}</p>
                         <p className="text-cream/40 text-xs">{product.category}</p>
                       </div>
-                      <span className="text-cream/60 text-sm">${product.price}</span>
+                      <span className="text-cream/60 text-sm">{product.price} DH</span>
                     </Link>
                   ))}
                 </div>

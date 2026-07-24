@@ -82,7 +82,7 @@ export default function OrdersPage() {
         </div>
         <div className="bg-white rounded-xl border border-border p-4">
           <p className="text-[11px] tracking-wider uppercase text-muted-foreground mb-1">Revenue</p>
-          <p className="text-2xl font-bold text-charcoal">${stats.revenue}</p>
+          <p className="text-2xl font-bold text-charcoal">{stats.revenue} DH</p>
         </div>
       </div>
 
@@ -112,7 +112,7 @@ export default function OrdersPage() {
                   </div>
                   <p className="text-xs text-muted-foreground mt-0.5">{order.items.length} item(s) — {new Date(order.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })}</p>
                 </div>
-                <span className="text-sm font-semibold text-charcoal shrink-0">${order.totalPrice}</span>
+                <span className="text-sm font-semibold text-charcoal shrink-0">{order.totalPrice} DH</span>
                 <ChevronDown className={`w-4 h-4 text-muted-foreground transition-transform ${isExpanded ? "rotate-180" : ""}`} />
               </div>
 
@@ -137,7 +137,7 @@ export default function OrdersPage() {
                       {order.items.map((item, i) => (
                         <div key={i} className="flex justify-between text-sm">
                           <span className="text-muted-foreground">{item.name}{item.size ? ` (${item.size})` : ""} x{item.qty}</span>
-                          <span className="font-medium">${item.price * item.qty}</span>
+                          <span className="font-medium">{item.price * item.qty} DH</span>
                         </div>
                       ))}
                     </div>

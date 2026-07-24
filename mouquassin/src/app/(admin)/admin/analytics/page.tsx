@@ -57,7 +57,7 @@ export default function AnalyticsPage() {
         {[
           { label: "Total Views", value: totalViews, icon: Eye, color: "text-blue-600", bg: "bg-blue-50" },
           { label: "Total Likes", value: totalLikes, icon: Heart, color: "text-rose-600", bg: "bg-rose-50" },
-          { label: "Revenue", value: `$${totalRevenue}`, icon: TrendingUp, color: "text-green-600", bg: "bg-green-50" },
+          { label: "Revenue", value: `${totalRevenue} DH`, icon: TrendingUp, color: "text-green-600", bg: "bg-green-50" },
           { label: "Orders", value: totalOrders, icon: Package, color: "text-purple-600", bg: "bg-purple-50" },
         ].map((stat) => (
           <div key={stat.label} className="bg-white rounded-xl border border-border p-4">
@@ -149,7 +149,7 @@ export default function AnalyticsPage() {
                       <tr key={order._id} className="border-b border-border/30 last:border-0">
                         <td className="py-3 text-sm font-medium">{order._id.slice(-6).toUpperCase()}</td>
                         <td className="py-3 text-sm text-muted-foreground">{order.items.length} item(s)</td>
-                        <td className="py-3 text-sm font-medium">${order.totalPrice}</td>
+                        <td className="py-3 text-sm font-medium">{order.totalPrice} DH</td>
                         <td className="py-3">
                           <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium ${sc.bg} ${sc.text}`}>
                             <span className={`w-1.5 h-1.5 rounded-full ${sc.dot}`} />

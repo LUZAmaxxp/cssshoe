@@ -109,7 +109,7 @@ export function ProductCard({
 
         {/* Price + Likes row */}
         <div className="flex items-center justify-between mt-0.5">
-          <p className="text-sm font-medium">${price}</p>
+          <p className="text-sm font-medium">{price} DH</p>
           <span className="text-xs text-muted-foreground flex items-center gap-1">
             <Heart className="w-3 h-3" />
             {likes}

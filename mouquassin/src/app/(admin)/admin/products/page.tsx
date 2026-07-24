@@ -84,7 +84,7 @@ export default function ProductsListPage() {
                   </div>
                 </td>
                 <td className="px-4 py-3 text-sm text-muted-foreground">{product.category}</td>
-                <td className="px-4 py-3 text-sm font-medium">${product.price}</td>
+                <td className="px-4 py-3 text-sm font-medium">{product.price} DH</td>
                 <td className="px-4 py-3 text-sm text-muted-foreground">{product.viewCount}</td>
                 <td className="px-4 py-3 text-sm text-muted-foreground">{product.likeCount}</td>
                 <td className="px-4 py-3">
@@ -125,7 +125,7 @@ export default function ProductsListPage() {
                 <p className="text-sm font-medium truncate">{product.name}</p>
                 <p className="text-xs text-muted-foreground">{product.category}</p>
                 <div className="flex items-center gap-2 mt-1">
-                  <span className="text-sm font-semibold">${product.price}</span>
+                  <span className="text-sm font-semibold">{product.price} DH</span>
                   <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium ${product.isArchived ? "bg-muted text-muted-foreground" : "bg-green-50 text-green-700"}`}>
                     <span className={`w-1 h-1 rounded-full ${product.isArchived ? "bg-muted-foreground" : "bg-green-500"}`} />
                     {product.isArchived ? "Archived" : "Active"}
