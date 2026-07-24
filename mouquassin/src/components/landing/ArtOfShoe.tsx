@@ -61,10 +61,10 @@ export function ArtOfShoe({ id }: ArtOfShoeProps) {
           className="absolute top-0 right-0 w-1/2 h-full"
         >
           <Image
-            src="https://res.cloudinary.com/dzrsbjdma/image/upload/v1784812813/lyzane/craftyman.png"
-            alt="Artisan crafting Lyzane shoes"
+            src="https://res.cloudinary.com/dzrsbjdma/image/upload/v1784913479/lyzane/shoeart-no-bg.png"
+            alt="Artisan wearing Lyzane classic shoe"
             fill
-            className="object-cover object-left"
+            className="object-contain object-right"
             priority
             quality={90}
             sizes="50vw"
@@ -142,10 +142,10 @@ export function ArtOfShoe({ id }: ArtOfShoeProps) {
           className="relative w-full aspect-[16/9]"
         >
           <Image
-            src="https://res.cloudinary.com/dzrsbjdma/image/upload/v1784812813/lyzane/craftyman.png"
-            alt="Artisan crafting Lyzane shoes"
+            src="https://res.cloudinary.com/dzrsbjdma/image/upload/v1784913479/lyzane/shoeart-no-bg.png"
+            alt="Artisan wearing Lyzane classic shoe"
             fill
-            className="object-cover object-left"
+            className="object-contain object-bottom"
             priority
             quality={85}
             sizes="100vw"
