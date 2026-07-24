@@ -121,6 +121,7 @@ export default function RootLayout({
         <link rel="icon" href="https://res.cloudinary.com/dzrsbjdma/image/upload/v1784804013/lyzane/logo1v1.png" type="image/png" />
         <link rel="apple-touch-icon" href="https://res.cloudinary.com/dzrsbjdma/image/upload/v1784804013/lyzane/logo1v1.png" />
         <meta name="theme-color" content="#0d0c0a" />
+        <meta name="google-site-verification" content="yPkYViTQP1IcX5oemeMg5XdsXgMdQP5V0eTwiLPLeTM" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
