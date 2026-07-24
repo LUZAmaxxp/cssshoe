@@ -3,9 +3,10 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { Menu, X, ShoppingBag, Search, User, Globe } from "lucide-react";
+import { Menu, X, ShoppingBag, User, Globe } from "lucide-react";
 import { useCartStore } from "@/stores/cart";
 import { CartDrawer } from "@/components/shop/CartDrawer";
+import { SearchModal } from "@/components/layout/SearchModal";
 import { useLocale } from "@/i18n/context";
 import { locales, localeMetadata } from "@/i18n/config";
 
@@ -81,9 +82,9 @@ export function Navbar({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
           </div>
 
           <div className="flex items-center gap-3 text-cream/70">
-            <button className="hidden md:block p-2 hover:text-cream transition-colors">
-              <Search className="w-4 h-4" />
-            </button>
+            <span className="hidden md:block">
+              <SearchModal />
+            </span>
             <button className="hidden md:block p-2 hover:text-cream transition-colors">
               <User className="w-4 h-4" />
             </button>
@@ -131,6 +132,9 @@ export function Navbar({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
 
         {menuOpen && (
           <div className="md:hidden bg-charcoal/95 backdrop-blur-sm border-t border-cream/10 px-4 py-6 min-h-[calc(100vh-64px)] space-y-4">
+            <div className="md:hidden">
+              <SearchModal />
+            </div>
             <Link href="/shop" className="block text-[11px] tracking-[0.15em] uppercase text-cream/70 hover:text-cream" onClick={() => setMenuOpen(false)}>
               {t("nav.shop")}
             </Link>
