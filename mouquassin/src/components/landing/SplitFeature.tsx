@@ -7,6 +7,7 @@ import { ArrowRight } from "lucide-react";
 
 interface SplitFeatureProps {
   id?: string;
+  subtitle?: string;
   title: string;
   body: string;
   ctaLabel?: string;
@@ -20,6 +21,7 @@ interface SplitFeatureProps {
 
 export function SplitFeature({
   id,
+  subtitle,
   title,
   body,
   ctaLabel = "Our Philosophy +",
@@ -87,6 +89,14 @@ export function SplitFeature({
           transition={{ duration: 0.8, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
           className="max-w-md"
         >
+          {subtitle && (
+            <p className={`text-[11px] tracking-[0.3em] uppercase mb-4 ${
+              isDark ? "text-brass" : "text-brass"
+            }`}>
+              {subtitle}
+            </p>
+          )}
+
           <h2
             className={`text-3xl md:text-4xl lg:text-5xl font-heading leading-[1.1] mb-6 ${
               isDark ? "text-cream" : "text-charcoal"

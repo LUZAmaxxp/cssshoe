@@ -87,30 +87,6 @@ export function HeroCarousel() {
           </motion.div>
         </div>
       </motion.div>
-
-      {/* Pagination indicator - bottom left */}
-      <div className="absolute bottom-6 left-6 md:bottom-8 md:left-16 z-10">
-        <p
-          className="text-[10px] tracking-[0.25em] uppercase"
-          style={{ color: "rgba(242,237,230,0.4)" }}
-        >
-          01 — 03
-        </p>
-      </div>
-
-      {/* Scroll hint - bottom right (hidden on mobile) */}
-      <div className="absolute bottom-6 right-6 md:bottom-8 md:right-16 z-10 hidden md:flex flex-col items-center gap-2">
-        <p
-          className="text-[10px] tracking-[0.2em] uppercase"
-          style={{
-            color: "rgba(242,237,230,0.4)",
-            writingMode: "vertical-rl",
-          }}
-        >
-          {t("hero.scroll")}
-        </p>
-        <div className="w-px h-8 bg-cream/20" />
-      </div>
     </section>
   );
 }

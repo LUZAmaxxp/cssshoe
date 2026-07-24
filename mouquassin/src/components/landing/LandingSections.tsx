@@ -12,6 +12,7 @@ export function LandingSections() {
       <BrandGrid />
 
       <SplitFeature
+        subtitle={t("splitFeature.subtitle")}
         title={t("splitFeature.title")}
         body={t("splitFeature.body")}
         ctaLabel={t("splitFeature.cta")}
