@@ -51,6 +51,7 @@ export default function ProductDetailPage() {
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [deliveryOpen, setDeliveryOpen] = useState(false);
   const [showSizeError, setShowSizeError] = useState(false);
+  const [showSizeGuide, setShowSizeGuide] = useState(false);
   const [added, setAdded] = useState(false);
   const addItem = useCartStore((s) => s.addItem);
 
@@ -253,7 +254,7 @@ export default function ProductDetailPage() {
                 <div className="mb-6">
                   <div className="flex items-center justify-between mb-3">
                     <p className="text-xs tracking-wider uppercase text-charcoal">{t("product.size")}</p>
-                    <button className="text-xs text-brass hover:underline">+ {t("product.sizeGuide")}</button>
+                    <button onClick={() => setShowSizeGuide(true)} className="text-xs text-brass hover:underline">+ {t("product.sizeGuide")}</button>
                   </div>
                   <div className="flex gap-2">
                     {allSizes.map((size) => {
@@ -396,6 +397,49 @@ export default function ProductDetailPage() {
           </div>
         )}
       </main>
+
+      {/* Size Guide Modal */}
+      {showSizeGuide && (
+        <div className="fixed inset-0 z-[100] bg-black/50 flex items-center justify-center p-4" onClick={() => setShowSizeGuide(false)}>
+          <div className="bg-white max-w-lg w-full max-h-[80vh] overflow-y-auto p-6" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-heading text-charcoal">{t("product.sizeGuide")}</h3>
+              <button onClick={() => setShowSizeGuide(false)} className="text-muted-foreground hover:text-charcoal text-xl">&times;</button>
+            </div>
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-border">
+                  <th className="text-left py-2 text-xs uppercase tracking-wider text-muted-foreground">EU</th>
+                  <th className="text-left py-2 text-xs uppercase tracking-wider text-muted-foreground">US</th>
+                  <th className="text-left py-2 text-xs uppercase tracking-wider text-muted-foreground">UK</th>
+                  <th className="text-left py-2 text-xs uppercase tracking-wider text-muted-foreground">CM</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  ["39", "6", "5.5", "24.5"],
+                  ["40", "7", "6", "25"],
+                  ["41", "8", "7", "26"],
+                  ["42", "8.5", "7.5", "26.5"],
+                  ["43", "9.5", "8.5", "27.5"],
+                  ["44", "10", "9", "28"],
+                  ["45", "11", "10", "29"],
+                  ["46", "11.5", "10.5", "29.5"],
+                ].map(([eu, us, uk, cm]) => (
+                  <tr key={eu} className="border-b border-border/50">
+                    <td className="py-2">{eu}</td>
+                    <td className="py-2">{us}</td>
+                    <td className="py-2">{uk}</td>
+                    <td className="py-2">{cm}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <p className="text-xs text-muted-foreground mt-4">If you are between sizes, we recommend sizing up.</p>
+          </div>
+        </div>
+      )}
+
       <Footer />
     </>
   );
