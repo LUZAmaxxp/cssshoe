@@ -90,8 +90,9 @@ export default function EditProductPage() {
   const addSizeToColor = (idx: number) => {
     const s = colors[idx].sizeInput.trim();
     if (s && !colors[idx].sizes.includes(s)) {
-      updateColor(idx, "sizes", [...colors[idx].sizes, s]);
-      updateColor(idx, "sizeInput", "");
+      setColors((prev) => prev.map((c, i) =>
+        i === idx ? { ...c, sizes: [...c.sizes, s], sizeInput: "" } : c
+      ));
     }
   };
 
@@ -384,7 +385,7 @@ export default function EditProductPage() {
                     </p>
                   </div>
                   {colors[activeColorIdx]?.images.length > 0 && (
-                    <div className="grid grid-cols-5 gap-2 mt-3">
+                    <div className="grid grid-cols-4 md:grid-cols-5 gap-2 mt-3">
                       {colors[activeColorIdx].images.map((img, i) => (
                         <div key={i} className="relative aspect-square group rounded-lg overflow-hidden border border-border">
                           <Image src={img} alt="" fill className="object-cover" />
@@ -412,6 +413,7 @@ export default function EditProductPage() {
                   <div className="flex gap-2 mb-2">
                     <input
                       type="text"
+                      inputMode="text"
                       value={colors[activeColorIdx]?.sizeInput || ""}
                       onChange={(e) => updateColor(activeColorIdx, "sizeInput", e.target.value)}
                       onKeyDown={(e) => {
@@ -420,13 +422,13 @@ export default function EditProductPage() {
                           addSizeToColor(activeColorIdx);
                         }
                       }}
-                      className="flex-1 border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-burgundy/20 focus:border-burgundy transition-colors"
+                      className="flex-1 min-w-0 border border-border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-burgundy/20 focus:border-burgundy transition-colors"
                       placeholder="e.g. 42"
                     />
                     <button
                       type="button"
                       onClick={() => addSizeToColor(activeColorIdx)}
-                      className="px-3 py-2 border border-border rounded-lg text-sm font-medium hover:bg-muted transition-colors"
+                      className="px-4 py-2.5 border border-border rounded-lg text-sm font-medium hover:bg-muted transition-colors flex-shrink-0"
                     >
                       Add
                     </button>
