@@ -116,7 +116,7 @@ export function ArtOfShoe({ id }: ArtOfShoeProps) {
       </div>
 
       {/* Mobile: stacked layout */}
-      <div className="md:hidden flex flex-col relative">
+      <div className="md:hidden relative">
         {/* Ghost numeral watermark — mobile */}
         <span
           className="absolute top-2 left-4 font-heading text-[60px] leading-none pointer-events-none select-none z-0"
@@ -125,19 +125,20 @@ export function ArtOfShoe({ id }: ArtOfShoeProps) {
           01
         </span>
 
+        {/* Text — compact, top */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="px-6 py-10 relative z-10"
+          className="px-5 pt-10 pb-4 relative z-10"
         >
-          <p className="text-brass text-[10px] tracking-[0.3em] uppercase mb-3">
+          <p className="text-brass text-[10px] tracking-[0.3em] uppercase mb-2">
             {t("artOfShoe.subtitle")}
           </p>
-          <h2 className="text-2xl font-heading text-charcoal leading-[1.1] mb-4">
+          <h2 className="text-[26px] font-heading text-charcoal leading-[1.1] mb-3">
             {t("artOfShoe.title")}
           </h2>
-          <p className="text-sm leading-relaxed mb-6 text-charcoal/60">
+          <p className="text-[13px] leading-relaxed mb-5 text-charcoal/60">
             {t("artOfShoe.body")}
           </p>
           <Link
@@ -149,11 +150,12 @@ export function ArtOfShoe({ id }: ArtOfShoeProps) {
           </Link>
         </motion.div>
 
+        {/* Image — full bleed, tall */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 1, delay: 0.4 }}
-          className="relative w-full aspect-[16/9]"
+          transition={{ duration: 1.2, delay: 0.5 }}
+          className="relative w-full h-[55vh]"
         >
           {/* Ambient shadow behind person — mobile */}
           <div
@@ -178,11 +180,11 @@ export function ArtOfShoe({ id }: ArtOfShoeProps) {
               background: "radial-gradient(ellipse 75% 90% at 50% 100%, rgba(13,12,10,0.25) 0%, rgba(13,12,10,0.08) 40%, transparent 70%)",
             }}
           />
-          {/* Gradient bridge — mobile top edge */}
+          {/* Gradient bridge — mobile top edge blends into text */}
           <div
             className="absolute inset-0 pointer-events-none z-10"
             style={{
-              background: "linear-gradient(to bottom, #f2ede6 0%, rgba(242,237,230,0) 6%)",
+              background: "linear-gradient(to bottom, #f2ede6 0%, rgba(242,237,230,0) 8%)",
             }}
           />
           {/* Corner frame marks — mobile */}
