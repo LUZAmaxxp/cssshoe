@@ -170,15 +170,15 @@ export default function ProductDetailPage() {
             name: product.name,
             description: product.description,
             image: displayImages,
-            url: `https://lyzane.co/shop/${product.slug || product._id}`,
+              url: `https://lyzane.ma/shop/${product.slug || product._id}`,
             brand: {
               "@type": "Brand",
               name: "Lyzane",
-              url: "https://lyzane.co",
+              url: "https://lyzane.ma",
             },
             offers: {
               "@type": "Offer",
-              url: `https://lyzane.co/shop/${product.slug || product._id}`,
+              url: `https://lyzane.ma/shop/${product.slug || product._id}`,
               priceCurrency: "MAD",
               price: product.price,
               availability: "https://schema.org/InStock",

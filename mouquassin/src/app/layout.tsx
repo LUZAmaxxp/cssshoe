@@ -32,7 +32,7 @@ const notoArabic = Noto_Sans_Arabic({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://lyzane.co"),
+  metadataBase: new URL("https://lyzane.ma"),
   title: {
     default: "Lyzane — Handcrafted Tuxedo & Mocassin Shoes | Luxury Footwear",
     template: "%s | Lyzane",
@@ -61,7 +61,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://lyzane.co",
+              url: "https://lyzane.ma",
     siteName: "Lyzane",
     title: "Lyzane — Handcrafted Tuxedo & Mocassin Shoes",
     description:
@@ -94,11 +94,11 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: "https://lyzane.co",
+    canonical: "https://lyzane.ma",
     languages: {
-      "en": "https://lyzane.co",
-      "ar": "https://lyzane.co",
-      "fr": "https://lyzane.co",
+      "en": "https://lyzane.ma",
+      "ar": "https://lyzane.ma",
+      "fr": "https://lyzane.ma",
     },
   },
   icons: {
@@ -130,7 +130,7 @@ export default function RootLayout({
               "@type": "ShoeStore",
               name: "Lyzane",
               description: "Handcrafted tuxedo and mocassin shoes. Premium Italian leather, timeless elegance.",
-              url: "https://lyzane.co",
+    url: "https://lyzane.ma",
               logo: "https://res.cloudinary.com/dzrsbjdma/image/upload/v1784804013/lyzane/logo1v1.png",
               image: "https://res.cloudinary.com/dzrsbjdma/image/upload/v1784804012/lyzane/logo.jpg",
               address: {

@@ -9,6 +9,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ["/admin", "/api/"],
       },
     ],
-    sitemap: "https://lyzane.co/sitemap.xml",
+    sitemap: "https://lyzane.ma/sitemap.xml",
   };
 }
