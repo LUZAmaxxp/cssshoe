@@ -32,29 +32,77 @@ const notoArabic = Noto_Sans_Arabic({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://lyzane.co"),
   title: {
-    default: "Lyzane — Classic Tuxedo & Mocassin Shoes",
+    default: "Lyzane — Handcrafted Tuxedo & Mocassin Shoes | Luxury Footwear",
     template: "%s | Lyzane",
   },
   description:
-    "Handcrafted tuxedo and mocassin shoes. Luxury footwear, timeless elegance.",
+    "Lyzane crafts handcrafted tuxedo and mocassin shoes in Fez, Morocco. Premium Italian leather, timeless elegance. Free delivery on orders over 1000 DH.",
+  keywords: [
+    "tuxedo shoes",
+    "mocassin shoes",
+    "handcrafted shoes",
+    "luxury footwear",
+    "Italian leather shoes",
+    "classic shoes",
+    "dress shoes",
+    "Moroccan craftsmanship",
+    "Lyzane",
+    "formal shoes",
+    "men's shoes Morocco",
+    "black tie shoes",
+    "wedding shoes",
+    "handmade loafers",
+  ],
+  authors: [{ name: "Lyzane" }],
+  creator: "Lyzane",
+  publisher: "Lyzane",
   openGraph: {
     type: "website",
     locale: "en_US",
+    url: "https://lyzane.co",
     siteName: "Lyzane",
-    title: "Lyzane — Classic Tuxedo & Mocassin Shoes",
+    title: "Lyzane — Handcrafted Tuxedo & Mocassin Shoes",
     description:
-      "Handcrafted tuxedo and mocassin shoes. Luxury footwear, timeless elegance.",
+      "Handcrafted tuxedo and mocassin shoes. Premium Italian leather, timeless elegance. Free delivery on orders over 1000 DH.",
+    images: [
+      {
+        url: "https://res.cloudinary.com/dzrsbjdma/image/upload/v1784804012/lyzane/logo.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Lyzane — Classic Tuxedo & Mocassin Shoes",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Lyzane — Classic Tuxedo & Mocassin Shoes",
+    title: "Lyzane — Handcrafted Tuxedo & Mocassin Shoes",
     description:
-      "Handcrafted tuxedo and mocassin shoes. Luxury footwear, timeless elegance.",
+      "Handcrafted tuxedo and mocassin shoes. Premium Italian leather, timeless elegance.",
+    images: ["https://res.cloudinary.com/dzrsbjdma/image/upload/v1784804012/lyzane/logo.jpg"],
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  alternates: {
+    canonical: "https://lyzane.co",
+    languages: {
+      "en": "https://lyzane.co",
+      "ar": "https://lyzane.co",
+      "fr": "https://lyzane.co",
+    },
+  },
+  icons: {
+    icon: "https://res.cloudinary.com/dzrsbjdma/image/upload/v1784804013/lyzane/logo1v1.png",
   },
 };
 
@@ -71,6 +119,32 @@ export default function RootLayout({
     >
       <head>
         <link rel="icon" href="https://res.cloudinary.com/dzrsbjdma/image/upload/v1784804013/lyzane/logo1v1.png" type="image/png" />
+        <link rel="apple-touch-icon" href="https://res.cloudinary.com/dzrsbjdma/image/upload/v1784804013/lyzane/logo1v1.png" />
+        <meta name="theme-color" content="#0d0c0a" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "ShoeStore",
+              name: "Lyzane",
+              description: "Handcrafted tuxedo and mocassin shoes. Premium Italian leather, timeless elegance.",
+              url: "https://lyzane.co",
+              logo: "https://res.cloudinary.com/dzrsbjdma/image/upload/v1784804013/lyzane/logo1v1.png",
+              image: "https://res.cloudinary.com/dzrsbjdma/image/upload/v1784804012/lyzane/logo.jpg",
+              address: {
+                "@type": "PostalAddress",
+                addressLocality: "Fez",
+                addressCountry: "MA",
+              },
+              sameAs: [
+                "https://www.instagram.com/lyzane.co",
+                "https://www.facebook.com/share/1BvUC9CRxt",
+              ],
+              priceRange: "$$",
+            }),
+          }}
+        />
       </head>
       <body className="min-h-full flex flex-col overflow-x-hidden">
         <ClientProviders>{children}</ClientProviders>

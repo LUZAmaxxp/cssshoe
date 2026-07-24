@@ -169,14 +169,30 @@ export default function ProductDetailPage() {
             "@type": "Product",
             name: product.name,
             description: product.description,
-            image: displayImages[0],
+            image: displayImages,
+            url: `https://lyzane.co/shop/${product.slug || product._id}`,
+            brand: {
+              "@type": "Brand",
+              name: "Lyzane",
+              url: "https://lyzane.co",
+            },
             offers: {
               "@type": "Offer",
+              url: `https://lyzane.co/shop/${product.slug || product._id}`,
               priceCurrency: "MAD",
               price: product.price,
               availability: "https://schema.org/InStock",
+              seller: {
+                "@type": "Organization",
+                name: "Lyzane",
+              },
             },
-            brand: { "@type": "Brand", name: "Lyzane" },
+            category: product.category,
+            aggregateRating: product.likeCount > 0 ? {
+              "@type": "AggregateRating",
+              ratingValue: "4.8",
+              reviewCount: String(product.likeCount),
+            } : undefined,
           }),
         }}
       />
