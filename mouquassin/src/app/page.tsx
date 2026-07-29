@@ -5,6 +5,7 @@ import { IntroReveal } from "@/components/landing/IntroReveal";
 import { ArtOfShoe } from "@/components/landing/ArtOfShoe";
 import { CraftSection } from "@/components/landing/CraftSection";
 import { LandingSections } from "@/components/landing/LandingSections";
+import { Analytics } from "@vercel/analytics/next"
 
 export default function HomePage() {
   return (
@@ -20,6 +21,7 @@ export default function HomePage() {
         <CraftSection id="craft" />
       </main>
       <Footer />
-    </IntroReveal>
+      <Analytics />
+</IntroReveal>
   );
 }
