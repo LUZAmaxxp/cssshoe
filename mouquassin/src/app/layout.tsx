@@ -101,14 +101,6 @@ export const metadata: Metadata = {
       "fr": "https://lyzane.ma",
     },
   },
-  icons: {
-    icon: [
-      { url: "/favicon.png", type: "image/png", sizes: "32x32" },
-      { url: "/favicon.png", type: "image/png", sizes: "16x16" },
-      { url: "/favicon.ico", sizes: "any" },
-    ],
-    apple: "/favicon.png",
-  },
 };
 
 export default function RootLayout({
