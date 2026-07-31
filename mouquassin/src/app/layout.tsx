@@ -102,7 +102,12 @@ export const metadata: Metadata = {
     },
   },
   icons: {
-    icon: "https://res.cloudinary.com/dzrsbjdma/image/upload/v1784804013/lyzane/logo1v1.png",
+    icon: [
+      { url: "/favicon.png", type: "image/png", sizes: "32x32" },
+      { url: "/favicon.png", type: "image/png", sizes: "16x16" },
+      { url: "/favicon.ico", sizes: "any" },
+    ],
+    apple: "/favicon.png",
   },
 };
 
@@ -118,9 +123,6 @@ export default function RootLayout({
       className={`${playfair.variable} ${inter.variable} ${tenorSans.variable} ${notoArabic.variable} h-full antialiased overflow-x-hidden`}
     >
       <head>
-        <link rel="icon" href="/favicon.png" type="image/png" sizes="32x32" />
-        <link rel="icon" href="/favicon.png" type="image/png" sizes="16x16" />
-        <link rel="apple-touch-icon" href="/favicon.png" />
         <meta name="theme-color" content="#0d0c0a" />
         <meta name="google-site-verification" content="yPkYViTQP1IcX5oemeMg5XdsXgMdQP5V0eTwiLPLeTM" />
         <script
