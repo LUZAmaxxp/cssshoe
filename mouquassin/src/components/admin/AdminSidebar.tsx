@@ -8,6 +8,7 @@ import {
   ShoppingCart,
   BarChart3,
   Package,
+  MessageSquare,
   LogOut,
   Menu,
   X,
@@ -17,6 +18,7 @@ import { signOut } from "next-auth/react";
 const navItems = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/orders", label: "Orders", icon: ShoppingCart },
+  { href: "/admin/chat", label: "Messages", icon: MessageSquare },
   { href: "/admin/analytics", label: "Analytics", icon: BarChart3 },
   { href: "/admin/products", label: "Products", icon: Package },
 ];

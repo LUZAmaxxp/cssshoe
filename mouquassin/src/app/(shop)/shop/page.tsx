@@ -3,6 +3,7 @@
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { ShopContent } from "./ShopContent";
+import { CustomerChat } from "@/components/chat/CustomerChat";
 import { useLocale } from "@/i18n/context";
 
 export default function ShopPage() {
@@ -19,6 +20,7 @@ export default function ShopPage() {
         <ShopContent />
       </main>
       <Footer />
+      <CustomerChat />
     </>
   );
 }
