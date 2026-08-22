@@ -26,6 +26,7 @@ export function ShopContent() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
+  const [loadError, setLoadError] = useState(false);
   const [category, setCategory] = useState("");
   const [categories, setCategories] = useState<string[]>([]);
   const [pagination, setPagination] = useState<Pagination | null>(null);
@@ -43,7 +44,13 @@ export function ShopContent() {
         params.set("limit", "24");
         if (category) params.set("category", category);
 
-        const res = await fetch(`/api/products?${params}`);
+        const controller = new AbortController();
+        const timeout = window.setTimeout(() => controller.abort(), 15000);
+        const res = await fetch(`/api/products?${params}`, {
+          signal: controller.signal,
+        });
+        window.clearTimeout(timeout);
+        if (!res.ok) throw new Error(`Product request failed: ${res.status}`);
         const data = await res.json();
 
         setProducts((prev) =>
@@ -51,8 +58,9 @@ export function ShopContent() {
         );
         setPagination(data.pagination);
         setCurrentPage(page);
+        setLoadError(false);
       } catch {
-        // silent
+        if (!append) setLoadError(true);
       } finally {
         setLoading(false);
         setLoadingMore(false);
@@ -94,6 +102,21 @@ export function ShopContent() {
             </div>
           </div>
         ))}
+      </div>
+    );
+  }
+
+  if (loadError) {
+    return (
+      <div className="py-16 text-center text-muted-foreground">
+        <p className="mb-4">The collection could not be loaded.</p>
+        <button
+          type="button"
+          onClick={() => fetchProducts(1)}
+          className="border border-charcoal px-6 py-3 text-xs uppercase tracking-wider text-charcoal"
+        >
+          Try again
+        </button>
       </div>
     );
   }

@@ -32,7 +32,7 @@ export function HeroCarousel() {
           muted
           playsInline
           controls={false}
-          preload="auto"
+          preload="metadata"
           className="w-full h-full object-cover object-[center_70%]"
         >
           <source src="https://res.cloudinary.com/dzrsbjdma/video/upload/v1784844238/lyzane/hero-video.mp4" type="video/mp4" />
