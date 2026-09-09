@@ -53,6 +53,7 @@ export function HeroCarousel() {
         className="absolute inset-0 z-10 flex flex-col items-center justify-center px-6 md:px-8"
       >
         <div className="text-center">
+          <h1 className="sr-only">Lyzane — Handcrafted Luxury Shoes</h1>
           {/* Brand name */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -63,10 +64,11 @@ export function HeroCarousel() {
             <Image
               src="https://res.cloudinary.com/dzrsbjdma/image/upload/v1784804014/lyzane/title-nobg.png"
               alt="Lyzane"
-              width={1250}
-              height={250}
+              width={400}
+              height={80}
               className="h-10 md:h-20 lg:h-[120px] w-auto"
               priority
+              fetchPriority="high"
             />
           </motion.div>
 

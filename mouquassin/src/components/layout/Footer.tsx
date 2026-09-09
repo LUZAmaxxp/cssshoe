@@ -30,9 +30,9 @@ export function Footer() {
 
           {/* Shop column */}
           <div>
-            <h4 className="text-[10px] tracking-[0.15em] uppercase font-sans font-normal text-cream md:text-charcoal mb-3">
+            <h2 className="text-[10px] tracking-[0.15em] uppercase font-sans font-normal text-cream md:text-charcoal mb-3">
               {t("footer.shop.title")}
-            </h4>
+            </h2>
             <div className="space-y-2">
               <Link href="/shop" className="block text-xs text-cream/60 md:text-muted-foreground hover:text-cream md:hover:text-charcoal transition-colors no-underline">
                 {t("footer.shop.allProducts")}
@@ -48,9 +48,9 @@ export function Footer() {
 
           {/* Help column */}
           <div>
-            <h4 className="text-[10px] tracking-[0.15em] uppercase font-sans font-normal text-cream md:text-charcoal mb-3">
+            <h2 className="text-[10px] tracking-[0.15em] uppercase font-sans font-normal text-cream md:text-charcoal mb-3">
               {t("footer.help.title")}
-            </h4>
+            </h2>
             <div className="space-y-2">
               <Link href="/#values" className="block text-xs text-cream/60 md:text-muted-foreground hover:text-cream md:hover:text-charcoal transition-colors no-underline">
                 {t("footer.help.ourStory")}
@@ -64,9 +64,9 @@ export function Footer() {
 
           {/* Stay Connected column */}
           <div>
-            <h4 className="text-[10px] tracking-[0.15em] uppercase font-sans font-normal text-cream md:text-charcoal mb-3">
+            <h2 className="text-[10px] tracking-[0.15em] uppercase font-sans font-normal text-cream md:text-charcoal mb-3">
               {t("footer.connected.title")}
-            </h4>
+            </h2>
             <p className="text-xs text-cream/60 md:text-muted-foreground mb-4">
               {t("footer.connected.subscribe")}
             </p>
@@ -76,7 +76,7 @@ export function Footer() {
                 placeholder={t("footer.connected.emailPlaceholder")}
                 className="flex-1 bg-transparent border border-cream/20 md:border-border px-3 py-2 text-xs text-cream md:text-charcoal placeholder:text-cream/40 md:placeholder:text-muted-foreground focus:outline-none focus:border-brass transition-colors"
               />
-              <button className="bg-cream text-charcoal md:bg-charcoal md:text-cream px-4 py-2 text-[10px] tracking-[0.15em] uppercase hover:bg-brass hover:text-charcoal transition-colors">
+              <button className="bg-cream text-charcoal md:bg-charcoal md:text-cream px-4 py-2 text-[10px] tracking-[0.15em] uppercase hover:bg-brass hover:text-charcoal transition-colors" aria-label={t("footer.connected.subscribeButton")}>
                 {t("footer.connected.subscribeButton")}
               </button>
             </div>

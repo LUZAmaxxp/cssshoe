@@ -85,7 +85,7 @@ export function Navbar({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
             <span className="hidden md:block">
               <SearchModal />
             </span>
-            <button className="hidden md:block p-2 hover:text-cream transition-colors">
+            <button className="hidden md:block p-2 hover:text-cream transition-colors" aria-label="Account">
               <User className="w-4 h-4" />
             </button>
 
@@ -115,7 +115,7 @@ export function Navbar({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
               )}
             </div>
 
-            <button onClick={() => setCartOpen(true)} className="relative p-2 hover:text-cream transition-colors">
+            <button onClick={() => setCartOpen(true)} className="relative p-2 hover:text-cream transition-colors" aria-label="Shopping cart">
               <ShoppingBag className="w-4 h-4" />
               {totalItemsCount > 0 && (
                 <span className="absolute -top-1 -right-1 bg-burgundy text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center">
@@ -124,7 +124,7 @@ export function Navbar({ alwaysSolid = false }: { alwaysSolid?: boolean }) {
               )}
             </button>
 
-            <button className="md:hidden p-2 hover:text-cream transition-colors" onClick={() => setMenuOpen(!menuOpen)}>
+            <button className="md:hidden p-2 hover:text-cream transition-colors" onClick={() => setMenuOpen(!menuOpen)} aria-label={menuOpen ? "Close menu" : "Open menu"}>
               {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>

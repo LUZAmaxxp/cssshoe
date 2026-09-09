@@ -91,6 +91,7 @@ export function ProductCard({
           <button
             onClick={handleLike}
             className="absolute top-2 right-2 p-2.5 bg-white/80 backdrop-blur-sm rounded-full opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity"
+            aria-label={liked ? "Already liked" : "Like product"}
           >
             <Heart
               className={`w-4 h-4 ${liked ? "fill-burgundy text-burgundy" : "text-muted-foreground"}`}

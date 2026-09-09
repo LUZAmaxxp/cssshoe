@@ -26,29 +26,33 @@ interface ConversationInfo {
   unreadCount: number;
 }
 
+function getCookie(name: string): string | null {
+  if (typeof document === "undefined") return null;
+  const match = document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`));
+  return match ? decodeURIComponent(match[1]) : null;
+}
+
+function setCookie(name: string, value: string, days: number = 365) {
+  if (typeof document === "undefined") return;
+  const expires = new Date(Date.now() + days * 864e5).toUTCString();
+  document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/; SameSite=Lax`;
+}
+
 function generateCustomerId(): string {
-  if (typeof window !== "undefined") {
-    let id = localStorage.getItem("chat_customer_id");
-    if (!id) {
-      id = `cust_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
-      localStorage.setItem("chat_customer_id", id);
-    }
-    return id;
+  let id = getCookie("chat_customer_id");
+  if (!id) {
+    id = `cust_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+    setCookie("chat_customer_id", id);
   }
-  return `cust_${Date.now()}`;
+  return id;
 }
 
 function getSavedName(): string {
-  if (typeof window !== "undefined") {
-    return localStorage.getItem("chat_customer_name") || "";
-  }
-  return "";
+  return getCookie("chat_customer_name") || "";
 }
 
 function saveName(name: string) {
-  if (typeof window !== "undefined") {
-    localStorage.setItem("chat_customer_name", name);
-  }
+  setCookie("chat_customer_name", name);
 }
 
 function getConversationId(customerId: string): string {
