@@ -1,0 +1,132 @@
+{
+  "title": "Cellular data blank page and indefinite loading diagnosis",
+  "createdAt": "2026-09-18",
+  "application": "mouquassin",
+  "productionHost": "https://lyzane.ma",
+  "scope": "Diagnosis only. No production code was changed.",
+  "symptom": {
+    "reported": "On cellular data, the website can show a blank page or remain in a loading state instead of becoming usable.",
+    "mostRelevantRoutes": ["/", "/shop", "/api/products", "/api/products/categories"]
+  },
+  "executiveDiagnosis": {
+    "primaryHypothesis": "The most likely shop-specific failure is a slow or unreachable dependency behind /api/products, especially the MongoDB connection. ShopContent renders its loading skeleton while that request is pending, and the server database helper has no explicit short connection timeout. A mobile carrier path can expose this intermittently through a different DNS route, region, IPv6 path, or slower cold start.",
+    "confidence": "medium",
+    "importantQualification": "This is not proven as the current production failure: from the current network, the production homepage, shop page, and products API all returned HTTP 200 quickly. A real cellular reproduction with browser network logs and Vercel function logs is required.",
+    "secondaryHypothesis": "For the homepage, the perceived blank screen is more likely caused by the full-screen IntroReveal overlay combined with external Cloudinary image/video loading on a slow cellular connection. The overlay is rendered for 2.8 seconds and depends on client hydration to exit; the hero also downloads a Cloudinary video and several priority images.",
+    "notLikely": "CORS is unlikely to be the cause for normal same-origin browser navigation because the app calls relative /api URLs. The live API also returned the expected CORS headers. The apex-to-www redirect adds a network hop, but it completed successfully during testing."
+  },
+  "evidence": [
+    {
+      "severity": "high",
+      "finding": "The shop is client-data dependent and starts with loading=true.",
+      "location": "mouquassin/src/app/(shop)/shop/ShopContent.tsx:27-66",
+      "details": "The page shows only the loading skeleton until fetchProducts receives and parses /api/products. The request has a 15 second browser timeout, so a stalled request creates a long loading experience before the error state appears."
+    },
+    {
+      "severity": "high",
+      "finding": "The products API waits for MongoDB before querying.",
+      "location": "mouquassin/src/app/api/products/route.ts:15-20 and mouquassin/src/lib/db.ts:4-30",
+      "details": "Every uncached serverless request calls connectToDatabase(). The helper caches a promise but does not configure serverSelectionTimeoutMS, connectTimeoutMS, or a failure reset. If MongoDB is slow or unreachable from a function region, the browser can remain in loading until its 15 second abort."
+    },
+    {
+      "severity": "medium",
+      "finding": "The homepage deliberately covers the entire viewport during startup.",
+      "location": "mouquassin/src/components/landing/IntroReveal.tsx:11-20 and 33-73",
+      "details": "showIntro starts true and the fixed z-index 100 overlay is removed only after a 2800 ms client-side timer. Slow hydration, blocked JavaScript, or slow priority Cloudinary images can make the user perceive this as a blank page."
+    },
+    {
+      "severity": "medium",
+      "finding": "The homepage requests large external media during first load.",
+      "location": "mouquassin/src/components/landing/HeroCarousel.tsx:19-44 and mouquassin/src/components/landing/IntroReveal.tsx:38-66",
+      "details": "The hero uses a remote Cloudinary MP4 and the intro/hero use remote priority images. preload=metadata reduces video pressure but does not eliminate external DNS, TLS, CDN, or carrier bandwidth failures."
+    },
+    {
+      "severity": "medium",
+      "finding": "The production domain adds an apex-to-www redirect.",
+      "location": "Production response headers for https://lyzane.ma/",
+      "details": "The request returned 308 to https://www.lyzane.ma/ and then 200. This is not currently broken, but removing the extra hop would reduce first-load sensitivity on poor networks and make DNS/certificate debugging simpler."
+    },
+    {
+      "severity": "low",
+      "finding": "The categories request has no timeout.",
+      "location": "mouquassin/src/app/(shop)/shop/ShopContent.tsx:70-76",
+      "details": "It does not gate the main loading state, so it is not the primary cause of the shop skeleton, but it can remain pending forever and adds another request during cellular startup."
+    },
+    {
+      "severity": "low",
+      "finding": "Global client components have lint errors.",
+      "location": "mouquassin/src/components/layout/LanguageSelector.tsx:26 and mouquassin/src/components/layout/SearchModal.tsx:36-52",
+      "details": "npm run lint reports three errors. npm run build and TypeScript succeed, so these are not proof of the blank page, but they increase client-side regression risk because ClientProviders renders globally."
+    }
+  ],
+  "validationPerformed": {
+    "date": "2026-09-18",
+    "commands": [
+      {
+        "command": "npm run typecheck",
+        "result": "passed"
+      },
+      {
+        "command": "npm run build",
+        "result": "passed; Next.js 16.2.10 production build completed"
+      },
+      {
+        "command": "npm run lint",
+        "result": "failed with 3 errors and 3 warnings in existing files; see evidence"
+      },
+      {
+        "command": "curl -L https://lyzane.ma/",
+        "result": "HTTP 200 after one redirect; about 0.41 seconds from current network"
+      },
+      {
+        "command": "curl -L https://lyzane.ma/shop",
+        "result": "HTTP 200 after one redirect; about 0.64 seconds from current network"
+      },
+      {
+        "command": "curl -L https://lyzane.ma/api/products?page=1&limit=1",
+        "result": "HTTP 200 with product data after one redirect; about 0.41 seconds from current network"
+      },
+      {
+        "command": "curl -L https://lyzane.ma/api/products/categories",
+        "result": "HTTP 200 with categories after one redirect"
+      }
+    ],
+    "limitation": "The available environment did not provide a cellular browser session, so these checks cannot reproduce carrier-specific DNS, IPv6, bandwidth, captive portal, or regional routing behavior."
+  },
+  "recommendedInvestigationOrder": [
+    {
+      "step": 1,
+      "action": "Reproduce on a real phone using cellular data with browser DevTools remote debugging or a HAR capture.",
+      "record": "Whether /, /shop, /api/products, Cloudinary image requests, and the hero MP4 return, stall, fail DNS, fail TLS, or are blocked. Record exact elapsed time and HTTP status."
+    },
+    {
+      "step": 2,
+      "action": "Check Vercel function logs at the exact reproduction time.",
+      "record": "Mongo connection timeout, server selection error, function duration, region, 500 responses, and whether /api/products was invoked."
+    },
+    {
+      "step": 3,
+      "action": "Compare https://lyzane.ma and https://www.lyzane.ma directly on the same phone.",
+      "record": "DNS resolution time, redirect behavior, certificate errors, and whether only the apex or only www fails."
+    },
+    {
+      "step": 4,
+      "action": "Temporarily test the homepage without the intro overlay, hero video, and global chat provider in a staging deployment.",
+      "record": "Whether the cellular blank page disappears. This cleanly separates the document/client/media path from the API/database path."
+    },
+    {
+      "step": 5,
+      "action": "Add server-side timing and request IDs to the products API before making infrastructure changes.",
+      "record": "Database connect duration, query duration, response status, and deployment region. Do not log secrets or customer data."
+    }
+  ],
+  "likelyFixesAfterReproduction": [
+    "Configure explicit MongoDB connection and server-selection timeouts, and clear a rejected cached connection promise so later requests can recover.",
+    "Return a bounded API error quickly and make the shop render a useful error state without waiting indefinitely.",
+    "Use a same-origin or optimized lightweight first-viewport image on cellular and lazy-load the hero video after the page is interactive.",
+    "Reduce or make the intro overlay skippable; never let it be the only visible first-viewport content while client hydration is pending.",
+    "Canonicalize production traffic to one hostname to remove the extra redirect.",
+    "Fix the existing global lint errors before the next deployment and add an automated mobile-throttled smoke test for / and /shop."
+  ],
+  "bottomLine": "The codebase contains a credible dependency timeout problem and a separate full-screen startup overlay/media risk. Current production probes are healthy from this network, so the next decisive artifact is a cellular HAR plus matching Vercel logs."
+}

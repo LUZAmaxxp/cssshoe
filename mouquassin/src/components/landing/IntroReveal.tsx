@@ -14,7 +14,7 @@ export function IntroReveal({ children }: IntroRevealProps) {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowIntro(false);
-    }, 2800);
+    }, 1200);
     return () => clearTimeout(timer);
   }, []);
 

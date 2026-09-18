@@ -45,20 +45,23 @@ export function ShopContent() {
         if (category) params.set("category", category);
 
         const controller = new AbortController();
-        const timeout = window.setTimeout(() => controller.abort(), 15000);
-        const res = await fetch(`/api/products?${params}`, {
-          signal: controller.signal,
-        });
-        window.clearTimeout(timeout);
-        if (!res.ok) throw new Error(`Product request failed: ${res.status}`);
-        const data = await res.json();
+        const timeout = window.setTimeout(() => controller.abort(), 8000);
+        try {
+          const res = await fetch(`/api/products?${params}`, {
+            signal: controller.signal,
+          });
+          if (!res.ok) throw new Error(`Product request failed: ${res.status}`);
+          const data = await res.json();
 
-        setProducts((prev) =>
-          append ? [...prev, ...data.products] : data.products
-        );
-        setPagination(data.pagination);
-        setCurrentPage(page);
-        setLoadError(false);
+          setProducts((prev) =>
+            append ? [...prev, ...data.products] : data.products
+          );
+          setPagination(data.pagination);
+          setCurrentPage(page);
+          setLoadError(false);
+        } finally {
+          window.clearTimeout(timeout);
+        }
       } catch {
         if (!append) setLoadError(true);
       } finally {
@@ -70,10 +73,22 @@ export function ShopContent() {
   );
 
   useEffect(() => {
-    fetch("/api/products/categories")
-      .then((res) => res.json())
+    const controller = new AbortController();
+    const timeout = window.setTimeout(() => controller.abort(), 8000);
+
+    fetch("/api/products/categories", { signal: controller.signal })
+      .then((res) => {
+        if (!res.ok) throw new Error(`Category request failed: ${res.status}`);
+        return res.json();
+      })
       .then(setCategories)
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => window.clearTimeout(timeout));
+
+    return () => {
+      window.clearTimeout(timeout);
+      controller.abort();
+    };
   }, []);
 
   /* eslint-disable react-hooks/set-state-in-effect */

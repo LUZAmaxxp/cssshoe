@@ -37,11 +37,19 @@ export async function connectToDatabase(): Promise<typeof mongoose> {
   if (!cached.promise) {
     cached.promise = mongoose.connect(getMongoUri(), {
       bufferCommands: false,
+      serverSelectionTimeoutMS: 5000,
+      connectTimeoutMS: 5000,
+      socketTimeoutMS: 10000,
     });
   }
 
-  cached.conn = await cached.promise;
-  return cached.conn;
+  try {
+    cached.conn = await cached.promise;
+    return cached.conn;
+  } catch (error) {
+    cached.promise = null;
+    throw error;
+  }
 }
 
 export function getMongoClient(): Promise<MongoClient> {
